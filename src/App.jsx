@@ -10,17 +10,17 @@ const StrokeText = lazy(() => import('./components/StrokeText'));
 const ProfileCard = lazy(() => import('./components/ProfileCard'));
 
 
-// Cada serviço responde a um dos problemas acima.
-const servicos = [
-  { titulo: 'Painel de vendas simples', texto: 'Uma tela que mostra o que vendeu, quanto e o que vende mais. Você bate o olho e sabe.' },
-  { titulo: 'Relatório semanal automático', texto: 'Um resumo da semana que chega pronto, sem você copiar nada de um lugar para outro.' },
-  { titulo: 'Estoque e caixa organizados', texto: 'Uma planilha arrumada, que qualquer pessoa da loja entende, para saber o que tem e quanto entrou e saiu.' }
+// Três degraus: o grátis abre a porta; os outros dois só se a pessoa quiser (preço dito antes).
+const degraus = [
+  { quando: 'Para começar, grátis', titulo: 'Seu mês arrumado', texto: 'A conversa de 20 minutos e um mês das suas vendas organizado, com o que mais vendeu e o que dá para melhorar.' },
+  { quando: 'Depois, se quiser', titulo: 'Raio-X de lucro', texto: 'Com o custo de cada produto, eu mostro qual dá lucro de verdade, qual vende muito e lucra pouco, um preço sugerido e quanto dinheiro está parado no estoque.' },
+  { quando: 'Todo mês', titulo: 'Fechamento do mês', texto: 'Planilha conferida, painel atualizado e um resumo de uma página: quanto vendeu, quanto lucrou e o que comprar.' }
 ];
 
 const passos = [
   { titulo: 'Conversa de 20 minutos', texto: 'Você me mostra a planilha ou o caderno, do jeito que estiver, e me conta como a loja funciona.' },
   { titulo: 'Seu mês arrumado, de presente', texto: 'Eu organizo um mês das suas vendas e te mando a planilha arrumada, o que mais vendeu e o que dá para melhorar. Se for caderno, fotos das páginas bastam.' },
-  { titulo: 'Proposta sem compromisso', texto: 'Se fizer sentido, eu digo como posso ajudar e quanto custa. Se não, você fica com o diagnóstico.' }
+  { titulo: 'Proposta sem compromisso', texto: 'Se fizer sentido, eu digo como posso ajudar e quanto custa. Se não, você fica com o seu mês arrumado.' }
 ];
 
 // Grade fina como padrão do brilho holográfico do cartão: o mesmo desenho da página.
@@ -87,14 +87,18 @@ export default function App() {
           <h1 className="hero-title">Sua planilha ou caderno deveria responder perguntas, não criar dúvidas.</h1>
           <div className="hero-copy">
             <p className="lead">
-              Numa conversa de 20 minutos eu entendo como você controla vendas e estoque. Depois te mando, sem custo,
-              um mês das suas vendas arrumado e o que dá para melhorar.
+              Eu arrumo um mês das suas vendas, de presente, e te mostro o que os números dizem. Começa com uma conversa.
             </p>
             <a className="btn" href="#formulario" onClick={irFormulario}>Pedir diagnóstico gratuito</a>
             <p className="byline">
               <img src="/caio.webp" alt="" width="44" height="44" />
               <span><strong>Caio Simão</strong>Estudante de Engenharia no ITA</span>
             </p>
+            <dl className="hero-fatos">
+              <div><dt>20 min</dt><dd>de conversa, por vídeo ou WhatsApp</dd></div>
+              <div><dt>1 mês</dt><dd>das suas vendas arrumado</dd></div>
+              <div><dt>R$ 0</dt><dd>para começar, sem senha</dd></div>
+            </dl>
           </div>
           <BeforeAfter />
         </div>
@@ -117,17 +121,18 @@ export default function App() {
           <div className="grid">
             <div className="sec-side">
               <h2 className="sec-title" id="t-servicos">O que eu posso fazer por você</h2>
-              <p>Dá para resolver isso sem trocar de sistema e sem complicar.</p>
+              <p>Começa grátis. Os outros degraus só se fizer sentido para você: eu digo o preço antes e você decide sem pressão.</p>
               <a className="btn btn-inverse" href="#formulario" onClick={irFormulario}>Pedir diagnóstico gratuito</a>
             </div>
-            <ul className="services">
-              {servicos.map((s, i) => (
-                <li key={s.titulo} className={i === 0 ? 'service-main' : undefined}>
-                  <h3>{s.titulo}</h3>
-                  <p>{s.texto}</p>
+            <ol className="degraus">
+              {degraus.map(d => (
+                <li key={d.titulo}>
+                  <p className="degrau-quando">{d.quando}</p>
+                  <h3>{d.titulo}</h3>
+                  <p>{d.texto}</p>
                 </li>
               ))}
-            </ul>
+            </ol>
           </div>
         </section>
 

@@ -150,16 +150,28 @@ fieldset { border: 0; padding: 0; min-width: 0; }
 /* Antes e depois (Pixel Swap) */
 .demo { border-top: 2px solid var(--rule); padding-top: 14px; }
 .demo-swap { border: 1px solid var(--hair); background: var(--sheet-bg); }
-.demo-foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px 16px;
-  margin-top: 14px;
+.demo-palco { position: relative; }
+.demo-acao { position: absolute; right: 16px; bottom: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.demo-acao.btn-ghost { background: var(--surface); }
+.demo-legenda { display: flex; gap: 10px; align-items: flex-start; min-height: 3em; margin-top: 14px; font-size: .9375rem; color: var(--muted); }
+.demo-legenda strong { color: var(--ink); font-weight: 600; }
+
+/* marcadores dos problemas: quadrado vermelho no canto da célula; no "depois", azul */
+.sheet td { position: relative; }
+.marca { position: absolute; right: 3px; top: 50%; translate: 0 -50%; display: grid; place-items: center; width: 18px; height: 18px; background: var(--error); color: #fff; font-size: 11px; font-weight: 700; font-style: normal; cursor: help; }
+.marca::after { content: ""; position: absolute; inset: -8px; }
+.sheet-ok .marca, .demo-depois .marca-legenda { background: var(--accent); }
+.marca-legenda { position: static; translate: none; flex: none; margin-top: 2px; cursor: default; }
+@media (hover: hover) { .marca:hover { scale: 1.15; } }
+@media (prefers-reduced-motion: no-preference) {
+  .marca { animation: marca-pulso 1.4s ease-out calc(var(--i) * .15s + .6s) 2; }
+  @keyframes marca-pulso { from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--error) 55%, transparent); } to { box-shadow: 0 0 0 9px transparent; } }
 }
-.demo-foot figcaption { font-size: .9375rem; color: var(--muted); max-width: 40ch; }
-.demo-foot figcaption strong { color: var(--ink); font-weight: 600; }
+
+/* fatos do topo: preenchem a coluna da esquerda */
+.hero-fatos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; width: 100%; padding-top: 20px; border-top: 1px solid var(--hair); }
+.hero-fatos dt { font-size: clamp(1.75rem, 2.6vw, 2.5rem); font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
+.hero-fatos dd { margin: 8px 0 0; font-size: .9375rem; color: var(--muted); max-width: 16ch; }
 
 /* A planilha bagunçada */
 .sheet {
@@ -263,18 +275,21 @@ h3 { font-size: 1.3125rem; font-weight: 600; letter-spacing: -0.01em; line-heigh
 .sec-accent > .grid::before { border-color: var(--on-accent); }
 .sec-side { display: grid; gap: 20px; align-content: start; justify-items: start; }
 .sec-side p { color: var(--on-accent-muted); font-size: 1.125rem; max-width: 30ch; }
-.services { display: grid; gap: 32px; }
-.services li { border-top: 1px solid color-mix(in srgb, var(--on-accent) 45%, transparent); padding-top: 16px; }
-.services p { color: var(--on-accent-muted); margin-top: 8px; max-width: 36ch; }
-.service-main h3 { font-size: clamp(1.5rem, 2.6vw, 2.25rem); letter-spacing: -0.02em; line-height: 1.15; }
-.service-main p { font-size: 1.125rem; }
+/* três degraus: no computador, cada um um pouco mais alto que o anterior, como uma escada */
+.degraus { display: grid; gap: 32px; }
+.degraus li { display: grid; gap: 8px; align-content: start; padding: 16px 0 0 16px; border-top: 2px solid var(--on-accent); border-left: 2px solid var(--on-accent); }
+.degrau-quando { font-size: .875rem; font-weight: 600; letter-spacing: .02em; color: var(--on-accent-muted); }
+.degraus h3 { font-size: clamp(1.375rem, 2vw, 1.75rem); letter-spacing: -0.02em; line-height: 1.15; }
+.degraus li > p:last-child { color: var(--on-accent-muted); max-width: 34ch; }
 
 @media (max-width: 959px) {
   .sec-side .btn { width: 100%; }
 }
 @media (min-width: 960px) {
-  .services { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gap); row-gap: 40px; }
-  .services .service-main { grid-column: 1 / -1; }
+  .degraus { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 0; }
+  .degraus li { padding-right: var(--gap); }
+  .degraus li:nth-child(1) { margin-top: 112px; }
+  .degraus li:nth-child(2) { margin-top: 56px; }
 }
 
 /* 4. Como funciona: a ordem importa, por isso os números */
@@ -416,7 +431,7 @@ form .btn { width: 100%; }
   .sec-accent .sec-side { display: contents; }
   .sec-accent .sec-side > * { grid-column: 1 / -1; }
   .sec-accent .sec-side > .btn { order: 3; }
-  .sec-accent .services { order: 2; }
+  .sec-accent .degraus { order: 2; }
 }
 
 /* No celular a planilha esconde a coluna de datas para as células da piada caberem. */
@@ -579,3 +594,9 @@ form .btn { width: 100%; }
   .cena-texto .sec-title { font-size: clamp(2rem, 3vw, 2.75rem); line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 16px; }
   .cena-frase { font-size: clamp(1.25rem, 1.8vw, 1.75rem); }
 }
+.marca-legenda::after { content: none; }
+/* celular: o botão sai de cima da planilha e fica logo abaixo dela */
+@media (max-width: 959px) {
+  .demo-acao { position: static; width: 100%; margin-top: 12px; }
+}
+.pixel-swap__pixel-content .marca { animation: none; }

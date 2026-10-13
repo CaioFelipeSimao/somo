@@ -10,7 +10,7 @@ import { abrirNavegador } from '../scripts/navegador.mjs';
 
 const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pasta = path.join(raiz, '.conferir');
-const PORTA = 4790, BASE = `http://localhost:${PORTA}`;
+let BASE = ''; // a porta é escolhida na hora (uma livre), para dois testes poderem rodar juntos
 const espera = ms => new Promise(ok => setTimeout(ok, ms));
 let falhas = 0;
 const item = (ok, texto, detalhe = '') => { if (!ok) falhas++; console.log(`${ok ? '  ok ' : '  FALHOU'}  ${texto}${!ok && detalhe ? ` (${detalhe})` : ''}`); };
@@ -36,7 +36,9 @@ const servidor = http.createServer((pedido, resposta) => {
   cabecalhos.forEach(h => resposta.setHeader(h.key, h.value));
   resposta.setHeader('Content-Type', TIPOS[path.extname(arquivo)] || 'application/octet-stream');
   resposta.end(fs.readFileSync(arquivo));
-}).listen(PORTA);
+}).listen(0);
+await new Promise(ok => servidor.once('listening', ok));
+BASE = `http://localhost:${servidor.address().port}`;
 
 const navegador = await abrirNavegador(['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist']);
 const VISTAS = [['PC', { width: 1707, height: 960 }], ['celular', { width: 390, height: 844, isMobile: true, hasTouch: true, deviceScaleFactor: 2 }]];
@@ -113,6 +115,13 @@ try {
     const avisos = await p.evaluate(() => [...document.querySelectorAll('.ficha-form [id^="e-"]')].map(e => e.textContent.trim()).filter(Boolean));
     item(avisos.length === 3, 'formulário em branco mostra os 3 avisos', avisos.join(' | '));
     item(await p.evaluate(() => document.activeElement?.id === 'f-nome'), 'o foco vai para o primeiro campo com problema');
+    // envio sem chave (a versão de teste não tem): a mensagem de falha aparece como texto corrido, não em colunas
+    await p.evaluate(() => { const v = (sel, t) => { const e = document.querySelector(sel); const set = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(e), 'value').set; set.call(e, t); e.dispatchEvent(new Event('input', { bubbles: true })); }; v('#f-nome', 'Tânia Teste'); document.querySelector('#f-tipo-1').click(); v('#f-contato', '(12) 99999-0000'); });
+    await espera(200);
+    await p.evaluate(() => document.querySelector('.ficha-form button[type="submit"]').click()); await espera(400);
+    const falha = await p.evaluate(() => { const e = document.querySelector('.status.erro'); return e ? { d: getComputedStyle(e).display, h: Math.round(e.getBoundingClientRect().height) } : null; });
+    item(falha && falha.d !== 'grid' && falha.h < 160, 'a mensagem de falha no envio aparece inteira, em texto corrido', JSON.stringify(falha));
+    await p.evaluate(() => sessionStorage.clear());
 
     // dados adulterados no navegador não quebram a página nem rodam código
     await p.evaluate(() => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 // Nome do produto: trocar aqui troca na barra (o título da aba fica em index.html).
-export const NOME = 'Caio Simão';
+export const NOME = 'Somô';
 
 // A barra imita a barra de fórmulas de uma planilha: a caixa de nome à esquerda, o "fx" com a
 // "fórmula" da seção em que a pessoa está, e as abas das seções embaixo (a aba atual fica marcada).

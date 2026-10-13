@@ -230,7 +230,7 @@ export default function App() {
 
       <footer className="footer">
         <div className="grid">
-          <p><strong>Caio Simão</strong><br />Vendas arrumadas para pequenos comércios</p>
+          <p><strong>Somô</strong><br />Vendas arrumadas para pequenos comércios, por Caio Simão</p>
           <p>Os dados enviados pelo formulário são usados só para responder ao seu pedido e não são repassados a ninguém.</p>
         </div>
       </footer>

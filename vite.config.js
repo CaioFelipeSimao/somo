@@ -20,8 +20,16 @@ const exigirChave = () => ({
   }
 });
 
+// no computador, /privacidade abre a página como na Vercel (lá o vercel.json faz isso)
+const enderecosLimpos = () => ({
+  name: 'enderecos-limpos',
+  configureServer(servidor) {
+    servidor.middlewares.use((pedido, _r, seguir) => { if (/^\/privacidade\/?(\?|$)/.test(pedido.url)) pedido.url = '/privacidade.html'; seguir(); });
+  }
+});
+
 // duas páginas: a landing e a de privacidade
 export default defineConfig({
-  plugins: [react(), exigirChave()],
+  plugins: [react(), exigirChave(), enderecosLimpos()],
   build: { rollupOptions: { input: { main: 'index.html', privacidade: 'privacidade.html', erro: '404.html' } } }
 });

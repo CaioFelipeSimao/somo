@@ -676,7 +676,7 @@ form .btn { width: 100%; }
 :root { --barra-h: 88px; }
 @media (max-width: 959px) { :root { --barra-h: 92px; } }
 html { scroll-padding-top: calc(var(--barra-h) + 8px); }
-.barra { position: sticky; top: 0; z-index: 50; height: var(--barra-h); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: 1fr auto; grid-template-areas: "nome fx cta" "nome abas abas"; background: var(--surface); border-bottom: 1px solid var(--sheet-grid); }
+.barra { position: sticky; top: 0; z-index: 50; height: var(--barra-h); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: 1fr auto; grid-template-areas: "nome fx cta" "nome abas cta"; background: var(--surface); border-bottom: 1px solid var(--sheet-grid); }
 /* caixa de nome: como o "A1" do Excel */
 /* marca: caixa própria, alta, com símbolo e nome grandes */
 .barra-nome { grid-area: nome; display: flex; align-items: center; gap: 12px; padding: 0 28px 0 24px; border-right: 1px solid var(--sheet-grid); color: var(--ink); text-decoration: none; font-size: 1.625rem; font-weight: 800; letter-spacing: -0.035em; line-height: 1; }
@@ -684,10 +684,15 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .barra-fx i { flex: none; padding-right: 14px; border-right: 1px solid var(--sheet-grid); color: var(--muted); font-family: var(--font); }
 .barra-fx-texto { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .barra-cta { grid-area: cta; min-height: 0; border-radius: 0; padding-inline: 20px; font-size: .9375rem; }
-/* abas de planilha */
-.barra-abas { grid-area: abas; display: flex; gap: 0; padding-left: 0; background: var(--sheet-head); overflow-x: auto; scrollbar-width: none; }
-.barra-abas a { display: flex; align-items: center; height: 32px; padding: 0 16px; border-right: 1px solid var(--sheet-grid); color: var(--muted); font-size: .8125rem; font-weight: 500; text-decoration: none; white-space: nowrap; }
-.barra-abas a.ativa { background: var(--surface); color: var(--accent); font-weight: 700; box-shadow: inset 0 -2px 0 var(--accent); }
+/* abas = cabeçalho de colunas da planilha: colunas iguais de ponta a ponta, cada uma com a letra e o nome;
+   a coluna da seção atual fica selecionada como no Excel (fundo azul claro, texto e fio de baixo em azul) */
+.barra-abas { grid-area: abas; display: flex; gap: 0; padding-left: 0; margin: 0; list-style: none; background: var(--sheet-head); overflow-x: auto; scrollbar-width: none; }
+.barra-abas li { flex: 1 1 0; min-width: max-content; display: flex; }
+.barra-abas li + li { border-left: 1px solid var(--sheet-grid); }
+.barra-abas a { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; height: 32px; padding: 0 16px; color: var(--muted); font-size: .8125rem; font-weight: 500; text-decoration: none; white-space: nowrap; }
+.barra-col { font-size: .6875rem; font-weight: 600; letter-spacing: .04em; color: var(--muted); opacity: .75; font-variant-numeric: tabular-nums; }
+.barra-abas a.ativa { background: var(--apoio); color: var(--accent-ink); font-weight: 700; box-shadow: inset 0 -2px 0 var(--accent); }
+.barra-abas a.ativa .barra-col { color: var(--accent); opacity: 1; }
 @media (hover: hover) { .barra-abas a:not(.ativa):hover { background: var(--surface); color: var(--ink); } }
 @media (max-width: 959px) {
   .barra-fx { display: none; }

@@ -87,11 +87,12 @@ export default function Barra({ onPedir }) {
         </p>
         <a className="btn barra-cta" href="#formulario" onClick={onPedir}>Quero meu mês arrumado</a>
       <ul className="barra-abas" ref={abasRef}>
-        {SECOES.filter(s => s.aba).map(s => {
+        {/* cada aba é uma coluna da planilha: letra (A, B, C…) e nome; a coluna da seção atual fica selecionada */}
+        {SECOES.filter(s => s.aba).map((s, k) => {
           const ativa = SECOES[atual].id === s.id || SECOES[atual].grupo === s.id;
           return (
             <li key={s.id}>
-              <a href={`#${s.id}`} onClick={ir(s.id)} aria-current={ativa ? 'location' : undefined} className={ativa ? 'ativa' : undefined}>{s.aba}</a>
+              <a href={`#${s.id}`} onClick={ir(s.id)} aria-current={ativa ? 'location' : undefined} className={ativa ? 'ativa' : undefined}><span className="barra-col" aria-hidden="true">{'ABCDE'[k]}</span>{s.aba}</a>
             </li>
           );
         })}

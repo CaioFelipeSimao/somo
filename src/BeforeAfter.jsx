@@ -172,7 +172,7 @@ export default function BeforeAfter({ liberado = true }) {
         ) : (
           <span>
             <strong>{depois ? 'Depois: os mesmos 5 números, consertados.' : 'Antes: 5 problemas, marcados de 1 a 5.'}</strong>{' '}
-            Toque num número para ver o detalhe. Quatro dias de outubro de uma papelaria, com dados fictícios.
+            <span className="so-toque">Toque num número para ver o detalhe. </span><span className="so-mouse">Passe o mouse num número para ver o detalhe. </span>Quatro dias de outubro de uma papelaria, com dados fictícios.
           </span>
         )}
       </figcaption>

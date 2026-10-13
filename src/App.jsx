@@ -191,7 +191,7 @@ export default function App() {
         <Degraus />
 
         {/* 3b. E QUANTO SOBROU: exemplo do Raio-X do mês, logo depois de os degraus apresentarem o Raio-X */}
-        <Suspense fallback={<section className="sec sobra" style={{ minHeight: '100vh' }} aria-hidden="true" />}><Sobra /></Suspense>
+        <Suspense fallback={<section className="sec sobra" style={{ minHeight: '100vh' }} aria-hidden="true" />}><Sobra onPedir={irFormulario} /></Suspense>
 
         {/* 4. COMO FUNCIONA: o número é desenhado e depois preenchido (Stroke Text) */}
         <section className="sec" aria-labelledby="t-passos">

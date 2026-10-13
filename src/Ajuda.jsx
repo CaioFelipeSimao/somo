@@ -12,7 +12,7 @@ const DUVIDAS = [
   ['Quanto tempo leva?', 'A conversa leva 20 minutos, por vídeo ou WhatsApp. Respondo ao pedido em até 2 dias úteis.'],
   ['Você vai pedir senha?', 'Não peço senha nem acesso ao seu sistema.'],
   ['E depois do mês grátis?', 'Depois do mês grátis não acontece nada, a não ser que você peça o próximo passo.'],
-  ['Quem vai ler meus números?', 'Quem lê e responde sou eu, Caio, estudante de Engenharia no ITA.'],
+  ['Quem vai me responder?', 'Quem responde sou eu, Caio, estudante de Engenharia no ITA.'],
   ['E o imposto?', 'Imposto e contabilidade continuam com o seu contador.']
 ];
 

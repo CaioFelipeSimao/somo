@@ -58,7 +58,7 @@ const SINTOMAS = [
         </Recorte>
       </div>
     ),
-    muda: 'No fechamento do mês: o resumo chega pronto, sem copiar nada.'
+    muda: 'Depois, no Fechamento do mês: o resumo chega pronto, sem copiar nada.'
   },
   {
     dor: 'Só uma pessoa entende a planilha (ou o caderno).',
@@ -92,7 +92,7 @@ const SINTOMAS = [
         </Recorte>
       </div>
     ),
-    muda: 'No fechamento do mês: o caixa confere com o caderno.'
+    muda: 'Depois, no Fechamento do mês: o caixa confere com o caderno.'
   }
 ];
 

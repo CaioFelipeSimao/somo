@@ -53,7 +53,7 @@ const FATIAS = FIXOS.map((g, i) => {
   return { ...g, pct: PCT[i], cor: CORES[i], ini: (ini / totalFixos) * C, tam: (g.valor / totalFixos) * C, lx: 100 + Math.cos(meio) * 112, ly: 100 + Math.sin(meio) * 112, dir: Math.cos(meio) >= 0 ? 'start' : 'end' };
 });
 
-export default function Sobra() {
+export default function Sobra({ onPedir }) {
   const [foco, setFoco] = useState(null);
   const [vendas, setVendas] = useState(VENDAS_MES);
   const resultado = sobraCom(vendas);
@@ -71,7 +71,7 @@ export default function Sobra() {
     <section className={`sec sobra${foco !== null ? ' com-foco' : ''}`} aria-labelledby="t-sobra">
       <div className="grid">
         <div className="sobra-esq">
-        <h2 className="sec-title" id="t-sobra"><span className="sobrelinha">Exemplo do Raio‑X do mês, o passo pago depois do grátis</span>E quanto sobrou?</h2>
+        <h2 className="sec-title" id="t-sobra"><span className="sobra-etiqueta">Exemplo do Raio‑X do mês · depois, se quiser</span>E quanto sobrou?</h2>
           <p className="sobra-lead">
             A papelaria vendeu {real(VENDAS_MES)} em outubro e sobraram <strong><Numero valor={SOBRA} /></strong>. Os gastos fixos são onde a análise começa.
           </p>
@@ -165,6 +165,10 @@ export default function Sobra() {
           </div>
 
           <p className="sobra-nota">Dados fictícios; as vendas são as mesmas do exemplo acima. Imposto e contabilidade continuam com o seu contador.</p>
+          <div className="sobra-volta">
+            <p>Tudo começa pelo mês arrumado, de graça. O Raio-X só vem depois, se fizer sentido para você.</p>
+            <a className="btn" href="#formulario" onClick={onPedir}>Quero meu mês arrumado</a>
+          </div>
         </div>
       </div>
     </section>

@@ -167,10 +167,6 @@ export default function LeadForm() {
           </div>
         ) : (
           <form onSubmit={enviar} noValidate className="ficha-form">
-            {!pronto && import.meta.env.DEV && (
-              <p className="notice" role="note">Só no seu computador: falta a chave do Web3Forms em src/config.js (envio desligado).</p>
-            )}
-
             <div className="ficha-topo" aria-live="polite">
               <span>{respondidas === 3 ? 'Tudo pronto para enviar' : `${respondidas} de 3 respostas`}</span>
               <ol className="ficha-progresso" aria-hidden="true">

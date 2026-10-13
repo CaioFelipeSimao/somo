@@ -604,6 +604,20 @@ form .btn { width: 100%; }
 }
 /* erro nas opções de loja: a mensagem do grupo basta, sem contorno vermelho em cada uma */
 .chip input[aria-invalid="true"] + span { border-color: var(--field); }
+/* tipos de loja: uma linha de células coladas, como uma linha de planilha, que ocupa a largura toda
+   (sem o "Outro" sozinho numa segunda linha); no celular, duas colunas e o "Outro" na largura toda */
+.chips { display: flex; flex-wrap: nowrap; gap: 0; }
+.chip { flex: 1 1 auto; }
+.chip + .chip { margin-left: -1px; }
+.chip span { justify-content: center; }
+.chip input:checked + span, .chip input:focus-visible + span { position: relative; z-index: 1; }
+@media (max-width: 719px) {
+  .chips { display: grid; grid-template-columns: 1fr 1fr; }
+  .chip + .chip { margin-left: 0; }
+  .chip:nth-child(even) { margin-left: -1px; }
+  .chip:nth-child(n+3) { margin-top: -1px; }
+  .chip:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
 @media (min-width: 960px) {
   .cena-texto .sec-title { font-size: clamp(2rem, 3vw, 2.75rem); line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 16px; }
   .cena-frase { font-size: clamp(1.25rem, 1.8vw, 1.75rem); }

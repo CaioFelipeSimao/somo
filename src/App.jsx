@@ -142,7 +142,20 @@ function Degraus() {
   );
 }
 
+// Quem chega por um link com seção (/#formulario, vindo das outras páginas) precisa parar nela. O navegador tenta
+// rolar antes de a página montar, quando a seção ainda não existe; então a página rola sozinha depois de pronta
+// e confere de novo um pouco depois (a cena 3D e as partes carregadas depois mudam as alturas).
+function irParaSecaoDoEndereco() {
+  let id = window.location.hash.slice(1);
+  try { id = decodeURIComponent(id); } catch { return; }
+  if (!/^[\w-]+$/.test(id)) return;
+  const ir = () => document.getElementById(id)?.scrollIntoView({ behavior: 'instant', block: 'start' });
+  const comecar = () => { requestAnimationFrame(() => requestAnimationFrame(ir)); window.setTimeout(ir, 700); };
+  if (document.readyState === 'complete') comecar(); else window.addEventListener('load', comecar, { once: true });
+}
+
 export default function App() {
+  useEffect(irParaSecaoDoEndereco, []);
   return (
     <>
       {/* 1. PRIMEIRA DOBRA (será reescrita na aula 1.9) */}

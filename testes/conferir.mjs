@@ -130,6 +130,9 @@ try {
   const p = await navegador.newPage();
   const r = await p.goto(`${BASE}/privacidade`, { waitUntil: 'networkidle0' });
   item(r.status() === 200 && await p.evaluate(() => document.querySelector('h1')?.textContent === 'Privacidade'), 'a página /privacidade abre');
+  await p.goto(`${BASE}/#formulario`, { waitUntil: 'networkidle0' }); await espera(1500);
+  const formTopo = await p.evaluate(() => Math.round(document.getElementById('formulario').getBoundingClientRect().top - document.querySelector('.barra').offsetHeight));
+  item(formTopo >= -2 && formTopo <= 40, 'link /#formulario (das outras páginas) para no formulário', `parou a ${formTopo} px`);
   const r404 = await p.goto(`${BASE}/endereco-que-nao-existe`, { waitUntil: 'networkidle0' });
   item(r404.status() === 404 && await p.evaluate(() => document.querySelector('.erro-ref')?.textContent === '#REF!' && !!document.querySelector('.erro-acoes a[href="/"]')), 'endereço que não existe mostra a página de erro com volta ao início');
   await p.goto(BASE, { waitUntil: 'networkidle0' });

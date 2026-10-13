@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import DecryptedText from './components/DecryptedText';
 
 // Nome do produto: trocar aqui troca na barra (o título da aba fica em index.html).
 export const NOME = 'Somô';
@@ -24,6 +25,7 @@ const bloco = id => {
 
 export default function Barra({ onPedir }) {
   const [atual, setAtual] = useState(0);
+  const calmo = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   useEffect(() => {
     let quadro = 0;
@@ -68,7 +70,14 @@ export default function Barra({ onPedir }) {
       <div className="barra-linha">
         <a className="barra-nome" href="#topo">{NOME}</a>
         <p className="barra-fx" aria-hidden="true">
-          <i>fx</i><span key={atual}>{SECOES[atual].fx}</span>
+          <i>fx</i>
+          {/* a pergunta se decifra da esquerda para a direita, com caracteres de planilha (pouco movimento: texto parado) */}
+          <span className="barra-fx-texto">
+            {calmo ? SECOES[atual].fx : (
+              <DecryptedText key={atual} text={SECOES[atual].fx} animateOn="view" sequential revealDirection="start"
+                             speed={22} characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#=$%+" encryptedClassName="barra-fx-cifra" />
+            )}
+          </span>
         </p>
         <a className="btn barra-cta" href="#formulario" onClick={onPedir}>Quero meu mês arrumado</a>
       </div>

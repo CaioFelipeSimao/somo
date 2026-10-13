@@ -2,6 +2,13 @@ import { useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { CheckmarkCircle02Icon, Search01Icon, ArrowUpRight01Icon, HelpCircleIcon } from '@hugeicons/core-free-icons';
 import { GASTOS, VENDAS_MES, real } from './dados';
+import CountUp from './components/CountUp';
+import ElasticSlider from './components/ElasticSlider';
+
+const calmo = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+// número em reais que "rola" até o valor quando aparece (com pouco movimento, fica parado)
+const Numero = ({ valor, duracao = 1.4 }) => (calmo ? real(valor)
+  : <>R$&nbsp;<CountUp to={valor} duration={duracao} separator="." /></>);
 
 // "E quanto sobrou?": exemplo do Raio-X do mês (serviço pago).
 // A rosca mostra só os gastos fixos (os que vêm todo mês); embaixo, cada um comparado com a média dos
@@ -25,6 +32,10 @@ const variaveis = totalGastos - totalFixos;
 const equilibrio = Math.round(totalFixos / (1 - variaveis / VENDAS_MES) / 50) * 50;
 const pedemOlhar = FIXOS.filter(g => g.situacao !== 'confere').length;
 const sem = v => v.toLocaleString('pt-BR');
+// calculadora: os fixos não mudam; o resto dos gastos acompanha as vendas na mesma proporção de outubro
+const margem = 1 - variaveis / VENDAS_MES;
+const sobraCom = v => Math.round(v * margem - totalFixos);
+const porCem = Math.round(margem * 100);
 
 // porcentagens que somam 100 (maior resto): sem isso, o arredondamento dá 99%
 const brutos = FIXOS.map(g => (g.valor / totalFixos) * 100);
@@ -43,6 +54,8 @@ const FATIAS = FIXOS.map((g, i) => {
 
 export default function Sobra() {
   const [foco, setFoco] = useState(null);
+  const [vendas, setVendas] = useState(VENDAS_MES);
+  const resultado = sobraCom(vendas);
   // mouse: passar por cima destaca; toque: tocar na fatia ou na linha liga e desliga o destaque
   const marcar = i => ({
     onPointerEnter: e => e.pointerType === 'mouse' && setFoco(i),
@@ -56,7 +69,7 @@ export default function Sobra() {
         <h2 className="sec-title" id="t-sobra"><span className="sobrelinha">Exemplo do Raio‑X do mês, o passo pago depois do grátis</span>E quanto sobrou?</h2>
         <div className="sobra-corpo">
           <p className="sobra-lead">
-            A papelaria vendeu {real(VENDAS_MES)} em outubro e sobraram <strong>{real(SOBRA)}</strong>. Os gastos fixos são onde a análise começa.
+            A papelaria vendeu {real(VENDAS_MES)} em outubro e sobraram <strong><Numero valor={SOBRA} /></strong>. Os gastos fixos são onde a análise começa.
           </p>
           <p className="sobra-conta" aria-label={`Vendas ${real(VENDAS_MES)}, menos mercadoria e maquininha ${real(variaveis)}, menos gastos fixos ${real(totalFixos)}, igual a ${real(SOBRA)} de sobra`}>
             <span><b>{sem(VENDAS_MES)}</b> vendas</span>
@@ -88,7 +101,7 @@ export default function Sobra() {
                 <figcaption>Em outubro, os fixos ficaram <strong>{real(totalFixos - mediaFixos)} acima</strong> da média de julho a setembro.</figcaption>
               </figure>
               <dl className="sobra-fatos">
-                <div><dt>{real(equilibrio)}</dt><dd>é quanto precisa vender por mês, mais ou menos, só para pagar as contas</dd></div>
+                <div><dt><Numero valor={equilibrio} duracao={1.8} /></dt><dd>é quanto precisa vender por mês, mais ou menos, só para pagar as contas</dd></div>
                 <div><dt>{pedemOlhar} de {FIXOS.length}</dt><dd>gastos fixos pedem um olhar. O Raio-X mostra quanto, por quê e o que fazer.</dd></div>
               </dl>
             </div>
@@ -118,6 +131,25 @@ export default function Sobra() {
                 })}
               </tbody>
             </table>
+          </div>
+
+          <div className="calculo">
+            <p className="calculo-titulo">E se a loja vendesse mais, ou menos?</p>
+            <ElasticSlider value={vendas} onChange={setVendas} min={2000} max={8000} step={50}
+                           label="Vendas do mês" valueText={`${real(vendas)} por mês`}
+                           marks={[{ valor: equilibrio, rotulo: 'empata' }]}
+                           leftIcon={<span className="calculo-ponta">{real(2000)}</span>}
+                           rightIcon={<span className="calculo-ponta">{real(8000)}</span>} />
+            <p className="calculo-resultado" aria-live="polite">
+              Vendendo <b>{real(vendas)}</b> por mês,{' '}
+              {resultado >= 0
+                ? <>sobrariam <strong>{real(resultado)}</strong>.</>
+                : <>faltariam <strong className="falta">{real(-resultado)}</strong> para pagar as contas.</>}
+            </p>
+            <p className="calculo-explica">
+              A marca preta é o ponto em que o mês empata ({real(equilibrio)}). Cada {real(100)} a mais em vendas deixa
+              uns {real(porCem)} no caixa, porque o resto vai para a mercadoria e a maquininha.
+            </p>
           </div>
 
           <p className="sobra-nota">Dados fictícios; as vendas são as mesmas do exemplo acima. Imposto e contabilidade continuam com o seu contador.</p>

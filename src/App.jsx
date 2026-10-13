@@ -6,12 +6,16 @@ import CenaPlanilha from './cena/CenaPlanilha';
 import Sintomas from './Sintomas';
 import Diagnostico from './Diagnostico';
 import Barra from './Barra';
-import Sobra from './Sobra';
 import { Simbolo, Padrao } from './Marca';
 
 // Os efeitos carregam depois do texto: no 3G a página aparece primeiro, as animações chegam em seguida.
 const StrokeText = lazy(() => import('./components/StrokeText'));
 const ProfileCard = lazy(() => import('./components/ProfileCard'));
+// "E quanto sobrou?" (e a biblioteca de animação que só ela usa) fica fora do primeiro carregamento:
+// o navegador busca esse pedaço assim que a página termina de abrir, bem antes de a pessoa rolar até lá
+const carregarSobra = () => import('./Sobra');
+const Sobra = lazy(carregarSobra);
+if (typeof window !== 'undefined') window.addEventListener('load', () => (window.requestIdleCallback ?? setTimeout)(carregarSobra), { once: true });
 
 
 // Três degraus: o grátis abre a porta; os outros dois só se a pessoa quiser (preço dito antes).
@@ -138,6 +142,8 @@ function Degraus() {
 }
 
 export default function App() {
+  // a planilha do topo só começa a contar para se arrumar sozinha depois que o título termina de digitar
+  const [tituloPronto, setTituloPronto] = useState(false);
   return (
     <>
       {/* 1. PRIMEIRA DOBRA (será reescrita na aula 1.9) */}
@@ -146,7 +152,7 @@ export default function App() {
         {/* fundo do topo: o padrão de peças da marca, em tons claros, sumindo em direção ao texto */}
         <Padrao id="padrao-topo" className="hero-padrao" forte="var(--apoio-forte)" leve="var(--apoio)" />
         <div className="grid">
-          <h1 className="hero-title"><TextType text="Sua planilha ou caderno deveria responder perguntas, não criar dúvidas." /></h1>
+          <h1 className="hero-title"><TextType text="Sua planilha ou caderno deveria responder perguntas, não criar dúvidas." onDone={() => setTituloPronto(true)} /></h1>
           <div className="hero-copy">
             <div className="hero-dados">
               <p className="lead">
@@ -165,7 +171,7 @@ export default function App() {
               <div className="hero-preco"><dt>R$ 0</dt><dd>para começar, sem compromisso</dd></div>
             </dl>
           </div>
-          <BeforeAfter />
+          <BeforeAfter liberado={tituloPronto} />
         </div>
       </header>
 
@@ -182,7 +188,7 @@ export default function App() {
         <CenaPlanilha />
 
         {/* 2c. E QUANTO SOBROU: exemplo do Raio-X do mês (vendas menos gastos; rosca dos fixos) */}
-        <Sobra />
+        <Suspense fallback={<section className="sec sobra" style={{ minHeight: '100vh' }} aria-hidden="true" />}><Sobra /></Suspense>
 
         {/* 3. SERVIÇOS em degraus */}
         <Degraus />

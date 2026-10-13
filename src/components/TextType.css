@@ -1,11 +1,11 @@
 /* a parte ainda não digitada ocupa o lugar, invisível */
 .text-type__resto { visibility: hidden; }
 
-/* cursor de planilha: barra fina na cor de destaque, pisca enquanto digita e some 1,6 s depois do fim */
+/* cursor de planilha: barra fina na cor do texto, pisca enquanto digita e some 1,6 s depois do fim */
 /* o cursor é um trecho vazio (inline, sem largura) com a barra desenhada por cima: as letras não se mexem e a
    palavra pela metade não ganha um ponto de quebra de linha onde o cursor está */
 .text-type__cursor { position: relative; animation: text-type-pisca 1s steps(1) infinite; }
-.text-type__cursor::after { content: ''; position: absolute; left: .03em; top: .12em; width: .08em; height: .9em; background: var(--accent); }
+.text-type__cursor::after { content: ''; position: absolute; left: .03em; top: .12em; width: .08em; height: .9em; background: currentColor; }
 .text-type__cursor--fim { animation: text-type-pisca 1s steps(1) 2 forwards, text-type-some 0s 1.6s forwards; }
 @keyframes text-type-pisca { 50% { opacity: 0; } }
 @keyframes text-type-some { to { visibility: hidden; } }

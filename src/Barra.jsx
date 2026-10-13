@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import DecryptedText from './components/DecryptedText';
 import { Simbolo } from './Marca';
+import Ajuda from './Ajuda';
 
 // Nome do produto: trocar aqui troca na barra (o título da aba fica em index.html).
 export const NOME = 'Somô';
@@ -71,6 +72,25 @@ export default function Barra({ onPedir }) {
     else window.setTimeout(conferir, suave ? 1200 : 0);
   };
 
+  // Atalhos de teclado (só quando a pessoa não está digitando num campo): 1 a 5 vão para as abas,
+  // T para o topo, P para o pedido, ? abre as dúvidas. Esc fecha a janela (o próprio navegador faz isso).
+  const ajudaRef = useRef(null);
+  useEffect(() => {
+    const abas = SECOES.filter(s => s.aba).map(s => s.id);
+    const tecla = e => {
+      if (e.ctrlKey || e.metaKey || e.altKey || e.target.closest?.('input, textarea, select, [contenteditable]') || ajudaRef.current?.open) return;
+      const k = e.key.toLowerCase(), finge = { preventDefault() {} };
+      if (k >= '1' && k <= String(abas.length)) ir(abas[+k - 1])(finge);
+      else if (k === 't') ir('topo')(finge);
+      else if (k === 'p') onPedir?.(finge);
+      else if (k === '?') ajudaRef.current?.showModal();
+      else return;
+      e.preventDefault();
+    };
+    window.addEventListener('keydown', tecla);
+    return () => window.removeEventListener('keydown', tecla);
+  }, [onPedir]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <nav className="barra" aria-label="Seções da página">
       {/* a marca ocupa as duas linhas da barra no computador: símbolo e nome grandes, à esquerda */}
@@ -87,16 +107,18 @@ export default function Barra({ onPedir }) {
         </p>
         <a className="btn barra-cta" href="#formulario" onClick={onPedir}>Quero meu mês arrumado</a>
       <ul className="barra-abas" ref={abasRef}>
-        {/* cada aba é uma coluna da planilha: letra (A, B, C…) e nome; a coluna da seção atual fica selecionada */}
-        {SECOES.filter(s => s.aba).map((s, k) => {
+        {/* cada aba é uma coluna da planilha, de largura igual; a coluna da seção atual fica selecionada */}
+        {SECOES.filter(s => s.aba).map(s => {
           const ativa = SECOES[atual].id === s.id || SECOES[atual].grupo === s.id;
           return (
             <li key={s.id}>
-              <a href={`#${s.id}`} onClick={ir(s.id)} aria-current={ativa ? 'location' : undefined} className={ativa ? 'ativa' : undefined}><span className="barra-col" aria-hidden="true">{'ABCDE'[k]}</span>{s.aba}</a>
+              <a href={`#${s.id}`} onClick={ir(s.id)} aria-current={ativa ? 'location' : undefined} className={ativa ? 'ativa' : undefined}>{s.aba}</a>
             </li>
           );
         })}
+        <li><button type="button" className="barra-ajuda" onClick={() => ajudaRef.current?.showModal()} aria-haspopup="dialog">Dúvidas<kbd aria-hidden="true">?</kbd></button></li>
       </ul>
+      <Ajuda ref={ajudaRef} onPedir={onPedir} />
     </nav>
   );
 }

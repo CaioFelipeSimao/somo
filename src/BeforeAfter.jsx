@@ -109,7 +109,7 @@ function PlanilhaArrumada({ onMarca, foco }) {
   );
 }
 
-export default function BeforeAfter() {
+export default function BeforeAfter({ liberado = true }) {
   const [depois, setDepois] = useState(false);
   const [trocando, setTrocando] = useState(false);
   const [foco, setFoco] = useState(null);
@@ -119,25 +119,26 @@ export default function BeforeAfter() {
   // O topo começa no "antes"; o "depois" só aparece no clique (a revelação completa é a cena 3D logo abaixo).
   const alternar = () => { if (trocando) return; setTrocando(true); setFoco(null); setDepois(d => !d); };
 
-  // A primeira troca acontece sozinha: 2,2 s depois de a planilha aparecer (tempo de ver a bagunça e os números),
-  // uma vez só, e não acontece se a pessoa já mexeu ou pediu menos movimento.
-  const figura = useRef(null), mexeuRef = useRef(false);
+  // A primeira troca acontece sozinha: 2,2 s depois de a planilha estar na tela E o título ter terminado de digitar
+  // (tempo de ver a bagunça sem disputar o olhar com a digitação), uma vez só, e não acontece se a pessoa já mexeu
+  // ou pediu menos movimento.
+  const figura = useRef(null), mexeuRef = useRef(false), jaTrocou = useRef(false);
   mexeuRef.current = mexeu;
+  const [naTela, setNaTela] = useState(false);
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
-    let espera = 0;
-    const io = new IntersectionObserver(([e]) => {
-      clearTimeout(espera);
-      if (!e.isIntersecting) return;
-      espera = window.setTimeout(() => {
-        io.disconnect();
-        if (mexeuRef.current) return;
-        setTrocando(true); setFoco(null); setDepois(true);
-      }, 2200);
-    }, { threshold: 0.6 });
+    const io = new IntersectionObserver(([e]) => setNaTela(e.isIntersecting), { threshold: 0.6 });
     io.observe(figura.current);
-    return () => { io.disconnect(); clearTimeout(espera); };
+    return () => io.disconnect();
   }, []);
+  useEffect(() => {
+    if (!naTela || !liberado || jaTrocou.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const espera = window.setTimeout(() => {
+      jaTrocou.current = true;
+      if (mexeuRef.current) return;
+      setTrocando(true); setFoco(null); setDepois(true);
+    }, 2200);
+    return () => clearTimeout(espera);
+  }, [naTela, liberado]);
   const textos = depois ? CONSERTOS : PROBLEMAS;
 
   return (

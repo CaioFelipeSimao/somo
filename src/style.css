@@ -611,7 +611,9 @@ form .btn { width: 100%; }
 .marca-legenda::after { content: none; }
 /* celular: o botão sai de cima da planilha e fica logo abaixo dela */
 @media (max-width: 959px) {
-  .demo-acao { position: static; width: 100%; margin-top: 12px; }
+  /* compacto e com contorno: o único botão cheio do topo é o azul do pedido */
+  .demo-acao { position: static; display: flex; width: auto; margin: 12px 0 0 auto; }
+  .demo-acao.btn-tinta { min-height: 44px; padding: 0 16px; background: var(--surface); color: var(--ink); border: 1px solid var(--ink); font-size: .9375rem; }
 }
 .pixel-swap__pixel-content .marca { animation: none; }
 
@@ -684,16 +686,36 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .barra-fx i { flex: none; padding-right: 14px; border-right: 1px solid var(--sheet-grid); color: var(--muted); font-family: var(--font); }
 .barra-fx-texto { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .barra-cta { grid-area: cta; min-height: 0; border-radius: 0; padding-inline: 20px; font-size: .9375rem; }
-/* abas = cabeçalho de colunas da planilha: colunas iguais de ponta a ponta, cada uma com a letra e o nome;
+/* abas = cabeçalho de colunas da planilha: colunas iguais de ponta a ponta;
    a coluna da seção atual fica selecionada como no Excel (fundo azul claro, texto e fio de baixo em azul) */
 .barra-abas { grid-area: abas; display: flex; gap: 0; padding-left: 0; margin: 0; list-style: none; background: var(--sheet-head); overflow-x: auto; scrollbar-width: none; }
 .barra-abas li { flex: 1 1 0; min-width: max-content; display: flex; }
 .barra-abas li + li { border-left: 1px solid var(--sheet-grid); }
 .barra-abas a { flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; height: 32px; padding: 0 16px; color: var(--muted); font-size: .8125rem; font-weight: 500; text-decoration: none; white-space: nowrap; }
-.barra-col { font-size: .6875rem; font-weight: 600; letter-spacing: .04em; color: var(--muted); opacity: .75; font-variant-numeric: tabular-nums; }
 .barra-abas a.ativa { background: var(--apoio); color: var(--accent-ink); font-weight: 700; box-shadow: inset 0 -2px 0 var(--accent); }
-.barra-abas a.ativa .barra-col { color: var(--accent); opacity: 1; }
-@media (hover: hover) { .barra-abas a:not(.ativa):hover { background: var(--surface); color: var(--ink); } }
+@media (hover: hover) { .barra-abas a:not(.ativa):hover, .barra-ajuda:hover { background: var(--surface); color: var(--ink); } }
+/* última coluna: abre as dúvidas; a tecla do atalho aparece só onde há teclado */
+.barra-ajuda { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; height: 32px; padding: 0 16px; border: 0; background: none; color: var(--muted); font: inherit; font-size: .8125rem; font-weight: 500; white-space: nowrap; cursor: pointer; }
+.barra-ajuda kbd, .ajuda kbd { display: inline-grid; place-items: center; min-width: 1.6em; padding: 0 .35em; border: 1px solid var(--sheet-grid); background: var(--surface); color: var(--ink); font: 600 .75rem/1.5 var(--font); }
+@media (hover: none) { .barra-ajuda kbd, .ajuda-atalhos { display: none; } }
+@media (max-width: 959px) { .barra-ajuda { height: 36px; } }
+
+/* janela de dúvidas: caixa reta à direita, fio fino, fundo escurecido */
+.ajuda { width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 0; border: 1px solid var(--hair); background: var(--surface); color: var(--ink); overflow: auto; }
+.ajuda::backdrop { background: color-mix(in srgb, var(--ink) 45%, transparent); }
+.ajuda-caixa { display: grid; gap: 24px; padding: 24px 28px 28px; }
+.ajuda-topo { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--hair); }
+.ajuda-topo h2 { margin: 0; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
+.ajuda-fechar { min-height: 44px; padding: 0 14px; border: 1px solid var(--hair); background: none; color: var(--ink); font: inherit; font-size: .9375rem; cursor: pointer; }
+.ajuda-lista { display: grid; gap: 18px; margin: 0; }
+.ajuda-lista dt { font-weight: 700; }
+.ajuda-lista dd { margin: 4px 0 0; color: var(--muted); line-height: 1.45; }
+.ajuda-atalhos { padding-top: 18px; border-top: 1px solid var(--hair); }
+.ajuda-atalhos h3 { margin: 0 0 12px; font-size: .8125rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.ajuda-atalhos dl { display: grid; gap: 8px; margin: 0; }
+.ajuda-atalhos div { display: grid; grid-template-columns: 4.5em 1fr; align-items: baseline; gap: 12px; }
+.ajuda-atalhos dd { margin: 0; font-size: .9375rem; }
+.ajuda .btn { width: 100%; }
 @media (max-width: 959px) {
   .barra-fx { display: none; }
   .barra { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "nome cta" "abas abas"; }
@@ -844,9 +866,9 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 }
 
 
-/* texto do topo sobre o padrão: o título vira uma faixa azul da marca atrás de cada linha, com letras brancas
+/* texto do topo sobre o padrão: o título ganha uma faixa preta atrás de cada linha, com letras brancas (o azul fica só para botões e o R$ 0)
    (cresce enquanto digita); no PC a coluna vira duas molduras: a da oferta e a dos números, com o preço em azul */
-.hero-title .text-type__feito { background: var(--accent); color: var(--on-accent); padding: 0 .14em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.hero-title .text-type__feito { background: var(--ink); color: var(--surface); padding: 0 .14em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 @media (min-width: 960px) {
   .hero-copy { gap: 16px; }
   .hero-dados { display: grid; gap: 28px; justify-items: start; padding: 28px 32px 32px; background: var(--surface); border: 1px solid var(--hair); }

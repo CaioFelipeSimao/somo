@@ -23,5 +23,5 @@ const exigirChave = () => ({
 // duas páginas: a landing e a de privacidade
 export default defineConfig({
   plugins: [react(), exigirChave()],
-  build: { rollupOptions: { input: { main: 'index.html', privacidade: 'privacidade.html' } } }
+  build: { rollupOptions: { input: { main: 'index.html', privacidade: 'privacidade.html', erro: '404.html' } } }
 });

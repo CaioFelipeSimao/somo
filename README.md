@@ -29,14 +29,16 @@ A publicação (`npm.cmd run build`) para sozinha se faltar a chave ou o endere�
 
 | O quê | Onde |
 |---|---|
-| Textos da página | `src/App.jsx` (topo, serviços, como funciona, quem faz, rodapé) |
+| Textos da página | `src/App.jsx` (topo, serviços, como funciona, quem faz) |
 | Perguntas da barra (fx) e abas | `src/Barra.jsx` |
 | Dúvidas e atalhos | `src/Ajuda.jsx` |
 | Números do exemplo (papelaria fictícia) | `src/dados.js` |
 | Sintomas | `src/Sintomas.jsx` |
 | Formulário | `src/LeadForm.jsx` |
 | Cores, letra, espaços | `src/style.css` (no topo, em `:root`) |
-| Privacidade | `privacidade.html` |
+| Privacidade | `src/paginaPrivacidade.jsx` |
+| Página de erro (404) | `src/pagina404.jsx` |
+| Rodapé (todas as páginas) | `src/Rodape.jsx` |
 | Proteções de segurança | `vercel.json` |
 
 Mudou o título ou a marca? Gere de novo a imagem de prévia e o ícone do celular:

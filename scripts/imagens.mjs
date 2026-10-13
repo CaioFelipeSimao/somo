@@ -44,6 +44,11 @@ const prevista = base(`
 const icone = lado => base(`<div style="width:${lado}px;height:${lado}px;background:#fff;display:grid;place-items:center">
   <svg width="${Math.round(lado * .62)}" height="${Math.round(lado * .62)}" viewBox="0 0 94 94"><path d="${SIMBOLO}" fill="${AZUL}"/></svg></div>`);
 
+// ícone da aba das páginas de apoio (a landing traz o mesmo desenho embutido no index.html)
+fs.writeFileSync(path.join(raiz, 'public/simbolo.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94 94"><path fill="${AZUL}" d="${SIMBOLO}"/></svg>
+`);
+console.log('gerado public/simbolo.svg');
+
 const b = await abrirNavegador();
 for (const [arquivo, html, w, h] of [['og.png', prevista, 1200, 630], ['apple-touch-icon.png', icone(180), 180, 180], ['icone-512.png', icone(512), 512, 512]]) {
   const p = await b.newPage();

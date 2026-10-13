@@ -29,7 +29,10 @@ const servidor = http.createServer((pedido, resposta) => {
   if (rota === '/') rota = '/index.html';
   if (!path.extname(rota)) rota += '.html'; // como o cleanUrls da Vercel: /privacidade → privacidade.html
   const arquivo = path.join(pasta, rota);
-  if (!arquivo.startsWith(pasta) || !fs.existsSync(arquivo)) { resposta.statusCode = 404; resposta.end(); return; }
+  if (!arquivo.startsWith(pasta) || !fs.existsSync(arquivo)) { // como a Vercel: endereço que não existe mostra o 404.html
+    resposta.statusCode = 404; cabecalhos.forEach(h => resposta.setHeader(h.key, h.value));
+    resposta.setHeader('Content-Type', TIPOS['.html']); resposta.end(fs.readFileSync(path.join(pasta, '404.html'))); return;
+  }
   cabecalhos.forEach(h => resposta.setHeader(h.key, h.value));
   resposta.setHeader('Content-Type', TIPOS[path.extname(arquivo)] || 'application/octet-stream');
   resposta.end(fs.readFileSync(arquivo));
@@ -127,6 +130,8 @@ try {
   const p = await navegador.newPage();
   const r = await p.goto(`${BASE}/privacidade`, { waitUntil: 'networkidle0' });
   item(r.status() === 200 && await p.evaluate(() => document.querySelector('h1')?.textContent === 'Privacidade'), 'a página /privacidade abre');
+  const r404 = await p.goto(`${BASE}/endereco-que-nao-existe`, { waitUntil: 'networkidle0' });
+  item(r404.status() === 404 && await p.evaluate(() => document.querySelector('.erro-ref')?.textContent === '#REF!' && !!document.querySelector('.erro-acoes a[href="/"]')), 'endereço que não existe mostra a página de erro com volta ao início');
   await p.goto(BASE, { waitUntil: 'networkidle0' });
   item(await p.evaluate(() => !!document.querySelector('.footer-miudo a[href="/privacidade"]')), 'o rodapé tem o link da privacidade');
   item(await p.evaluate(() => !!document.querySelector('meta[property="og:image"]') && !!document.querySelector('meta[name="description"]')), 'a prévia do link (descrição e imagem) está na página');

@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowRight02Icon } from '@hugeicons/core-free-icons';
 import ClickSpark from './components/ClickSpark';
 import { FORM_ACCESS_KEY } from './config';
 
@@ -50,9 +52,14 @@ export default function LeadForm() {
   const pressRef = useRef(null);
   const doneRef = useRef(null);
   const botRef = useRef(null);
+  const falhaRef = useRef(null);
 
   const erros = validar(v);
   const mostrar = campo => (tentou || tocado[campo]) && erros[campo];
+  const respondidas = [!erros.nome, !erros.tipo && !erros.tipoOutro, !erros.contato].filter(Boolean).length;
+
+  // erro do envio (rede ou servidor): o foco vai para a mensagem, como nos erros dos campos
+  useEffect(() => { if (falha) falhaRef.current?.focus(); }, [falha]);
 
   useEffect(() => {
     try { sessionStorage.setItem(RASCUNHO, JSON.stringify(v)); } catch { /* sem armazenamento: segue sem rascunho */ }
@@ -158,15 +165,20 @@ export default function LeadForm() {
             <button type="button" className="btn-ghost" onClick={corrigir}>Errei o contato, quero corrigir</button>
           </div>
         ) : (
-          <form onSubmit={enviar} noValidate>
+          <form onSubmit={enviar} noValidate className="ficha-form">
             {!pronto && import.meta.env.DEV && (
-              <p className="notice" role="note">
-                Só no seu computador: falta a chave do Web3Forms em src/config.js, então o envio está desligado. A publicação também fica bloqueada até ela existir.
-              </p>
+              <p className="notice" role="note">Só no seu computador: falta a chave do Web3Forms em src/config.js (envio desligado).</p>
             )}
 
+            <div className="ficha-topo" aria-live="polite">
+              <span>{respondidas === 3 ? 'Tudo pronto para enviar' : `${respondidas} de 3 respostas`}</span>
+              <ol className="ficha-progresso" aria-hidden="true">
+                {[0, 1, 2].map(i => <li key={i} className={i < respondidas ? 'feito' : undefined} />)}
+              </ol>
+            </div>
+
             <div className="field">
-              <label htmlFor="f-nome">Seu nome</label>
+              <label htmlFor="f-nome"><span className="passo" aria-hidden="true">1</span>Seu nome</label>
               <input id="f-nome" name="nome" type="text" autoComplete="name" maxLength={80} required
                      value={v.nome} onChange={mudar('nome')} onBlur={sair('nome')}
                      aria-invalid={Boolean(mostrar('nome'))} aria-describedby={ajuda('nome')} />
@@ -174,7 +186,7 @@ export default function LeadForm() {
             </div>
 
             <fieldset className="field" aria-describedby={ajuda('tipo')}>
-              <legend>Tipo de negócio</legend>
+              <legend><span className="passo" aria-hidden="true">2</span>Que tipo de loja você tem?</legend>
               <div className="chips">
                 {TIPOS.map((t, i) => (
                   <label key={t} className="chip">
@@ -197,8 +209,8 @@ export default function LeadForm() {
             </fieldset>
 
             <div className="field">
-              <label htmlFor="f-contato">E-mail ou WhatsApp para eu te responder</label>
-              <input id="f-contato" name="contato" type="text" maxLength={120}
+              <label htmlFor="f-contato"><span className="passo" aria-hidden="true">3</span>E-mail ou WhatsApp para eu te responder</label>
+              <input id="f-contato" name="contato" type="text" maxLength={120} placeholder="voce@email.com ou (12) 99999-0000"
                      required value={v.contato} onChange={mudar('contato')} onBlur={sair('contato')}
                      aria-invalid={Boolean(mostrar('contato'))} aria-describedby={ajuda('contato') ?? 'h-contato'} />
               {mostrar('contato')
@@ -207,19 +219,25 @@ export default function LeadForm() {
             </div>
 
             <div className="field">
-              <label htmlFor="f-problema">Qual o seu maior problema hoje? <span className="opt">(opcional)</span></label>
-              <textarea id="f-problema" name="problema" rows={3} maxLength={1000}
+              <label htmlFor="f-problema"><span className="passo passo-opt" aria-hidden="true">+</span>O que mais te incomoda hoje? <span className="opt">(opcional)</span></label>
+              <textarea id="f-problema" name="problema" rows={3} maxLength={1000} placeholder="Ex.: nunca sei quanto tenho de estoque"
                         value={v.problema} onChange={mudar('problema')} />
             </div>
 
             {/* campo invisível contra robôs de spam */}
             <input ref={botRef} type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" />
 
-            {falha && <p className="status erro" role="alert">{falha}</p>}
-            <button className="btn" type="submit" disabled={enviando} aria-busy={enviando}
+            {falha && <p className="status erro" role="alert" tabIndex={-1} ref={falhaRef}>{falha}</p>}
+            <button className="btn btn-seta" type="submit" disabled={enviando} aria-busy={enviando}
                     onPointerDown={lembrarClique}>
-              {enviando ? 'Enviando…' : correcao ? 'Enviar com o contato corrigido' : 'Pedir diagnóstico gratuito'}
+              <span>{enviando ? 'Enviando…' : correcao ? 'Enviar com o contato corrigido' : 'Pedir diagnóstico gratuito'}</span>
+              {!enviando && <HugeiconsIcon icon={ArrowRight02Icon} size={20} strokeWidth={2} aria-hidden="true" />}
             </button>
+            <ul className="promises">
+              <li>Conversa por chamada de vídeo ou WhatsApp, como for melhor para você.</li>
+              <li>Não peço senha nem acesso ao seu sistema.</li>
+              <li>Por que é grátis? Estou começando e quero conhecer lojas de verdade. Se depois você quiser ajuda, eu digo o preço antes e você decide sem pressão.</li>
+            </ul>
           </form>
         )}
       </div>

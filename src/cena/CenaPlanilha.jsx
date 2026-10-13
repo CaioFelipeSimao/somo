@@ -5,10 +5,10 @@ import { Planilha } from '../BeforeAfter';
 // O que a pessoa lê em cada ato da cena, na ordem da rolagem.
 const ATOS = [
   { frase: 'Isso é o que você tem hoje.', sub: 'Nomes repetidos de jeitos diferentes, valores faltando e erros de fórmula.' },
-  { frase: 'Cada linha guarda uma resposta.', sub: 'Só que tudo misturado, do jeito que foi anotado na correria.' },
+  { frase: 'Cada linha guarda uma resposta.', sub: 'Cada célula vira uma ficha que dá para separar, só que tudo está misturado, do jeito que foi anotado na correria.' },
   { frase: 'Primeiro eu separo o que é venda do que é ruído.', sub: 'Erros, linhas vazias e anotações soltas saem da conta.' },
   { frase: 'Depois junto o que é igual.', sub: '“caderno 10 mat” e “Caderno espiral” viram um produto só, e as vendas se empilham.' },
-  { frase: 'Cadernos venderam mais: R$ 1.840.', sub: 'Cada ficha vale cerca de R$ 150. Exemplo com dados fictícios.' }
+  { frase: 'Cadernos venderam mais: R$ 1.840.', sub: 'Cada ficha empilhada vale cerca de R$ 150 em vendas. Exemplo com dados fictícios.' }
 ];
 
 const suportaWebGL = () => {
@@ -61,7 +61,7 @@ export default function CenaPlanilha() {
       <div className="cena-palco">
         <div className="grid cena-grid">
           <div className="cena-texto">
-            <h2 className="sec-title" id="t-cena">Do caderno à resposta</h2>
+            <h2 className="sec-title" id="t-cena">Da bagunça à resposta</h2>
             <div className="cena-legenda" key={ato}>
               <p className="cena-frase">{atual.frase}</p>
               <p className="cena-sub">{atual.sub}</p>

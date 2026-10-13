@@ -2,17 +2,13 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import BeforeAfter from './BeforeAfter';
 import LeadForm from './LeadForm';
 import CenaPlanilha from './cena/CenaPlanilha';
+import Sintomas from './Sintomas';
+import Diagnostico from './Diagnostico';
 
 // Os efeitos carregam depois do texto: no 3G a página aparece primeiro, as animações chegam em seguida.
 const StrokeText = lazy(() => import('./components/StrokeText'));
 const ProfileCard = lazy(() => import('./components/ProfileCard'));
 
-const problemas = [
-  'Não sei qual produto vende mais.',
-  'Gasto horas copiando dados de um lugar para outro.',
-  'Só uma pessoa entende a planilha (ou o caderno).',
-  'Não confio nos números no fim do mês.'
-];
 
 // Cada serviço responde a um dos problemas acima.
 const servicos = [
@@ -47,32 +43,38 @@ function irFormulario(e) {
   else window.setTimeout(focar, 900);
 }
 
-// Frases dos problemas com Blur Text. Se o efeito chegar quando a lista já está na tela, fica o texto parado (sem piscar).
-function Problemas() {
+// O cartão só é montado quando entra na tela: assim o reflexo de entrada (intro) acontece na frente da pessoa,
+// e é esse movimento que convida a mexer nele, sem precisar escrever "passe o mouse".
+function CartaoNaTela() {
   const ref = useRef(null);
-  const [Blur, setBlur] = useState(null);
+  const [visivel, setVisivel] = useState(false);
   useEffect(() => {
-    if (reduzMovimento()) return undefined;
-    let vivo = true;
-    import('./components/BlurText').then(m => {
-      const r = ref.current?.getBoundingClientRect();
-      if (!vivo || !r || (r.top < window.innerHeight && r.bottom > 0)) return;
-      setBlur(() => m.default);
-    });
-    return () => { vivo = false; };
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisivel(true); io.disconnect(); } }, { threshold: 0.45 });
+    io.observe(ref.current);
+    return () => io.disconnect();
   }, []);
+  const foto = <img src="/caio.webp" alt="Caio Simão" width="340" height="340" className="cartao-espera" />;
   return (
-    <ul className="problems" ref={ref}>
-      {problemas.map(frase => (
-        <li key={frase}>
-          {Blur ? (
-            <Blur text={frase} delay={60} threshold={0.2} stepDuration={0.3}
-                  animationFrom={{ filter: 'blur(8px)', opacity: 0, y: -12 }}
-                  animationTo={[{ filter: 'blur(3px)', opacity: 0.6, y: 2 }, { filter: 'blur(0px)', opacity: 1, y: 0 }]} />
-          ) : frase}
-        </li>
-      ))}
-    </ul>
+    <div ref={ref} className="cartao">
+      {visivel ? (
+        <Suspense fallback={foto}>
+          <ProfileCard
+            avatarUrl="/caio.webp"
+            iconUrl={GRADE}
+            name="Caio Simão"
+            title="Estudante de Engenharia no ITA"
+            handle=""
+            status="Diagnóstico grátis"
+            statusColor="#2148c0"
+            contactText="Pedir diagnóstico"
+            onContactClick={irFormulario}
+            theme="light"
+            backdropColor="#25272b"
+            radius={0}
+          />
+        </Suspense>
+      ) : foto}
+    </div>
   );
 }
 
@@ -98,15 +100,15 @@ export default function App() {
       </header>
 
       <main>
-        {/* 2. PROBLEMAS: cada frase sai do borrão e fica nítida (Blur Text) */}
+        {/* 2. PROBLEMAS: cada dor com um recorte da planilha mostrando o sintoma e o que muda */}
         <section className="sec" aria-labelledby="t-problemas">
           <div className="grid">
             <h2 className="sec-title" id="t-problemas">Parece com a sua rotina?</h2>
-            <Problemas />
+            <Sintomas />
           </div>
         </section>
 
-        {/* 2b. DO CADERNO À RESPOSTA: a planilha explode e se remonta no painel (cena 3D por rolagem) */}
+        {/* 2b. DA BAGUNÇA À RESPOSTA: a planilha explode e se remonta no painel (cena 3D por rolagem) */}
         <CenaPlanilha />
 
         {/* 3. SERVIÇOS */}
@@ -165,21 +167,7 @@ export default function App() {
               </p>
             </div>
             <div className="about-card">
-              <Suspense fallback={<img src="/caio.webp" alt="Caio Simão" width="340" height="340" />}>
-                <ProfileCard
-                  avatarUrl="/caio.webp"
-                  iconUrl={GRADE}
-                  name="Caio Simão"
-                  title="Estudante de Engenharia no ITA"
-                  showUserInfo={false}
-                  theme="light"
-                  backdropColor="#25272b"
-                  radius={0}
-                  holo={0.3}
-                  glare={0.25}
-                  tiltStrength={4}
-                />
-              </Suspense>
+              <CartaoNaTela />
             </div>
           </div>
         </section>
@@ -190,15 +178,7 @@ export default function App() {
             <div className="form-intro">
               <h2 id="t-form">Pedir diagnóstico gratuito</h2>
               <p>20 minutos, sem custo e sem compromisso. Respondo em até 2 dias úteis.</p>
-              <ul className="promises">
-                <li>A conversa é por chamada de vídeo ou WhatsApp, como for melhor para você.</li>
-                <li>Não peço senha nem acesso ao seu sistema.</li>
-                <li>Seu contato só serve para eu te responder.</li>
-                <li>
-                  Por que é grátis? Estou começando e quero conhecer lojas de verdade. Se depois você quiser ajuda, eu
-                  digo o preço antes e você decide sem pressão.
-                </li>
-              </ul>
+              <Diagnostico />
             </div>
             <LeadForm />
           </div>

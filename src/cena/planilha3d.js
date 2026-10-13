@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 const LARG = [44, 120, 120, 120, 120, 120], ALT = 36, PROF = 8;   // coluna dos números de linha + A a E, em unidades (1 unidade = 1 px no plano z = 0)
 const COR = { papel: '#fbfbf8', cab: '#eceef1', grade: '#d9dbe0', lado: '#cfd2d8', texto: '#15171c', apagado: '#4a505c', marca: '#ffe86b', erro: '#b42318', azul: '#2148c0', cinza: '#858a95' };
 const FONTE = '"Schibsted Grotesk Variable", "Helvetica Neue", Arial, sans-serif';
-const PASSO = 150, BASE = -LUCRO[0].fichas * ALT / 2;   // distância entre as barras; pé das barras
+const PASSO = 136, BASE = -LUCRO[0].fichas * ALT / 2;   // distância entre as barras; pé das barras
 export const TEMPOS = [0, .6, 1.3, 3, 4.35];   // início de cada ato na linha do tempo (para as frases)
 
 /* números pseudoaleatórios fixos: a explosão é a mesma em toda visita */
@@ -63,7 +63,7 @@ export function montarCena({ secao, vista, canvas, rotulos, onAto }) {
   // celular em pé: explosão alta e zoom menor, para a planilha e o painel caberem na largura
   // ponytail: o formato é escolhido ao montar; girar o celular no meio da cena não refaz a grade (recarregar refaz)
   const retrato = vista.clientWidth < vista.clientHeight;
-  const Z = retrato ? { ini: .95, solta: .9, exp: 1, fim: .82 } : { ini: 1.25, solta: 1.15, exp: 1, fim: 1.12 };
+  const Z = retrato ? { ini: .95, solta: .9, exp: 1, fim: .9 } : { ini: 1.25, solta: 1.15, exp: 1, fim: 1.45 };
   const C = { rx: -24, ry: 14, rz: -3, zoom: Z.ini };   // proxy da câmera do conjunto (graus)
 
   const geos = [], mats = [], texs = [];
@@ -113,7 +113,7 @@ export function montarCena({ secao, vista, canvas, rotulos, onAto }) {
     f.s = { ...f.m, z: 14 + 34 * onda + (f.tipo === 'erro' ? 60 : 0), rx: entre(-6, 6), ry: entre(-8, 8), rz: f.tipo === 'erro' ? entre(-14, 14) : entre(-3, 3) };
   });
   // explodida: as úteis numa grade 8 x 4 com profundidades alternadas (nenhuma esconde a outra); o ruído sai para fora e cai
-  const [COLS, LINS, LX, LY] = retrato ? [3, 11, 480, 1000] : [7, 5, 1060, 600];
+  const [COLS, LINS, LX, LY] = retrato ? [3, 11, 420, 1000] : [7, 5, 1040, 580];
   const vagas = [];
   for (let l = 0; l < LINS; l++) for (let c = 0; c < COLS; c++)
     {

@@ -1,0 +1,131 @@
+import { useEffect, useRef, useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowRight02Icon } from '@hugeicons/core-free-icons';
+
+// "Parece com a sua rotina?": cada dor vem com um recorte da mesma planilha mostrando o sintoma,
+// e uma linha com o que muda. Os recortes são fictícios, como o resto da página.
+
+function Recorte({ arquivo, children }) {
+  return (
+    <div className="recorte" aria-hidden="true">
+      {arquivo && <div className="recorte-aba">{arquivo}</div>}
+      {children}
+    </div>
+  );
+}
+
+const Tabela = ({ linhas, cab }) => (
+  <table>
+    {cab && <thead><tr>{cab.map(c => <th key={c}>{c}</th>)}</tr></thead>}
+    <tbody>
+      {linhas.map((l, i) => (
+        <tr key={i}>{l.map((c, j) => <td key={j} className={c.cls}>{c.t ?? c}</td>)}</tr>
+      ))}
+    </tbody>
+  </table>
+);
+
+const SINTOMAS = [
+  {
+    dor: 'Não sei qual produto vende mais.',
+    leitura: 'Recorte de planilha: três produtos e o campo "mais vendido" com três pontos de interrogação.',
+    figura: (
+      <Recorte arquivo="vendas_out.xlsx">
+        <Tabela cab={['produto', 'qtd', 'valor']} linhas={[
+          ['caderno 10 mat', '3', '18,90'],
+          ['CANETA AZUL', '12', '2.5'],
+          ['Caderno espiral', '2', 'R$ 37,8'],
+          [{ t: 'mais vendido?', cls: 'forte' }, '', { t: '???', cls: 'erro' }]
+        ]} />
+      </Recorte>
+    ),
+    muda: 'Painel de vendas: a resposta em uma tela.'
+  },
+  {
+    dor: 'Gasto horas copiando dados de um lugar para outro.',
+    leitura: 'Duas planilhas lado a lado com os mesmos dados copiados de uma para a outra, e um valor que não bate.',
+    figura: (
+      <div className="recorte-par" aria-hidden="true">
+        <Recorte arquivo="vendas.xlsx">
+          <Tabela linhas={[['caderno', '3'], ['caneta', '12'], [{ t: 'mochila', cls: 'copiado' }, { t: '1', cls: 'copiado' }]]} />
+        </Recorte>
+        <span className="recorte-seta">
+          <HugeiconsIcon icon={ArrowRight02Icon} size={20} strokeWidth={1.8} />
+          <small>copiar e colar</small>
+        </span>
+        <Recorte arquivo="estoque.xlsx">
+          <Tabela linhas={[['caderno', '3'], ['caneta', '12'], [{ t: 'mochila', cls: 'copiado' }, { t: '11', cls: 'erro' }]]} />
+        </Recorte>
+      </div>
+    ),
+    muda: 'Relatório semanal que chega pronto, sem copiar nada.'
+  },
+  {
+    dor: 'Só uma pessoa entende a planilha (ou o caderno).',
+    leitura: 'Uma célula com uma fórmula longa e ilegível e um bilhete colado: não mexer.',
+    figura: (
+      <Recorte arquivo="caixa_2024_NOVO.xlsx">
+        <div className="recorte-formula"><span>fx</span>=SE(PROCV(B2;Plan3!A:F;6;0)&gt;0;SOMA(D2:D40)-H$1;"")</div>
+        <Tabela linhas={[['total do dia', { t: '#N/D', cls: 'erro' }]]} />
+        <p className="recorte-bilhete">não mexer nessa fórmula!</p>
+      </Recorte>
+    ),
+    muda: 'Uma planilha arrumada, que qualquer pessoa da loja entende.'
+  },
+  {
+    dor: 'Não confio nos números no fim do mês.',
+    leitura: 'O total de outubro no caderno é diferente do total na planilha.',
+    figura: (
+      <Recorte arquivo="fechamento_outubro">
+        <Tabela linhas={[
+          ['no caderno', 'R$ 4.210'],
+          ['na planilha', 'R$ 3.980'],
+          [{ t: 'diferença', cls: 'forte' }, { t: 'R$ 230 ???', cls: 'erro' }]
+        ]} />
+      </Recorte>
+    ),
+    muda: 'Estoque e caixa que fecham no fim do mês.'
+  }
+];
+
+// Blur Text nas dores: se o efeito chegar quando a seção já está na tela, fica o texto parado (sem piscar).
+export default function Sintomas() {
+  const ref = useRef(null);
+  const [Blur, setBlur] = useState(null);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    let vivo = true;
+    import('./components/BlurText').then(m => {
+      const r = ref.current?.getBoundingClientRect();
+      if (!vivo || !r || (r.top < window.innerHeight && r.bottom > 0)) return;
+      setBlur(() => m.default);
+    });
+    return () => { vivo = false; };
+  }, []);
+
+  return (
+    <div className="sintomas-corpo" ref={ref}>
+      <ul className="sintomas">
+        {SINTOMAS.map(s => (
+          <li key={s.dor}>
+            <div className="sintoma-dor" role="heading" aria-level={3}>
+              {Blur ? <Blur text={s.dor} delay={50} threshold={0.3} stepDuration={0.3}
+                            animationFrom={{ filter: 'blur(8px)', opacity: 0, y: -10 }}
+                            animationTo={[{ filter: 'blur(3px)', opacity: 0.6, y: 2 }, { filter: 'blur(0px)', opacity: 1, y: 0 }]} />
+                : s.dor}
+            </div>
+            <figure>
+              {s.figura}
+              <figcaption className="sr-only">{s.leitura}</figcaption>
+            </figure>
+            <p className="sintoma-muda">
+              <HugeiconsIcon icon={ArrowRight02Icon} size={18} strokeWidth={2} aria-hidden="true" />
+              <span>{s.muda}</span>
+            </p>
+          </li>
+        ))}
+      </ul>
+      <p className="sintomas-nota">Recortes de exemplo, com dados fictícios.</p>
+    </div>
+  );
+}

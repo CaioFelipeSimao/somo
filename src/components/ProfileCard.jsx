@@ -2,7 +2,7 @@
 
 import { memo, useEffect, useRef } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Mail01Icon } from '@hugeicons/core-free-icons';
+import { ArrowRight02Icon } from '@hugeicons/core-free-icons';
 
 import './ProfileCard.css';
 
@@ -352,7 +352,7 @@ const ProfileCard = ({
                 onClick={onContactClick}
                 aria-label={name ? `${contactText} ${name}` : contactText}
               >
-                <HugeiconsIcon icon={Mail01Icon} size={16} strokeWidth={1.8} />
+                <HugeiconsIcon icon={ArrowRight02Icon} size={16} strokeWidth={1.8} />
                 {contactText}
               </button>
             )}

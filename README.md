@@ -14,8 +14,9 @@ Abre em http://localhost:5173/. O que você salvar nos arquivos aparece na hora.
 ## Antes de publicar
 
 1. **Chave do formulário.** Crie a chave em web3forms.com com o e-mail do projeto e cole em `src/config.js`, no lugar de `COLE_AQUI_A_CHAVE`. No painel do Web3Forms, ative o filtro de spam e a resposta automática.
-2. **Endereço do site.** Em `.env`, troque `VITE_SITE_URL` pelo endereço público, por exemplo `https://somo.com.br`, sem barra no fim. Ele vai na prévia do link no WhatsApp.
-3. **Conferir tudo:**
+2. **Contato e prazo da privacidade.** Em `src/config.js`, preencha `EMAIL_PRIVACIDADE` (aparece só na página de privacidade) e `DIAS_PEDIDO` (em quantos dias você apaga o pedido de quem não seguiu para a conversa).
+3. **Endereço do site.** Em `.env`, troque `VITE_SITE_URL` pelo endereço público, por exemplo `https://somo.com.br`, sem barra no fim. Ele vai na prévia do link no WhatsApp.
+4. **Conferir tudo:**
 
    ```bash
    npm.cmd run conferir
@@ -23,7 +24,7 @@ Abre em http://localhost:5173/. O que você salvar nos arquivos aparece na hora.
 
    Gera a versão de publicação e testa no PC e no celular: pulos de layout, cena 3D, abas, janela de dúvidas, atalhos, formulário, dados adulterados, proteções de segurança, privacidade e prévia do link. Termina com "Tudo certo." ou com a lista do que falhou.
 
-A publicação (`npm.cmd run build`) para sozinha se faltar a chave ou o endereço, para não ir ao ar com o formulário desligado.
+A publicação (`npm.cmd run build`) para sozinha se faltar a chave, o contato da privacidade ou o endereço, para não ir ao ar com o formulário desligado.
 
 ## Onde mudar as coisas
 

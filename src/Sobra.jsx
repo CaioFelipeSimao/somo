@@ -56,6 +56,7 @@ const FATIAS = FIXOS.map((g, i) => {
 export default function Sobra({ onPedir }) {
   const [foco, setFoco] = useState(null);
   const [vendas, setVendas] = useState(VENDAS_MES);
+  const [todos, setTodos] = useState(false); // celular: as 2 últimas linhas da tabela ficam fechadas até o toque
   const resultado = sobraCom(vendas);
   // o painel mostra o valor "confirmado": o mesmo da frase, mas só depois de 250 ms sem mexer
   const [noPainel, setNoPainel] = useState(resultado);
@@ -120,7 +121,7 @@ export default function Sobra({ onPedir }) {
                   const S = SITUACAO[f.situacao];
                   const dif = f.valor - f.media;
                   return (
-                    <tr key={f.nome} className={foco === i ? 'ativa' : undefined} {...marcar(i)}>
+                    <tr key={f.nome} className={[foco === i && 'ativa', i >= 2 && !todos && 'fixos-extra'].filter(Boolean).join(' ') || undefined} {...marcar(i)}>
                       <th scope="row"><i style={{ background: f.cor }} aria-hidden="true" />{f.nome}</th>
                       <td>{real(f.valor)}</td>
                       <td>{real(f.media)}{dif !== 0 && <span className={dif > 0 ? 'subiu' : undefined}> ({dif > 0 ? '+' : ''}{Math.round((dif / f.media) * 100)}%)</span>}</td>
@@ -135,6 +136,7 @@ export default function Sobra({ onPedir }) {
                 })}
               </tbody>
             </table>
+            {!todos && <button type="button" className="btn-ghost fixos-mais" onClick={() => setTodos(true)}>Ver os outros {FIXOS.length - 2} gastos</button>}
 
           <div className="calculo">
             <p className="calculo-titulo">E se a loja vendesse mais, ou menos?</p>
@@ -166,7 +168,7 @@ export default function Sobra({ onPedir }) {
 
           <p className="sobra-nota">Dados fictícios; as vendas são as mesmas do exemplo acima. Imposto e contabilidade continuam com o seu contador.</p>
           <div className="sobra-volta">
-            <p>Tudo começa pelo mês arrumado, de graça. O Raio-X só vem depois, se fizer sentido para você.</p>
+            <p>Tudo começa pelo mês arrumado, de graça. O Raio‑X só vem depois, se fizer sentido para você.</p>
             <a className="btn" href="#formulario" onClick={onPedir}>Quero meu mês arrumado</a>
           </div>
         </div>

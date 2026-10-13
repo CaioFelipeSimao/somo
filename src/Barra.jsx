@@ -13,7 +13,7 @@ const SECOES = [
   { id: 't-problemas', aba: 'Problema', fx: 'Onde a planilha atrapalha?' },
   { id: 't-cena', aba: 'Exemplo', fx: 'Qual produto vende mais?' },
   { id: 't-servicos', aba: 'Serviços', fx: 'O que vem depois do grátis?' },
-  { id: 't-sobra', aba: null, grupo: 't-servicos', fx: 'Quanto sobrou no fim do mês?' },
+  { id: 't-sobra', aba: null, fx: 'Quanto sobrou no fim do mês?' },
   { id: 't-passos', aba: 'Como funciona', fx: 'Como funciona, passo a passo?' },
   { id: 't-quem', aba: 'Quem faz', fx: 'Quem vai olhar os meus números?' },
   { id: 'formulario', aba: null, fx: 'Como eu peço?' }

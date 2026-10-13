@@ -5,7 +5,7 @@ import { LUCRO, real } from './dados';
 // com a planilha do topo, e os valores com a cena 3D.
 const ACHADOS = [
   { titulo: 'Os cadernos estavam em linhas separadas.', texto: '“caderno 10 mat” e “Caderno espiral” agora somam juntos. Assim aparece que é o que mais vende.' },
-  { titulo: 'Duas vendas estavam sem valor certo.', texto: 'A mochila (???) não tinha valor e a conta das canetas bic deu erro (#VALOR!). Conferimos na conversa e o total do mês fechou.' },
+  { titulo: 'Duas vendas estavam sem valor certo.', texto: 'A mochila (???) não tinha valor e a conta das canetas bic deu erro (#VALOR!). Conferi com você na conversa e o total do mês fechou.' },
   { titulo: 'Cadernos e mochilas puxam as vendas.', texto: 'Vale nunca deixar faltar cadernos e repor as mochilas antes da volta às aulas.' }
 ];
 

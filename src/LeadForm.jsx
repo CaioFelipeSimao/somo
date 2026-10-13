@@ -215,7 +215,7 @@ export default function LeadForm() {
                 ))}
               </div>
               <input id="f-contato" name="contato" type="text" inputMode={teclado} autoComplete={teclado === 'email' ? 'email' : 'tel'} maxLength={120}
-                     placeholder={teclado === 'email' ? 'voce@email.com' : '(12) 99999-0000'}
+                     placeholder={teclado === 'email' ? 'Ex.: voce@email.com' : 'Ex.: (12) 99999-0000'}
                      required value={v.contato} onChange={mudar('contato')} onBlur={sair('contato')}
                      aria-invalid={Boolean(mostrar('contato'))} aria-describedby={ajuda('contato') ?? 'h-contato'} />
               {mostrar('contato')

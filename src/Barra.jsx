@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // Nome do produto: trocar aqui troca na barra (o título da aba fica em index.html).
 export const NOME = 'Somô';
@@ -8,8 +8,8 @@ export const NOME = 'Somô';
 const SECOES = [
   { id: 'topo', aba: null, fx: '=ARRUMAR(sua planilha)' },
   { id: 't-problemas', aba: 'Problema', fx: '=ONDE.DÓI(vendas; estoque; caixa)' },
-  { id: 't-cena', aba: 'Da bagunça', fx: '=SOMA(cadernos)  → R$ 1.840' },
-  { id: 't-servicos', aba: 'Degraus', fx: '=DEGRAUS(grátis; lucro; todo mês)' },
+  { id: 't-cena', aba: 'Exemplo', fx: '=SOMA(cadernos)  → R$ 1.840' },
+  { id: 't-servicos', aba: 'Serviços', fx: '=DEGRAUS(grátis; lucro; todo mês)' },
   { id: 't-passos', aba: 'Como funciona', fx: '=CONVERSA(20 min) + MÊS.ARRUMADO()' },
   { id: 't-quem', aba: 'Quem faz', fx: '=QUEM.FAZ("Caio Simão")' },
   { id: 'formulario', aba: null, fx: '=PEDIR(meu mês arrumado)' }
@@ -40,6 +40,14 @@ export default function Barra({ onPedir }) {
     return () => { window.removeEventListener('scroll', pedir); window.removeEventListener('resize', pedir); cancelAnimationFrame(quadro); };
   }, []);
 
+  // no celular a faixa de abas desliza; a aba da seção atual vem para a vista sozinha
+  const abasRef = useRef(null);
+  useEffect(() => {
+    const ul = abasRef.current, a = ul?.querySelector('a.ativa');
+    if (!a || ul.scrollWidth <= ul.clientWidth) return;
+    ul.scrollTo({ left: Math.max(0, a.offsetLeft - 24), behavior: 'smooth' });
+  }, [atual]);
+
   return (
     <nav className="barra" aria-label="Seções da página">
       <div className="barra-linha">
@@ -49,7 +57,7 @@ export default function Barra({ onPedir }) {
         </p>
         <a className="btn barra-cta" href="#formulario" onClick={onPedir}>Quero meu mês arrumado</a>
       </div>
-      <ul className="barra-abas">
+      <ul className="barra-abas" ref={abasRef}>
         {SECOES.filter(s => s.aba).map(s => {
           const ativa = SECOES[atual].id === s.id;
           return (

@@ -13,7 +13,7 @@ const ProfileCard = lazy(() => import('./components/ProfileCard'));
 
 // Três degraus: o grátis abre a porta; os outros dois só se a pessoa quiser (preço dito antes).
 const degraus = [
-  { quando: 'Para começar, grátis', titulo: 'Seu mês arrumado', texto: 'A conversa de 20 minutos e um mês das suas vendas organizado, com o que mais vendeu e o que dá para melhorar.' },
+  { quando: 'Para começar, grátis', titulo: 'Seu mês arrumado', texto: 'Você me mostra como anota as vendas e eu devolvo o mês organizado, com o que mais vendeu e o que dá para melhorar.' },
   { quando: 'Depois, se quiser', titulo: 'Raio-X de lucro', texto: 'Com o custo de cada produto, eu mostro qual dá lucro de verdade, qual vende muito e lucra pouco, um preço sugerido e quanto dinheiro está parado no estoque.' },
   { quando: 'Todo mês', titulo: 'Fechamento do mês', texto: 'Planilha conferida, painel atualizado e um resumo de uma página: quanto vendeu, quanto lucrou e o que comprar.' }
 ];
@@ -65,9 +65,9 @@ function CartaoNaTela() {
             name="Caio Simão"
             title="Estudante de Engenharia no ITA"
             handle=""
-            status="Mês arrumado grátis"
+            status="Grátis"
             statusColor="#2148c0"
-            contactText="Quero meu mês"
+            contactText="Quero meu mês arrumado"
             onContactClick={irFormulario}
             theme="light"
             backdropColor="#25272b"
@@ -138,6 +138,7 @@ export default function App() {
               Eu arrumo um mês das suas vendas, de presente, e te mostro o que os números dizem. Começa com uma conversa.
             </p>
             <a className="btn" href="#formulario" onClick={irFormulario}>Quero meu mês arrumado</a>
+            <p className="hero-nota">Planilha bagunçada ou caderno: fotos das páginas bastam.</p>
             <p className="byline">
               <img src="/caio.webp" alt="" width="44" height="44" />
               <span><strong>Caio Simão</strong>Estudante de Engenharia no ITA</span>
@@ -220,7 +221,7 @@ export default function App() {
           <div className="grid">
             <div className="form-intro">
               <h2 id="t-form">Pedir meu mês arrumado</h2>
-              <p>20 minutos de conversa e um mês das suas vendas arrumado, sem custo e sem compromisso. Respondo em até 2 dias úteis.</p>
+              <p>Respondo em até 2 dias úteis, pelo contato que você deixar.</p>
               <Diagnostico />
             </div>
             <LeadForm />

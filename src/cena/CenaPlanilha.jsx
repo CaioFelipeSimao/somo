@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { LUCRO, real } from '../dados';
+import { Planilha } from '../BeforeAfter';
 
 // O que a pessoa lê em cada ato da cena, na ordem da rolagem.
 const ATOS = [
@@ -35,6 +36,7 @@ export default function CenaPlanilha() {
   const [modo] = useState(() =>
     window.matchMedia('(prefers-reduced-motion: reduce)').matches || !suportaWebGL() ? 'parado' : '3d');
   const [ato, setAto] = useState(modo === 'parado' ? ATOS.length - 1 : 0);
+  const [montada, setMontada] = useState(false);
 
   // O 3D (Three.js) só baixa quando a seção está a uma tela e meia de aparecer.
   useEffect(() => {
@@ -46,7 +48,8 @@ export default function CenaPlanilha() {
       import('./planilha3d').then(({ montarCena }) => {
         if (!vivo) return;
         desmontar = montarCena({ secao: secaoRef.current, vista: vistaRef.current, canvas: canvasRef.current, rotulos: rotulosRef.current, onAto: setAto });
-      });
+        setMontada(true);
+      }).catch(() => { /* sem rede para o 3D: a planilha em HTML continua no palco */ });
     }, { rootMargin: '150% 0px' });
     io.observe(secaoRef.current);
     return () => { vivo = false; io.disconnect(); desmontar?.(); };
@@ -70,9 +73,10 @@ export default function CenaPlanilha() {
             )}
             <ol className="sr-only">{ATOS.map(a => <li key={a.frase}>{a.frase} {a.sub}</li>)}</ol>
           </div>
-          <div className="cena-vista" ref={vistaRef} aria-hidden={modo === '3d'}>
+          <div className={`cena-vista${montada ? ' montada' : ''}`} ref={vistaRef} aria-hidden={modo === '3d'}>
             {modo === '3d' ? (
               <>
+                <div className="cena-espera"><Planilha /></div>
                 <canvas ref={canvasRef} />
                 <div className="cena-rotulos" ref={rotulosRef} />
               </>

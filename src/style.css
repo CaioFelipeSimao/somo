@@ -195,7 +195,6 @@ fieldset { border: 0; padding: 0; min-width: 0; }
 .sheet col, .sheet thead th:nth-child(3) { width: 34%; }
 .sheet-head td { font-weight: 600; }
 .sheet-err { color: var(--error); font-weight: 600; }
-.sheet td:nth-child(4), .sheet td:nth-child(5) { font-variant-numeric: tabular-nums; }
 .sheet-note { background: var(--sheet-note); }
 
 /* O painel com a resposta */
@@ -288,7 +287,8 @@ h3 { font-size: 1.3125rem; font-weight: 600; letter-spacing: -0.01em; line-heigh
 }
 .step-num-plain { display: block; font-size: clamp(3rem, 6vw, 4.5rem); font-weight: 700; line-height: 1.5; letter-spacing: -0.04em; }
 /* Stroke Text centraliza o número; aqui ele fica alinhado à esquerda, como o resto da grade. */
-.step-num .stroke-text__svg { width: auto; height: clamp(4.5rem, 9vw, 6.75rem); overflow: visible; margin-left: -0.45rem; }
+.step-num .stroke-text__svg { width: auto; height: clamp(4.5rem, 9vw, 6.75rem); overflow: visible; }
+@media (min-width: 960px) { .step-num .stroke-text__svg { margin-left: -0.45rem; } }
 .steps p { color: var(--muted); margin-top: 6px; max-width: 32ch; }
 
 @media (min-width: 960px) {
@@ -381,7 +381,7 @@ form .btn { width: 100%; }
 .done { display: grid; gap: 12px; justify-items: start; padding: 28px; background: var(--ok-bg); color: var(--ink); }
 .done:focus { outline: none; }
 .done h3 { font-size: clamp(1.75rem, 3vw, 2.25rem); letter-spacing: -0.02em; color: var(--ok); }
-.done p { max-width: 40ch; overflow-wrap: anywhere; }
+.done p { max-width: 40ch; overflow-wrap: break-word; }
 .done .btn-ghost { margin-top: 8px; }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -413,6 +413,7 @@ form .btn { width: 100%; }
 /* No celular o botão da faixa azul vem depois dos serviços que ele vende. */
 @media (max-width: 959px) {
   .sec-accent .sec-side { display: contents; }
+  .sec-accent .sec-side > * { grid-column: 1 / -1; }
   .sec-accent .sec-side > .btn { order: 3; }
   .sec-accent .services { order: 2; }
 }
@@ -465,3 +466,8 @@ form .btn { width: 100%; }
 .colunas li { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 6px; height: 100%; }
 .colunas .coluna { width: 100%; height: calc(var(--h) * 240px); background: var(--bar); }
 .colunas .top .coluna { background: var(--accent); }
+
+/* Enquanto o 3D baixa, a planilha em HTML ocupa o palco (no 3G a cena não fica vazia). */
+.cena-espera { position: absolute; inset: 0; display: grid; place-items: center; transition: opacity .3s; }
+.cena-espera .sheet { width: min(100%, 560px); height: auto; border: 1px solid var(--hair); }
+.cena-vista.montada .cena-espera { opacity: 0; pointer-events: none; }

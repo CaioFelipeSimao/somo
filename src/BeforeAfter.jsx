@@ -7,7 +7,7 @@ const [cabecalho, ...linhas] = LINHAS;
 const erro = ehErro;
 const lucroPorProduto = LUCRO;
 
-function Planilha() {
+export function Planilha() {
   return (
     <div className="sheet" aria-hidden="true">
       <div className="sheet-tab">vendas_out_FINAL(2).xlsx</div>

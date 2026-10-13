@@ -78,11 +78,69 @@ function CartaoNaTela() {
   );
 }
 
+// Serviços em degraus. No computador a faixa azul fica parada na tela e os degraus chegam da esquerda
+// para a direita conforme a rolagem; só na primeira vez (o progresso guarda o máximo e não volta).
+function Degraus() {
+  const trilho = useRef(null);
+  useEffect(() => {
+    const el = trilho.current;
+    const pode = window.matchMedia('(min-width: 960px) and (min-height: 700px) and (prefers-reduced-motion: no-preference)');
+    if (!pode.matches) { el.style.setProperty('--p', 1); return undefined; }
+    el.classList.add('degraus-presos');
+    let maximo = 0, quadro = 0;
+    const medir = () => {
+      quadro = 0;
+      const r = el.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - window.innerHeight)) / 0.8);
+      if (p > maximo) { maximo = p; el.style.setProperty('--p', maximo.toFixed(3)); }
+      if (maximo >= 1) window.removeEventListener('scroll', pedir);
+    };
+    const pedir = () => { if (!quadro) quadro = requestAnimationFrame(medir); };
+    window.addEventListener('scroll', pedir, { passive: true });
+    medir();
+    return () => { window.removeEventListener('scroll', pedir); cancelAnimationFrame(quadro); };
+  }, []);
+  return (
+    <div className="degraus-trilho" ref={trilho}>
+      <section className="sec sec-accent" aria-labelledby="t-servicos">
+        <div className="grid">
+          <div className="sec-side">
+            <h2 className="sec-title" id="t-servicos">O que eu posso fazer por você</h2>
+            <p>Começa grátis. Os outros degraus só se fizer sentido para você: eu digo o preço antes e você decide sem pressão.</p>
+            <a className="btn btn-inverse" href="#formulario" onClick={irFormulario}>Pedir diagnóstico gratuito</a>
+          </div>
+          <ol className="degraus">
+            {degraus.map((d, i) => (
+              <li key={d.titulo} style={{ '--i': i }}>
+                <p className="degrau-quando">{d.quando}</p>
+                <h3>{d.titulo}</h3>
+                <p>{d.texto}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <>
       {/* 1. PRIMEIRA DOBRA (será reescrita na aula 1.9) */}
-      <header className="hero">
+      <nav className="faixa" aria-label="Seções da página">
+        <div className="grid faixa-grid">
+          <a className="faixa-marca" href="#topo"><strong>Caio Simão</strong><span>vendas de pequenos comércios</span></a>
+          <ul className="faixa-links">
+            <li><a href="#t-problemas">O problema</a></li>
+            <li><a href="#t-servicos">O que eu faço</a></li>
+            <li><a href="#t-passos">Como funciona</a></li>
+            <li><a href="#t-quem">Quem faz</a></li>
+          </ul>
+          <a className="btn faixa-cta" href="#formulario" onClick={irFormulario}>Pedir diagnóstico</a>
+        </div>
+      </nav>
+      <header className="hero" id="topo">
         <div className="grid">
           <h1 className="hero-title">Sua planilha ou caderno deveria responder perguntas, não criar dúvidas.</h1>
           <div className="hero-copy">
@@ -116,25 +174,8 @@ export default function App() {
         {/* 2b. DA BAGUNÇA À RESPOSTA: a planilha explode e se remonta no painel (cena 3D por rolagem) */}
         <CenaPlanilha />
 
-        {/* 3. SERVIÇOS */}
-        <section className="sec sec-accent" aria-labelledby="t-servicos">
-          <div className="grid">
-            <div className="sec-side">
-              <h2 className="sec-title" id="t-servicos">O que eu posso fazer por você</h2>
-              <p>Começa grátis. Os outros degraus só se fizer sentido para você: eu digo o preço antes e você decide sem pressão.</p>
-              <a className="btn btn-inverse" href="#formulario" onClick={irFormulario}>Pedir diagnóstico gratuito</a>
-            </div>
-            <ol className="degraus">
-              {degraus.map(d => (
-                <li key={d.titulo}>
-                  <p className="degrau-quando">{d.quando}</p>
-                  <h3>{d.titulo}</h3>
-                  <p>{d.texto}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
+        {/* 3. SERVIÇOS em degraus */}
+        <Degraus />
 
         {/* 4. COMO FUNCIONA: o número é desenhado e depois preenchido (Stroke Text) */}
         <section className="sec" aria-labelledby="t-passos">

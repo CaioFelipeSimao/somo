@@ -96,19 +96,25 @@ const SINTOMAS = [
   }
 ];
 
-// Blur Text nas dores: se o efeito chegar quando a seção já está na tela, fica o texto parado (sem piscar).
+// Blur Text nas dores, e o recorte e a linha azul chegando logo depois (classe "chegou" em cada item).
+// Se o efeito chegar quando a seção já está na tela, fica tudo parado (sem piscar).
 export default function Sintomas() {
   const ref = useRef(null);
   const [Blur, setBlur] = useState(null);
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
-    let vivo = true;
+    let vivo = true, io;
     import('./components/BlurText').then(m => {
       const r = ref.current?.getBoundingClientRect();
       if (!vivo || !r || (r.top < window.innerHeight && r.bottom > 0)) return;
       setBlur(() => m.default);
+      ref.current.classList.add('sintomas-anima');
+      io = new IntersectionObserver(es => es.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('chegou'); io.unobserve(e.target); }
+      }), { threshold: 0.3 });
+      ref.current.querySelectorAll('.sintomas > li').forEach(li => io.observe(li));
     });
-    return () => { vivo = false; };
+    return () => { vivo = false; io?.disconnect(); };
   }, []);
 
   return (

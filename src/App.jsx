@@ -268,7 +268,7 @@ export default function App() {
         <div className="grid">
           <p className="footer-marca"><Simbolo tamanho={36} cor="var(--on-accent)" /><strong>Somô</strong></p>
           <p className="footer-frase">Clareza para o seu pequeno comércio.</p>
-          <p className="footer-miudo">Por Caio Simão. Os dados enviados pelo formulário são usados só para responder ao seu pedido e não são repassados a ninguém.</p>
+          <p className="footer-miudo">Por Caio Simão. Os dados enviados pelo formulário são usados só para responder ao seu pedido. <a href="/privacidade">Como eu cuido dos seus dados e arquivos</a></p>
         </div>
       </footer>
     </>

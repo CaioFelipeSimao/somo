@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { MagicWand01Icon, ArrowTurnBackwardIcon } from '@hugeicons/core-free-icons';
 import PixelSwap from './components/PixelSwap';
@@ -118,10 +118,30 @@ export default function BeforeAfter() {
 
   // O topo começa no "antes"; o "depois" só aparece no clique (a revelação completa é a cena 3D logo abaixo).
   const alternar = () => { if (trocando) return; setTrocando(true); setFoco(null); setDepois(d => !d); };
+
+  // A primeira troca acontece sozinha: 2,2 s depois de a planilha aparecer (tempo de ver a bagunça e os números),
+  // uma vez só, e não acontece se a pessoa já mexeu ou pediu menos movimento.
+  const figura = useRef(null), mexeuRef = useRef(false);
+  mexeuRef.current = mexeu;
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    let espera = 0;
+    const io = new IntersectionObserver(([e]) => {
+      clearTimeout(espera);
+      if (!e.isIntersecting) return;
+      espera = window.setTimeout(() => {
+        io.disconnect();
+        if (mexeuRef.current) return;
+        setTrocando(true); setFoco(null); setDepois(true);
+      }, 2200);
+    }, { threshold: 0.6 });
+    io.observe(figura.current);
+    return () => { io.disconnect(); clearTimeout(espera); };
+  }, []);
   const textos = depois ? CONSERTOS : PROBLEMAS;
 
   return (
-    <figure className={`demo${depois ? ' demo-depois' : ''}${mexeu ? ' demo-mexeu' : ''}`} onPointerLeave={() => setFoco(null)}>
+    <figure ref={figura} className={`demo${depois ? ' demo-depois' : ''}${mexeu ? ' demo-mexeu' : ''}`} onPointerLeave={() => setFoco(null)}>
       <div className="demo-palco">
         <PixelSwap
           firstContent={<Planilha onMarca={marcar} foco={foco} />}
@@ -140,7 +160,7 @@ export default function BeforeAfter() {
           onComplete={() => setTrocando(false)}
         />
         <button type="button" className={depois ? 'btn-ghost demo-acao' : 'btn btn-tinta demo-acao'}
-                onClick={alternar} aria-pressed={depois} disabled={trocando}>
+                onClick={() => { setMexeu(true); alternar(); }} aria-pressed={depois} disabled={trocando}>
           <HugeiconsIcon icon={depois ? ArrowTurnBackwardIcon : MagicWand01Icon} size={20} strokeWidth={2} aria-hidden="true" />
           {depois ? 'Ver o antes' : 'Arrumar esta planilha'}
         </button>

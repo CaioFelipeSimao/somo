@@ -478,7 +478,7 @@ form .btn { width: 100%; }
   .cena-3d .cena-texto .sec-title { font-size: 1rem; color: var(--muted); }
   .cena-frase { font-size: 1.375rem; }
   .cena-sub { font-size: .9375rem; }
-  .cena-legenda { min-height: 5.5em; }
+  .cena-legenda { min-height: 8.5em; }   /* reserva a altura do ato mais longo: a cena não pula entre atos */
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -764,7 +764,7 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .sobra-corpo { display: grid; gap: 24px; min-width: 0; }
 .sobra-lead { font-size: clamp(1.1875rem, 1.6vw, 1.5rem); line-height: 1.35; letter-spacing: -0.01em; max-width: 36ch; }
 .sobra-lead strong { color: var(--accent-ink); }
-.sobra-fatos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; padding-top: 18px; border-top: 1px solid var(--hair); }
+.sobra-fatos { display: grid; gap: 24px; align-content: center; }
 .sobra-fatos dt { font-size: clamp(1.5rem, 2.2vw, 2rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
 .sobra-fatos dd { margin: 8px 0 0; font-size: .9375rem; color: var(--muted); max-width: 24ch; }
 .sobra-nota { font-size: .875rem; color: var(--muted); max-width: 60ch; }
@@ -781,7 +781,7 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .rosca-rotulo { font-size: 12px; font-weight: 600; fill: var(--ink); }
 .rosca-rotulo .rosca-pct { font-weight: 400; fill: var(--muted); }
 .fixos.com-foco .rosca-rotulo:not(.ativa) { opacity: .45; }
-.rosca-total { font-size: 22px; font-weight: 700; fill: var(--ink); letter-spacing: -0.02em; }
+.rosca-total { font-size: 21px; font-weight: 700; fill: var(--ink); letter-spacing: -0.02em; }
 .rosca-sub { font-size: 11px; fill: var(--muted); }
 .fixos-tabela { width: 100%; border-collapse: collapse; font-size: .9375rem; }
 .fixos-tabela thead th { padding: 0 12px 10px 0; text-align: left; font-size: .8125rem; font-weight: 600; color: var(--muted); border-bottom: 2px solid var(--rule); }
@@ -795,7 +795,6 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .fixos-tabela tbody tr.ativa { background: color-mix(in srgb, var(--accent) 7%, transparent); }
 .fixos-tabela tbody tr:focus-visible { outline: 3px solid var(--accent-ink); outline-offset: -3px; }
 .situacao { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-weight: 700; color: var(--ink); }
-.situacao-cortar { color: var(--accent-ink); }
 @media (max-width: 959px) {
   .rosca { max-width: 360px; margin-inline: auto; }
   /* celular: cada gasto vira um bloco (nome e valores em cima, o que eu vi embaixo) */
@@ -809,3 +808,19 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
   .fixos-tabela .fixos-nota { grid-column: 1 / -1; min-width: 0; margin-top: 8px; }
 }
 @media (min-width: 960px) { .rosca { padding-left: 36px; } }
+
+/* ---------- Critique 10 ---------- */
+.sobrelinha { display: block; margin-bottom: 10px; font-size: .8125rem; font-weight: 600; letter-spacing: .02em; color: var(--accent-ink); max-width: 30ch; line-height: 1.35; }
+.sobra-conta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; padding: 12px 0; border-block: 1px solid var(--hair); font-size: .9375rem; color: var(--muted); }
+.sobra-conta b { color: var(--ink); font-size: 1.0625rem; margin-right: 4px; }
+.sobra-conta i { font-style: normal; color: var(--ink); margin-right: 8px; }
+.sobra-conta-fim b { color: var(--accent-ink); }
+@media (min-width: 960px) { .fixos-topo { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px; align-items: center; } }
+@media (max-width: 959px) {
+  .fixos-topo { display: grid; gap: 20px; }
+  .rosca-rotulo { font-size: 15px; }
+  .rosca-sub { font-size: 12px; }
+  .sobra-conta { flex-direction: column; gap: 4px; }
+}
+.rosca figcaption { margin-top: 4px; font-size: .9375rem; color: var(--muted); text-align: center; }
+.rosca figcaption strong { color: var(--ink); }

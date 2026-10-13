@@ -175,7 +175,7 @@ export default function App() {
         {/* 2b. DA BAGUNÇA À RESPOSTA: a planilha explode e se remonta no painel (cena 3D por rolagem) */}
         <CenaPlanilha />
 
-        {/* 2c. E QUANTO SOBROU: exemplo do Raio-X do mês (vendas menos gastos, em cascata) */}
+        {/* 2c. E QUANTO SOBROU: exemplo do Raio-X do mês (vendas menos gastos; rosca dos fixos) */}
         <Sobra />
 
         {/* 3. SERVIÇOS em degraus */}

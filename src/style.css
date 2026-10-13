@@ -620,9 +620,10 @@ form .btn { width: 100%; }
     linear-gradient(180deg, color-mix(in srgb, var(--accent) 4%, var(--bg)) 0%, var(--bg) 100%);
 }
 @media (max-width: 959px) {
+  /* celular: o azul desce do alto (mais forte no canto esquerdo) e se apaga até a planilha */
   .hero { background:
-    radial-gradient(120% 45% at 0% 8%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 75%),
-    var(--bg); }
+    radial-gradient(90% 35% at 0% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 80%),
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 26%, var(--bg)) 0%, color-mix(in srgb, var(--accent) 12%, var(--bg)) 40%, var(--bg) 75%); }
 }
 
 /* sintomas: o recorte e a linha azul chegam depois da frase (só quando a seção ainda não estava na tela) */

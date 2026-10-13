@@ -8,14 +8,30 @@ const TIPOS = ['Loja de roupas', 'Papelaria', 'Pet shop', 'Cosméticos', 'Outro'
 const RASCUNHO = 'p0-rascunho', ENVIADO = 'p0-enviado';
 const VAZIO = { nome: '', tipo: '', tipoOutro: '', contato: '', problema: '' };
 const pronto = Boolean(FORM_ACCESS_KEY) && !FORM_ACCESS_KEY.startsWith('COLE_AQUI');
+const LIMITE = { nome: 80, tipo: 40, tipoOutro: 80, contato: 120, problema: 1000 };
 
+// Texto que sai do formulário: sempre string, sem caracteres de controle (quebras de linha só no campo livre),
+// sem espaços nas pontas e no tamanho máximo do campo. O limite do HTML (maxLength) pode ser burlado; este não.
+function limpar(valor, max, linhas = false) {
+  const s = typeof valor === 'string' ? valor : '';
+  return s.replace(linhas ? /[\u0000-\u0009\u000B-\u001F\u007F]/g : /[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, max);
+}
+
+// O que vem do armazenamento do navegador pode ter sido mexido: só aceita os campos conhecidos, como texto.
 function lerEnviado() {
-  try { return JSON.parse(sessionStorage.getItem(ENVIADO) || 'null'); } catch { return null; }
+  try {
+    const p = JSON.parse(sessionStorage.getItem(ENVIADO) || 'null');
+    return p && typeof p === 'object' ? { nome: limpar(p.nome, LIMITE.nome), contato: limpar(p.contato, LIMITE.contato) } : null;
+  } catch { return null; }
 }
 
 function lerRascunho() {
   try {
-    return { ...VAZIO, ...JSON.parse(sessionStorage.getItem(RASCUNHO) || '{}') };
+    const r = JSON.parse(sessionStorage.getItem(RASCUNHO) || '{}');
+    const ok = {};
+    for (const k of Object.keys(VAZIO)) ok[k] = typeof r?.[k] === 'string' ? r[k].slice(0, LIMITE[k]) : '';
+    if (ok.tipo && !TIPOS.includes(ok.tipo)) ok.tipo = '';
+    return ok;
   } catch {
     return VAZIO;
   }
@@ -91,6 +107,7 @@ export default function LeadForm() {
 
   async function enviar(e) {
     e.preventDefault();
+    if (enviando) return; // um envio por vez (duplo clique não manda dois pedidos)
     setTentou(true);
     const primeiro = ORDEM.find(c => erros[c]);
     if (primeiro) {
@@ -103,16 +120,19 @@ export default function LeadForm() {
       return;
     }
 
+    // robô que marcou o campo escondido: finge que deu certo e não manda nada (não ensina o robô a contornar)
+    if (botRef.current?.checked) { setEnviado({ nome: '', contato: '' }); return; }
+
     setEnviando(true);
     setFalha('');
+    const nome = limpar(v.nome, LIMITE.nome);
     const data = new FormData();
     data.append('access_key', FORM_ACCESS_KEY);
-    data.append('subject', `${correcao ? 'Correção de contato' : 'Novo pedido de mês arrumado'}: ${v.nome.trim()}`);
-    data.append('nome', v.nome.trim());
-    data.append('tipo_de_negocio', v.tipo === 'Outro' ? v.tipoOutro.trim() : v.tipo);
-    data.append('contato', v.contato.trim());
-    data.append('problema', v.problema.trim());
-    if (botRef.current?.checked) data.append('botcheck', 'on');
+    data.append('subject', `${correcao ? 'Correção de contato' : 'Novo pedido de mês arrumado'}: ${nome}`);
+    data.append('nome', nome);
+    data.append('tipo_de_negocio', v.tipo === 'Outro' ? limpar(v.tipoOutro, LIMITE.tipoOutro) : (TIPOS.includes(v.tipo) ? v.tipo : 'Outro'));
+    data.append('contato', limpar(v.contato, LIMITE.contato));
+    data.append('problema', limpar(v.problema, LIMITE.problema, true));
     if (correcao) data.append('observacao', 'Este pedido corrige o contato de um pedido anterior.');
 
     // Sem resposta em 15 s, desiste: no 3G o botão não pode ficar em "Enviando…" para sempre.
@@ -128,7 +148,7 @@ export default function LeadForm() {
       if (!res.ok || !json.success) throw new Error('servidor');
       try { sessionStorage.removeItem(RASCUNHO); } catch { /* ignorado */ }
       setCorFaisca(getComputedStyle(wrapRef.current).getPropertyValue('--ok').trim() || '#17663f');
-      const pedido = { nome: v.nome.trim().split(/\s+/)[0], contato: v.contato.trim() };
+      const pedido = { nome: nome.split(/\s+/)[0], contato: limpar(v.contato, LIMITE.contato) };
       try { sessionStorage.setItem(ENVIADO, JSON.stringify(pedido)); } catch { /* ignorado */ }
       setEnviado(pedido);
       setCorrecao(false);

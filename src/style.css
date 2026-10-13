@@ -322,7 +322,12 @@ h3 { font-size: 1.3125rem; font-weight: 600; letter-spacing: -0.01em; line-heigh
 .about-text p + p { color: var(--muted); max-width: 40ch; }
 .about-card { width: min(100%, 340px); }
 .cartao { min-height: 480px; }
-.cartao-espera { width: 100%; height: auto; display: block; }
+.cartao-espera { display: grid; grid-template-rows: 400px 50px; gap: 10px; width: 340px; max-width: 100%; height: 480px; padding: 10px; background: rgb(240 240 243); }
+.cartao-espera-tile { position: relative; overflow: hidden; background: #25272b; }
+.cartao-espera-tile img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; display: block; }
+.cartao-espera-tile p { position: absolute; left: 20px; bottom: 18px; display: grid; gap: 4px; color: #fff; font-size: .8125rem; }
+.cartao-espera-tile strong { font-size: 1.25rem; }
+.cartao-espera-pe { background: #fff; opacity: .6; }
 .about-card .profile-card__body, .about-card .profile-card__contact { border-radius: 0; }
 .about-card .profile-card__name { font-family: var(--font); }
 
@@ -754,3 +759,53 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
   .degraus li:nth-child(2) { margin-top: 80px; }
   .degraus h3 { font-size: clamp(1.5rem, 2.2vw, 2rem); }
 }
+
+/* ---------- E quanto sobrou? (Raio-X do mês) ---------- */
+.sobra-corpo { display: grid; gap: 24px; min-width: 0; }
+.sobra-lead { font-size: clamp(1.1875rem, 1.6vw, 1.5rem); line-height: 1.35; letter-spacing: -0.01em; max-width: 36ch; }
+.sobra-lead strong { color: var(--accent-ink); }
+.sobra-fatos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; padding-top: 18px; border-top: 1px solid var(--hair); }
+.sobra-fatos dt { font-size: clamp(1.5rem, 2.2vw, 2rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1; }
+.sobra-fatos dd { margin: 8px 0 0; font-size: .9375rem; color: var(--muted); max-width: 24ch; }
+.sobra-nota { font-size: .875rem; color: var(--muted); max-width: 60ch; }
+@media (max-width: 959px) {
+  .sobra-fatos { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+}
+
+/* ---------- Gastos fixos: rosca + comparação (substitui a cascata) ---------- */
+.fixos { display: grid; gap: 28px; min-width: 0; }
+.rosca { margin: 0; max-width: 520px; }
+.rosca svg { display: block; width: 100%; height: auto; overflow: visible; }
+.rosca circle { transition: stroke-width .2s, opacity .2s; cursor: pointer; }
+.fixos.com-foco .rosca circle:not(.ativa) { opacity: .45; }
+.rosca-rotulo { font-size: 12px; font-weight: 600; fill: var(--ink); }
+.rosca-rotulo .rosca-pct { font-weight: 400; fill: var(--muted); }
+.fixos.com-foco .rosca-rotulo:not(.ativa) { opacity: .45; }
+.rosca-total { font-size: 22px; font-weight: 700; fill: var(--ink); letter-spacing: -0.02em; }
+.rosca-sub { font-size: 11px; fill: var(--muted); }
+.fixos-tabela { width: 100%; border-collapse: collapse; font-size: .9375rem; }
+.fixos-tabela thead th { padding: 0 12px 10px 0; text-align: left; font-size: .8125rem; font-weight: 600; color: var(--muted); border-bottom: 2px solid var(--rule); }
+.fixos-tabela tbody th, .fixos-tabela td { padding: 14px 12px 14px 0; border-bottom: 1px solid var(--hair); text-align: left; vertical-align: top; }
+.fixos-tabela tbody th { font-weight: 600; white-space: nowrap; }
+.fixos-tabela tbody th i { display: inline-block; width: 12px; height: 12px; margin-right: 8px; vertical-align: -1px; }
+.fixos-tabela td { white-space: nowrap; }
+.fixos-tabela .fixos-nota { white-space: normal; color: var(--muted); min-width: 16rem; }
+.fixos-tabela .subiu { font-weight: 700; color: var(--ink); }
+.fixos-tabela tbody tr { cursor: default; transition: background-color .15s; }
+.fixos-tabela tbody tr.ativa { background: color-mix(in srgb, var(--accent) 7%, transparent); }
+.fixos-tabela tbody tr:focus-visible { outline: 3px solid var(--accent-ink); outline-offset: -3px; }
+.situacao { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; font-weight: 700; color: var(--ink); }
+.situacao-cortar { color: var(--accent-ink); }
+@media (max-width: 959px) {
+  .rosca { max-width: 360px; margin-inline: auto; }
+  /* celular: cada gasto vira um bloco (nome e valores em cima, o que eu vi embaixo) */
+  .fixos-tabela thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .fixos-tabela tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--hair); }
+  .fixos-tabela tbody th, .fixos-tabela td { padding: 0; border: 0; }
+  .fixos-tabela tbody th { grid-column: 1; white-space: normal; }
+  .fixos-tabela td:nth-of-type(1) { grid-column: 2; grid-row: 1; font-weight: 700; text-align: right; }
+  .fixos-tabela td:nth-of-type(2) { grid-column: 1 / -1; font-size: .8125rem; color: var(--muted); }
+  .fixos-tabela td:nth-of-type(2)::before { content: "média jul–set: "; }
+  .fixos-tabela .fixos-nota { grid-column: 1 / -1; min-width: 0; margin-top: 8px; }
+}
+@media (min-width: 960px) { .rosca { padding-left: 36px; } }

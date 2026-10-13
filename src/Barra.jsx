@@ -9,6 +9,7 @@ const SECOES = [
   { id: 'topo', aba: null, fx: 'Dá para arrumar a minha planilha?' },
   { id: 't-problemas', aba: 'Problema', fx: 'Onde a planilha atrapalha?' },
   { id: 't-cena', aba: 'Exemplo', fx: 'Qual produto vende mais?' },
+  { id: 't-sobra', aba: null, grupo: 't-cena', fx: 'Quanto sobrou no fim do mês?' },
   { id: 't-servicos', aba: 'Serviços', fx: 'O que vem depois do grátis?' },
   { id: 't-passos', aba: 'Como funciona', fx: 'Como funciona, passo a passo?' },
   { id: 't-quem', aba: 'Quem faz', fx: 'Quem vai olhar os meus números?' },
@@ -73,7 +74,7 @@ export default function Barra({ onPedir }) {
       </div>
       <ul className="barra-abas" ref={abasRef}>
         {SECOES.filter(s => s.aba).map(s => {
-          const ativa = SECOES[atual].id === s.id;
+          const ativa = SECOES[atual].id === s.id || SECOES[atual].grupo === s.id;
           return (
             <li key={s.id}>
               <a href={`#${s.id}`} onClick={ir(s.id)} aria-current={ativa ? 'location' : undefined} className={ativa ? 'ativa' : undefined}>{s.aba}</a>

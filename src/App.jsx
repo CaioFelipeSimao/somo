@@ -5,6 +5,7 @@ import CenaPlanilha from './cena/CenaPlanilha';
 import Sintomas from './Sintomas';
 import Diagnostico from './Diagnostico';
 import Barra from './Barra';
+import Sobra from './Sobra';
 
 // Os efeitos carregam depois do texto: no 3G a página aparece primeiro, as animações chegam em seguida.
 const StrokeText = lazy(() => import('./components/StrokeText'));
@@ -14,14 +15,14 @@ const ProfileCard = lazy(() => import('./components/ProfileCard'));
 // Três degraus: o grátis abre a porta; os outros dois só se a pessoa quiser (preço dito antes).
 const degraus = [
   { quando: 'Para começar, grátis', titulo: 'Seu mês arrumado', texto: 'Você me mostra como anota as vendas e eu devolvo o mês organizado, com o que mais vendeu e o que dá para melhorar.' },
-  { quando: 'Depois, se quiser', titulo: 'Raio-X de lucro', texto: 'Com o custo de cada produto, eu mostro qual dá lucro de verdade, qual vende muito e lucra pouco, um preço sugerido e quanto dinheiro está parado no estoque.' },
-  { quando: 'Todo mês', titulo: 'Fechamento do mês', texto: 'Planilha conferida, painel atualizado e um resumo de uma página: quanto vendeu, quanto lucrou e o que comprar.' }
+  { quando: 'Depois, se quiser', titulo: 'Raio-X do mês', texto: 'Vendas e gastos juntos: mercadoria, aluguel, contas, marketing, manutenção, maquininha. Você vê quanto sobrou, qual produto dá lucro de verdade e quanto precisa vender para pagar as contas.' },
+  { quando: 'Todo mês', titulo: 'Fechamento do mês', texto: 'Vendas e gastos conferidos todo mês e um resumo de uma página: quanto vendeu, quanto sobrou e qual gasto mudou.' }
 ];
 
 const passos = [
   { titulo: 'Conversa de 20 minutos', texto: 'Você me mostra a planilha ou o caderno, do jeito que estiver, e me conta como a loja funciona.' },
   { titulo: 'Seu mês arrumado, de presente', texto: 'Eu organizo um mês das suas vendas e te mando a planilha arrumada, o que mais vendeu e o que dá para melhorar. Se for caderno, eu leio pelas fotos.' },
-  { titulo: 'Você usa no dia a dia', texto: 'A planilha arrumada fica com você. Se quiser ir além, a gente conversa sobre o Raio-X de lucro.' }
+  { titulo: 'Você usa no dia a dia', texto: 'A planilha arrumada fica com você. Se quiser ir além, a gente conversa sobre o Raio-X do mês.' }
 ];
 
 // Grade fina como padrão do brilho holográfico do cartão: o mesmo desenho da página.
@@ -54,7 +55,16 @@ function CartaoNaTela() {
     io.observe(ref.current);
     return () => io.disconnect();
   }, []);
-  const foto = <img src="/caio.webp" alt="Caio Simão" width="340" height="340" className="cartao-espera" />;
+  // espera com o mesmo desenho do cartão (moldura, foto escura, nome e rodapé), para a troca não dar salto
+  const foto = (
+    <div className="cartao-espera">
+      <div className="cartao-espera-tile">
+        <img src="/caio.webp" alt="Caio Simão" width="320" height="400" />
+        <p><strong>Caio Simão</strong>Estudante de Engenharia no ITA</p>
+      </div>
+      <div className="cartao-espera-pe" aria-hidden="true" />
+    </div>
+  );
   return (
     <div ref={ref} className="cartao">
       {visivel ? (
@@ -164,6 +174,9 @@ export default function App() {
 
         {/* 2b. DA BAGUNÇA À RESPOSTA: a planilha explode e se remonta no painel (cena 3D por rolagem) */}
         <CenaPlanilha />
+
+        {/* 2c. E QUANTO SOBROU: exemplo do Raio-X do mês (vendas menos gastos, em cascata) */}
+        <Sobra />
 
         {/* 3. SERVIÇOS em degraus */}
         <Degraus />

@@ -866,9 +866,9 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 }
 
 
-/* texto do topo sobre o padrão: o título ganha uma faixa preta atrás de cada linha, com letras brancas (o azul fica só para botões e o R$ 0)
+/* texto do topo sobre o padrão: o título ganha uma faixa branca atrás de cada linha, do mesmo papel das molduras (o azul fica só para botões e o R$ 0)
    (cresce enquanto digita); no PC a coluna vira duas molduras: a da oferta e a dos números, com o preço em azul */
-.hero-title .text-type__feito { background: var(--ink); color: var(--surface); padding: 0 .14em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.hero-title .text-type__feito { background: var(--surface); color: var(--ink); padding: 0 .14em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 @media (min-width: 960px) {
   .hero-copy { gap: 16px; }
   .hero-dados { display: grid; gap: 28px; justify-items: start; padding: 28px 32px 32px; background: var(--surface); border: 1px solid var(--hair); }

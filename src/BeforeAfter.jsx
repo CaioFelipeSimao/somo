@@ -119,7 +119,7 @@ export default function BeforeAfter() {
   // O topo começa no "antes"; o "depois" só aparece no clique (a revelação completa é a cena 3D logo abaixo).
   const alternar = () => { if (trocando) return; setTrocando(true); setFoco(null); setDepois(d => !d); };
 
-  // A primeira troca acontece sozinha: 0,7 s depois de a planilha estar na tela (pedido do Caio), uma vez só,
+  // A primeira troca acontece sozinha: 1,5 s depois de a planilha estar na tela (pedido do Caio), uma vez só,
   // e não acontece se a pessoa já mexeu ou pediu menos movimento.
   const figura = useRef(null), mexeuRef = useRef(false), jaTrocou = useRef(false);
   mexeuRef.current = mexeu;
@@ -135,7 +135,7 @@ export default function BeforeAfter() {
       jaTrocou.current = true;
       if (mexeuRef.current) return;
       setTrocando(true); setFoco(null); setDepois(true);
-    }, 700);
+    }, 1500);
     return () => clearTimeout(espera);
   }, [naTela]);
   const textos = depois ? CONSERTOS : PROBLEMAS;

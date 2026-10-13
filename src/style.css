@@ -427,7 +427,7 @@ form .btn { width: 100%; }
 .footer-marca strong { font-weight: 800; letter-spacing: -0.03em; color: var(--on-accent); }
 .footer-frase { font-size: clamp(1.375rem, 2.4vw, 2rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: var(--on-accent); max-width: 18ch; }
 .footer-miudo { max-width: 52ch; margin-top: 18px; }
-.footer-miudo a { color: inherit; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+.footer-miudo a { display: inline-block; padding-block: 12px; margin-block: -12px; color: inherit; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
 @media (hover: hover) { .footer-miudo a:hover { text-decoration-thickness: 2px; } }
 .footer-padrao { position: absolute; right: 0; bottom: 0; width: min(46%, 560px); height: 100%;
   -webkit-mask-image: linear-gradient(115deg, transparent 30%, #000 75%); mask-image: linear-gradient(115deg, transparent 30%, #000 75%); }
@@ -923,6 +923,9 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .simples-sobre { grid-column: 1 / -1; justify-self: start; padding: 6px 10px; background: var(--surface); border: 1px solid var(--hair); color: var(--muted); font-size: .9375rem; max-width: 52ch; }
 .simples-titulo { grid-column: 1 / -1; margin-top: 16px; font-size: clamp(2.25rem, 5vw, 4rem); font-weight: 700; line-height: 1.04; letter-spacing: -0.035em; text-wrap: balance; }
 .simples-titulo span { background: var(--surface); padding: 0 .12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.simples-abertura { grid-column: 1 / -1; margin-top: 16px; font-size: 1.25rem; line-height: 1.5; max-width: 40ch; }
+.simples-abertura span { background: var(--surface); padding: 0 .2em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.priv a { color: var(--accent-ink); text-underline-offset: 3px; overflow-wrap: anywhere; }
 .simples-corpo { padding-block: 24px 96px; border-top: 2px solid var(--rule); background: var(--bg); }
 @media (max-width: 959px) {
   .simples-barra { height: 56px; }

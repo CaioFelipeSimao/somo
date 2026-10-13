@@ -10,8 +10,10 @@ const exigirChave = () => ({
   apply: 'build',
   buildStart() {
     const config = readFileSync(new URL('./src/config.js', import.meta.url), 'utf8');
-    if (config.includes('COLE_AQUI') && !process.env.P0_SEM_CHAVE)
+    if (config.includes('COLE_AQUI_A_CHAVE') && !process.env.P0_SEM_CHAVE)
       this.error('Falta a chave do Web3Forms em src/config.js. Crie a chave em web3forms.com com o e-mail do projeto e cole no lugar de COLE_AQUI_A_CHAVE.');
+    if ((config.includes('COLE_AQUI_O_EMAIL') || config.includes('COLE_AQUI_OS_DIAS')) && !process.env.P0_SEM_CHAVE)
+      this.error('Faltam o e-mail de privacidade e o prazo do pedido em src/config.js (EMAIL_PRIVACIDADE e DIAS_PEDIDO). Eles aparecem na página de privacidade.');
     // a prévia do link (WhatsApp, redes) precisa do endereço completo do site
     const env = loadEnv('production', fileURLToPath(new URL('.', import.meta.url)), 'VITE_');
     const site = env.VITE_SITE_URL ?? '';

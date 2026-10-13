@@ -7,7 +7,7 @@ import Rodape from './Rodape';
 
 // Molde das páginas de apoio (privacidade, página não encontrada): a mesma barra branca com a marca e o botão
 // do pedido, o padrão de peças no topo, o título na faixa branca e o rodapé azul da landing.
-function PaginaSimples({ titulo, sobre, children }) {
+function PaginaSimples({ titulo, sobre, abertura, semLinkPrivacidade, children }) {
   return (
     <>
       <nav className="simples-barra" aria-label="Somô">
@@ -19,12 +19,13 @@ function PaginaSimples({ titulo, sobre, children }) {
         <div className="grid">
           {sobre && <p className="simples-sobre">{sobre}</p>}
           <h1 className="simples-titulo"><span>{titulo}</span></h1>
+          {abertura && <p className="simples-abertura"><span>{abertura}</span></p>}
         </div>
       </header>
       <main className="simples-corpo">
         <div className="grid">{children}</div>
       </main>
-      <Rodape />
+      <Rodape semLinkPrivacidade={semLinkPrivacidade} />
     </>
   );
 }

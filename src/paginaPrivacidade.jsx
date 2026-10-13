@@ -1,15 +1,19 @@
 import { montar } from './PaginaSimples';
+import { EMAIL_PRIVACIDADE, DIAS_PEDIDO } from './config';
 
 // O que o Somô faz com o que a pessoa manda. Só traz o que o Caio decidiu; mudou a prática, mude aqui.
 montar({
-  sobre: 'O que eu faço com o que você me manda, em palavras simples. Quem cuida disso sou eu, Caio Simão.',
+  sobre: 'Em palavras simples',
   titulo: 'Privacidade',
+  abertura: 'O que eu faço com o que você me manda. Quem cuida disso sou eu, Caio Simão.',
+  semLinkPrivacidade: true,
   children: (
     <article className="priv">
       <section>
         <h2>O que você me manda pelo formulário</h2>
         <p>Seu nome, o tipo da sua loja, um WhatsApp ou e-mail e, se quiser, o que mais te incomoda. Uso só para responder ao seu pedido e combinar a nossa conversa. Não vendo nem passo esses dados para ninguém usar.</p>
         <p>Para o formulário chegar até mim, o site usa o Web3Forms, um serviço que entrega o pedido no meu e-mail.</p>
+        <p>Se a gente não seguir para a conversa, apago o seu pedido em até {DIAS_PEDIDO} dias.</p>
       </section>
       <section>
         <h2>Suas fotos e planilhas</h2>
@@ -27,7 +31,7 @@ montar({
       </section>
       <section>
         <h2>Seus direitos</h2>
-        <p>Pela Lei Geral de Proteção de Dados (LGPD), você pode pedir para ver, corrigir ou apagar os seus dados e arquivos a qualquer momento. É só me pedir pelo mesmo WhatsApp ou e-mail da nossa conversa.</p>
+        <p>Pela Lei Geral de Proteção de Dados (LGPD), você pode pedir para ver, corrigir ou apagar os seus dados e arquivos a qualquer momento. Se já conversamos, é só me pedir pelo mesmo WhatsApp ou e-mail. Se não, escreva para <a href={`mailto:${EMAIL_PRIVACIDADE}`}>{EMAIL_PRIVACIDADE}</a>.</p>
       </section>
       <p className="priv-data">Atualizado em outubro de 2026.</p>
     </article>

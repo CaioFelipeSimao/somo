@@ -118,7 +118,7 @@ export default function LeadForm() {
     if (!pronto) {
       // sem a chave o envio está desligado; quem visita não vê nome de arquivo nem detalhe técnico
       if (import.meta.env.DEV) console.warn('Falta a chave do Web3Forms em src/config.js.');
-      setFalha('O envio está fora do ar agora. Seus dados continuam aqui; tente de novo mais tarde.');
+      setFalha('O envio está fora do ar agora. Suas respostas ficam guardadas nesta aba: é só tentar de novo daqui a pouco.');
       return;
     }
 
@@ -157,8 +157,8 @@ export default function LeadForm() {
       setCelebrar(true);
     } catch (erro) {
       setFalha(erro.message === 'rede'
-        ? 'Não consegui enviar: a conexão falhou ou demorou demais. Seus dados continuam aqui; tente de novo.'
-        : 'O envio não foi aceito agora. Seus dados continuam aqui; tente de novo em alguns minutos.');
+        ? 'Não consegui enviar: a conexão falhou ou demorou demais. Suas respostas ficam guardadas nesta aba: é só tentar de novo.'
+        : 'O envio não foi aceito agora. Suas respostas ficam guardadas nesta aba: é só tentar de novo daqui a alguns minutos.');
     } finally {
       window.clearTimeout(relogio);
       setEnviando(false);
@@ -257,7 +257,7 @@ export default function LeadForm() {
             {falha && <p className="status erro" role="alert" tabIndex={-1} ref={falhaRef}>{falha}</p>}
             <button className="btn btn-seta" type="submit" disabled={enviando} aria-busy={enviando}
                     onPointerDown={lembrarClique}>
-              <span>{enviando ? 'Enviando…' : correcao ? 'Enviar com o contato corrigido' : 'Quero meu mês arrumado'}</span>
+              <span>{enviando ? 'Enviando…' : falha ? 'Tentar de novo' : correcao ? 'Enviar com o contato corrigido' : 'Quero meu mês arrumado'}</span>
               {!enviando && <HugeiconsIcon icon={ArrowRight02Icon} size={20} strokeWidth={2} aria-hidden="true" />}
             </button>
             <ul className="promises">

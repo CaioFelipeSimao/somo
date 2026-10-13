@@ -109,7 +109,7 @@ function PlanilhaArrumada({ onMarca, foco }) {
   );
 }
 
-export default function BeforeAfter({ liberado = true }) {
+export default function BeforeAfter() {
   const [depois, setDepois] = useState(false);
   const [trocando, setTrocando] = useState(false);
   const [foco, setFoco] = useState(null);
@@ -119,9 +119,8 @@ export default function BeforeAfter({ liberado = true }) {
   // O topo começa no "antes"; o "depois" só aparece no clique (a revelação completa é a cena 3D logo abaixo).
   const alternar = () => { if (trocando) return; setTrocando(true); setFoco(null); setDepois(d => !d); };
 
-  // A primeira troca acontece sozinha: 2,2 s depois de a planilha estar na tela E o título ter terminado de digitar
-  // (tempo de ver a bagunça sem disputar o olhar com a digitação), uma vez só, e não acontece se a pessoa já mexeu
-  // ou pediu menos movimento.
+  // A primeira troca acontece sozinha: 0,7 s depois de a planilha estar na tela (pedido do Caio), uma vez só,
+  // e não acontece se a pessoa já mexeu ou pediu menos movimento.
   const figura = useRef(null), mexeuRef = useRef(false), jaTrocou = useRef(false);
   mexeuRef.current = mexeu;
   const [naTela, setNaTela] = useState(false);
@@ -131,14 +130,14 @@ export default function BeforeAfter({ liberado = true }) {
     return () => io.disconnect();
   }, []);
   useEffect(() => {
-    if (!naTela || !liberado || jaTrocou.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    if (!naTela || jaTrocou.current || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
     const espera = window.setTimeout(() => {
       jaTrocou.current = true;
       if (mexeuRef.current) return;
       setTrocando(true); setFoco(null); setDepois(true);
-    }, 2200);
+    }, 700);
     return () => clearTimeout(espera);
-  }, [naTela, liberado]);
+  }, [naTela]);
   const textos = depois ? CONSERTOS : PROBLEMAS;
 
   return (

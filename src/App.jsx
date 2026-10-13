@@ -142,8 +142,6 @@ function Degraus() {
 }
 
 export default function App() {
-  // a planilha do topo só começa a contar para se arrumar sozinha depois que o título termina de digitar
-  const [tituloPronto, setTituloPronto] = useState(false);
   return (
     <>
       {/* 1. PRIMEIRA DOBRA (será reescrita na aula 1.9) */}
@@ -152,7 +150,7 @@ export default function App() {
         {/* fundo do topo: o padrão de peças da marca, em tons claros, sumindo em direção ao texto */}
         <Padrao id="padrao-topo" className="hero-padrao" forte="var(--apoio-forte)" leve="var(--apoio)" />
         <div className="grid">
-          <h1 className="hero-title"><TextType text="Sua planilha ou caderno deveria responder perguntas, não criar dúvidas." onDone={() => setTituloPronto(true)} /></h1>
+          <h1 className="hero-title"><TextType text="Sua planilha ou caderno deveria responder perguntas, não criar dúvidas." /></h1>
           <div className="hero-copy">
             <div className="hero-dados">
               <p className="lead">
@@ -171,7 +169,7 @@ export default function App() {
               <div className="hero-preco"><dt>R$ 0</dt><dd>para começar, sem compromisso</dd></div>
             </dl>
           </div>
-          <BeforeAfter liberado={tituloPronto} />
+          <BeforeAfter />
         </div>
       </header>
 

@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagnóstico gratuito da sua planilha</title>
+  <meta name="description" content="Em 20 minutos eu olho como você controla vendas e estoque e te digo, sem custo, o que dá para melhorar.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 1. PRIMEIRA DOBRA (será reescrita na aula 1.9) -->
+  <header class="hero">
+    <div class="grid">
+      <h1 class="hero-title">Sua planilha deveria responder perguntas, não criar dúvidas.</h1>
+      <div class="hero-copy">
+        <p class="lead">Em 20 minutos eu olho como você controla vendas e estoque e te digo, sem custo, o que dá para melhorar.</p>
+        <a class="btn" href="#formulario">Pedir diagnóstico gratuito</a>
+      </div>
+
+      <!-- Exemplo de painel: troque os valores à vontade, são fictícios -->
+      <figure class="chart">
+        <p class="chart-title">Lucro por produto no mês</p>
+        <ol class="chart-rows">
+          <li style="--v:100; --i:0" class="top"><span>Cadernos</span><span class="bar"></span><span class="val">R$ 1.840</span></li>
+          <li style="--v:66; --i:1"><span>Mochilas</span><span class="bar"></span><span class="val">R$ 1.215</span></li>
+          <li style="--v:52; --i:2"><span>Canetas</span><span class="bar"></span><span class="val">R$ 960</span></li>
+          <li style="--v:23; --i:3"><span>Presentes</span><span class="bar"></span><span class="val">R$ 430</span></li>
+          <li style="--v:16; --i:4"><span>Cópias</span><span class="bar"></span><span class="val">R$ 290</span></li>
+        </ol>
+        <figcaption>Exemplo com dados fictícios.</figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- 2. PROBLEMAS -->
+    <section class="sec">
+      <div class="grid">
+        <h2 class="sec-title">Parece com a sua rotina?</h2>
+        <ul class="problems">
+          <li>Não sei qual produto dá mais lucro.</li>
+          <li>Gasto horas copiando dados de um lugar para outro.</li>
+          <li>Só uma pessoa entende a planilha.</li>
+          <li>Não confio nos números no fim do mês.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. SERVIÇOS -->
+    <section class="sec sec-accent">
+      <div class="grid">
+        <h2 class="sec-title">O que eu posso fazer por você</h2>
+        <ul class="services">
+          <li class="service-main">
+            <h3>Painel de vendas simples</h3>
+            <p>Uma tela que mostra o que vendeu, quanto e o que deu lucro.</p>
+          </li>
+          <li>
+            <h3>Relatório semanal automático</h3>
+            <p>Um resumo da semana que chega pronto, sem você copiar nada.</p>
+          </li>
+          <li>
+            <h3>Estoque e caixa organizados</h3>
+            <p>Uma planilha arrumada para saber o que tem na loja e quanto entrou e saiu.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 4. COMO FUNCIONA -->
+    <section class="sec">
+      <div class="grid">
+        <h2 class="sec-title">Como funciona</h2>
+        <ol class="steps">
+          <li>
+            <h3>Conversa de 20 minutos</h3>
+            <p>Você me mostra como controla vendas e estoque hoje.</p>
+          </li>
+          <li>
+            <h3>Diagnóstico por escrito</h3>
+            <p>Eu te mando o que dá para melhorar, em palavras simples.</p>
+          </li>
+          <li>
+            <h3>Proposta sem compromisso</h3>
+            <p>Se fizer sentido, eu digo como posso ajudar. Se não, você fica com o diagnóstico.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 5. QUEM FAZ -->
+    <section class="sec">
+      <div class="grid">
+        <h2 class="sec-title">Quem faz</h2>
+        <p class="about">Sou estudante de Engenharia no ITA, com experiência em análise de dados e gestão de projetos. Meu trabalho é transformar a sua planilha em respostas claras, sem complicar.</p>
+      </div>
+    </section>
+
+    <!-- 6. FORMULÁRIO -->
+    <section class="sec sec-form" id="formulario">
+      <div class="grid">
+        <div class="form-intro">
+          <h2>Pedir diagnóstico gratuito</h2>
+          <p>20 minutos, sem custo e sem compromisso. Respondo em até 2 dias úteis.</p>
+        </div>
+        <form id="form" novalidate>
+          <label>Seu nome
+            <input name="nome" type="text" autocomplete="name" required>
+          </label>
+          <label>Tipo de negócio
+            <input name="tipo_de_negocio" type="text" placeholder="Ex.: papelaria, pet shop" required>
+          </label>
+          <label>E-mail ou WhatsApp para eu te responder
+            <input name="contato" type="text" required>
+          </label>
+          <label><span>Qual o seu maior problema hoje? <span class="opt">(opcional)</span></span>
+            <textarea name="problema" rows="3"></textarea>
+          </label>
+          <!-- campo invisível contra robôs de spam -->
+          <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off">
+          <button class="btn" type="submit">Pedir diagnóstico gratuito</button>
+          <p id="status" class="status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

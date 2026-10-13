@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-10-13T14:03:06.710Z",
+        "reason": "agent: header.hero full-bleed background; inner .wrap gives 16px inline padding, verified in browser at 375px"
+      }
+    ]
+  }
+}

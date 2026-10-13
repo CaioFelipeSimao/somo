@@ -151,7 +151,8 @@ export default function BeforeAfter({ liberado = true }) {
           trigger="manual"
           pixelSize={56}
           counterScale={false}
-          pattern="left-to-right"
+          // a onda vai para a direita ao arrumar e volta para a esquerda ao desarrumar
+          pattern={depois ? 'left-to-right' : 'right-to-left'}
           randomness={0.35}
           pixelScale={0.2}
           duration={1300}

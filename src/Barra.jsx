@@ -73,8 +73,8 @@ export default function Barra({ onPedir }) {
 
   return (
     <nav className="barra" aria-label="Seções da página">
-      <div className="barra-linha">
-        <a className="barra-nome" href="#topo"><Simbolo tamanho={20} cor="var(--accent)" />{NOME}</a>
+      {/* a marca ocupa as duas linhas da barra no computador: símbolo e nome grandes, à esquerda */}
+        <a className="barra-nome" href="#topo" aria-label={`${NOME}, voltar ao início`}><Simbolo tamanho={30} cor="var(--accent)" /><span>{NOME}</span></a>
         <p className="barra-fx" aria-hidden="true">
           <i>fx</i>
           {/* a pergunta se decifra da esquerda para a direita, com caracteres de planilha (pouco movimento: texto parado) */}
@@ -86,7 +86,6 @@ export default function Barra({ onPedir }) {
           </span>
         </p>
         <a className="btn barra-cta" href="#formulario" onClick={onPedir}>Quero meu mês arrumado</a>
-      </div>
       <ul className="barra-abas" ref={abasRef}>
         {SECOES.filter(s => s.aba).map(s => {
           const ativa = SECOES[atual].id === s.id || SECOES[atual].grupo === s.id;

@@ -145,7 +145,7 @@ export default function App() {
         {/* fundo do topo: o padrão de peças da marca, em tons claros, sumindo em direção ao texto */}
         <Padrao id="padrao-topo" className="hero-padrao" forte="var(--apoio-forte)" leve="var(--apoio)" />
         <div className="grid">
-          <h1 className="hero-title">Sua planilha ou caderno deveria responder perguntas, não criar dúvidas.</h1>
+          <h1 className="hero-title"><span>Sua planilha ou caderno deveria responder perguntas, não criar dúvidas.</span></h1>
           <div className="hero-copy">
             <p className="lead">
               Eu arrumo um mês das suas vendas, de presente, e te mostro o que os números dizem. Começa com uma conversa.

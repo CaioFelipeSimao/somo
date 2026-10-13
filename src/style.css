@@ -620,8 +620,8 @@ form .btn { width: 100%; }
 /* fundo do topo: padrão de peças da marca (no lugar do degradê), forte no alto à direita e sumindo para baixo e para o texto */
 .hero { position: relative; isolation: isolate; background: var(--bg); }
 .hero-padrao { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; pointer-events: none;
-  -webkit-mask-image: radial-gradient(150% 130% at 100% 0%, #000 45%, rgba(0, 0, 0, .3) 100%); mask-image: radial-gradient(150% 130% at 100% 0%, #000 45%, rgba(0, 0, 0, .3) 100%); }
-@media (max-width: 959px) { .hero-padrao { -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .35) 70%); mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .35) 70%); } }
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 35%, rgba(0, 0, 0, .55) 65%, transparent 100%); mask-image: linear-gradient(180deg, #000 0%, #000 35%, rgba(0, 0, 0, .55) 65%, transparent 100%); }
+
 
 /* sintomas: o recorte e a linha azul chegam depois da frase (só quando a seção ainda não estava na tela) */
 @media (prefers-reduced-motion: no-preference) {
@@ -676,23 +676,24 @@ form .btn { width: 100%; }
 :root { --barra-h: 88px; }
 @media (max-width: 959px) { :root { --barra-h: 92px; } }
 html { scroll-padding-top: calc(var(--barra-h) + 8px); }
-.barra { position: sticky; top: 0; z-index: 50; height: var(--barra-h); display: grid; grid-template-rows: 1fr auto; background: var(--surface); border-bottom: 1px solid var(--sheet-grid); }
-.barra-linha { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: stretch; border-bottom: 1px solid var(--sheet-grid); }
+.barra { position: sticky; top: 0; z-index: 50; height: var(--barra-h); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: 1fr auto; grid-template-areas: "nome fx cta" "nome abas abas"; background: var(--surface); border-bottom: 1px solid var(--sheet-grid); }
 /* caixa de nome: como o "A1" do Excel */
-.barra-nome { display: flex; align-items: center; padding: 0 18px; min-width: 9.5rem; border-right: 1px solid var(--sheet-grid); color: var(--ink); text-decoration: none; font-weight: 700; letter-spacing: -0.01em; }
-.barra-fx { display: flex; align-items: center; gap: 14px; min-width: 0; padding: 0 16px; font-family: ui-monospace, Consolas, monospace; font-size: .875rem; color: var(--ink); }
+/* marca: caixa própria, alta, com símbolo e nome grandes */
+.barra-nome { grid-area: nome; display: flex; align-items: center; gap: 12px; padding: 0 28px 0 24px; border-right: 1px solid var(--sheet-grid); color: var(--ink); text-decoration: none; font-size: 1.625rem; font-weight: 800; letter-spacing: -0.035em; line-height: 1; }
+.barra-fx { grid-area: fx; border-bottom: 1px solid var(--sheet-grid); display: flex; align-items: center; gap: 14px; min-width: 0; padding: 0 16px; font-family: ui-monospace, Consolas, monospace; font-size: .875rem; color: var(--ink); }
 .barra-fx i { flex: none; padding-right: 14px; border-right: 1px solid var(--sheet-grid); color: var(--muted); font-family: var(--font); }
 .barra-fx-texto { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.barra-cta { min-height: 0; border-radius: 0; padding-inline: 20px; font-size: .9375rem; }
+.barra-cta { grid-area: cta; min-height: 0; border-radius: 0; padding-inline: 20px; font-size: .9375rem; }
 /* abas de planilha */
-.barra-abas { display: flex; gap: 0; padding-left: 9.5rem; background: var(--sheet-head); overflow-x: auto; scrollbar-width: none; }
+.barra-abas { grid-area: abas; display: flex; gap: 0; padding-left: 0; background: var(--sheet-head); overflow-x: auto; scrollbar-width: none; }
 .barra-abas a { display: flex; align-items: center; height: 32px; padding: 0 16px; border-right: 1px solid var(--sheet-grid); color: var(--muted); font-size: .8125rem; font-weight: 500; text-decoration: none; white-space: nowrap; }
 .barra-abas a.ativa { background: var(--surface); color: var(--accent); font-weight: 700; box-shadow: inset 0 -2px 0 var(--accent); }
 @media (hover: hover) { .barra-abas a:not(.ativa):hover { background: var(--surface); color: var(--ink); } }
 @media (max-width: 959px) {
   .barra-fx { display: none; }
-  .barra-linha { grid-template-columns: minmax(0, 1fr) auto; }
-  .barra-nome { min-width: 0; padding: 0 16px; border-right: 0; }
+  .barra { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "nome cta" "abas abas"; }
+  .barra-nome { min-width: 0; padding: 0 16px; border-right: 0; border-bottom: 1px solid var(--sheet-grid); font-size: 1.375rem; gap: 10px; }
+  .barra-nome svg { width: 26px; height: 26px; }
   .barra-cta { padding-inline: 14px; font-size: .875rem; }
   .barra-abas { padding-left: 0; }
   .barra-abas a { height: 36px; }
@@ -837,4 +838,14 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
   .sobra-esq .sobra-conta { flex-direction: column; gap: 4px; }
 }
 
-.barra-nome { gap: 10px; }
+
+/* moldura do texto do topo sobre o padrão: o título ganha uma faixa da cor do fundo atrás de cada linha;
+   a coluna de texto fica num painel branco reto com fio fino */
+.hero-title span { background: var(--bg); padding: 0 .12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+@media (min-width: 960px) {
+  .hero-copy { padding: 28px 32px 32px; background: var(--surface); border: 1px solid var(--hair); }
+}
+@media (max-width: 959px) {
+  /* celular: o padrão fica só no alto, acima do texto corrido */
+  .hero-padrao { -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .5) 9%, transparent 19%); mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .5) 9%, transparent 19%); }
+}

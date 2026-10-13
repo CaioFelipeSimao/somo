@@ -6,6 +6,7 @@ import Sintomas from './Sintomas';
 import Diagnostico from './Diagnostico';
 import Barra from './Barra';
 import Sobra from './Sobra';
+import { Simbolo, Padrao } from './Marca';
 
 // Os efeitos carregam depois do texto: no 3G a página aparece primeiro, as animações chegam em seguida.
 const StrokeText = lazy(() => import('./components/StrokeText'));
@@ -141,6 +142,8 @@ export default function App() {
       {/* 1. PRIMEIRA DOBRA (será reescrita na aula 1.9) */}
       <Barra onPedir={irFormulario} />
       <header className="hero" id="topo">
+        {/* fundo do topo: o padrão de peças da marca, em tons claros, sumindo em direção ao texto */}
+        <Padrao id="padrao-topo" className="hero-padrao" forte="var(--apoio-forte)" leve="var(--apoio)" />
         <div className="grid">
           <h1 className="hero-title">Sua planilha ou caderno deveria responder perguntas, não criar dúvidas.</h1>
           <div className="hero-copy">
@@ -251,10 +254,13 @@ export default function App() {
         </section>
       </main>
 
+      {/* rodapé como o anúncio da marca: faixa azul, o símbolo, a frase e o padrão de peças no canto */}
       <footer className="footer">
+        <Padrao id="padrao-rodape" className="footer-padrao" />
         <div className="grid">
-          <p><strong>Somô</strong><br />Vendas arrumadas para pequenos comércios, por Caio Simão</p>
-          <p>Os dados enviados pelo formulário são usados só para responder ao seu pedido e não são repassados a ninguém.</p>
+          <p className="footer-marca"><Simbolo tamanho={36} cor="var(--on-accent)" /><strong>Somô</strong></p>
+          <p className="footer-frase">Clareza para o seu pequeno comércio.</p>
+          <p className="footer-miudo">Por Caio Simão. Os dados enviados pelo formulário são usados só para responder ao seu pedido e não são repassados a ninguém.</p>
         </div>
       </footer>
     </>

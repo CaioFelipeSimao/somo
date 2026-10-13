@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import DecryptedText from './components/DecryptedText';
+import { Simbolo } from './Marca';
 
 // Nome do produto: trocar aqui troca na barra (o título da aba fica em index.html).
 export const NOME = 'Somô';
@@ -26,6 +27,11 @@ const bloco = id => {
 export default function Barra({ onPedir }) {
   const [atual, setAtual] = useState(0);
   const calmo = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // só a primeira pergunta se decifra; depois de a seção mudar uma vez, as perguntas trocam sem animação
+  const primeira = useRef(null), mudou = useRef(false);
+  if (primeira.current === null) primeira.current = atual;
+  if (atual !== primeira.current) mudou.current = true;
+  const decifra = !calmo && !mudou.current;
 
   useEffect(() => {
     let quadro = 0;
@@ -68,12 +74,12 @@ export default function Barra({ onPedir }) {
   return (
     <nav className="barra" aria-label="Seções da página">
       <div className="barra-linha">
-        <a className="barra-nome" href="#topo">{NOME}</a>
+        <a className="barra-nome" href="#topo"><Simbolo tamanho={20} cor="var(--accent)" />{NOME}</a>
         <p className="barra-fx" aria-hidden="true">
           <i>fx</i>
           {/* a pergunta se decifra da esquerda para a direita, com caracteres de planilha (pouco movimento: texto parado) */}
           <span className="barra-fx-texto">
-            {calmo ? SECOES[atual].fx : (
+            {!decifra ? SECOES[atual].fx : (
               <DecryptedText key={atual} text={SECOES[atual].fx} animateOn="view" sequential revealDirection="start"
                              speed={22} characters="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#=$%+" encryptedClassName="barra-fx-cifra" />
             )}

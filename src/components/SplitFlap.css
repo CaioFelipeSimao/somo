@@ -14,6 +14,11 @@
 .placar-verso { transform-origin: center top; transform: rotateX(90deg); animation: placar-verso var(--placar-giro, .09s) cubic-bezier(.23, 1, .32, 1) both; }
 @keyframes placar-frente { from { transform: rotateX(0); } to { transform: rotateX(-90deg); } }
 @keyframes placar-verso { 0%, 45% { transform: rotateX(90deg); } to { transform: rotateX(0); } }
-/* resultado no vermelho: a letra fica vermelha clara sobre a placa preta */
-.placar.falta .placar-letra { color: color-mix(in srgb, var(--error) 45%, #fff); }
+/* resultado no vermelho: placa vermelha, letra branca (um vermelho só, o mesmo do "R$") */
+.placar.falta .placar-placa, .placar.falta .placar-meia, .placar.falta .placar-aba { background: var(--error); }
+.placar.falta .placar-baixo, .placar.falta .placar-verso { background: color-mix(in srgb, var(--error) 88%, #000); }
+/* placa sem número: só o contorno, clara, para não parecer um dígito escondido */
+.placar-placa.vazia, .placar-placa.vazia .placar-meia { background: transparent; }
+.placar-placa.vazia { box-shadow: inset 0 0 0 1px var(--hair); }
+.placar-placa.vazia::before { background: var(--hair); }
 @media (prefers-reduced-motion: reduce) { .placar-aba { animation: none !important; } }

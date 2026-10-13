@@ -23,6 +23,8 @@
   --sheet-grid: #d9dbe0;
   --sheet-head: #eceef1;
   --sheet-note: #fff4c2;
+  --apoio: #dce3f5;       /* azul claro de apoio da marca */
+  --apoio-forte: #b9c7ee; /* apoio mais firme (peças fortes do fundo do topo) */
 
   --font: "Schibsted Grotesk Variable", "Helvetica Neue", Arial, sans-serif;
   --gutter: 16px;
@@ -418,19 +420,17 @@ form .btn { width: 100%; }
 
 /* ---------- Rodapé ---------- */
 
-.footer { padding-block: 40px 48px; font-size: .9375rem; color: var(--muted); }
-.footer .grid { row-gap: 8px; }
-.footer .grid::before { content: ""; grid-column: 1 / -1; border-top: 1px solid var(--hair); margin-bottom: 16px; }
-.footer strong { color: var(--ink); font-weight: 600; }
-@media (min-width: 960px) {
-  .footer .grid > :first-child { grid-column: 1 / 5; }
-  .footer .grid > :last-child { grid-column: 5 / 13; }
-}
-
-/* No celular a planilha precisa de mais altura para mostrar a linha do TOTAL. */
-@media (max-width: 959px) {
-  .demo-swap { aspect-ratio: 10 / 9 !important; }
-}
+/* rodapé: faixa azul da marca com o padrão de peças subindo pelo canto direito */
+.footer { position: relative; overflow: hidden; padding-block: 64px 56px; background: var(--accent); color: var(--on-accent-muted); font-size: .9375rem; }
+.footer .grid { position: relative; z-index: 1; row-gap: 14px; }
+.footer-marca { display: flex; align-items: center; gap: 12px; color: var(--on-accent); font-size: clamp(1.75rem, 3vw, 2.5rem); }
+.footer-marca strong { font-weight: 800; letter-spacing: -0.03em; color: var(--on-accent); }
+.footer-frase { font-size: clamp(1.375rem, 2.4vw, 2rem); font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: var(--on-accent); max-width: 18ch; }
+.footer-miudo { max-width: 52ch; margin-top: 18px; }
+.footer-padrao { position: absolute; right: 0; bottom: 0; width: min(46%, 560px); height: 100%;
+  -webkit-mask-image: linear-gradient(115deg, transparent 30%, #000 75%); mask-image: linear-gradient(115deg, transparent 30%, #000 75%); }
+/* celular: o padrão fica só na faixa de baixo, longe do texto pequeno */
+@media (max-width: 959px) { .footer { padding-bottom: 150px; } .footer-padrao { top: auto; width: 100%; height: 130px; -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 60%); mask-image: linear-gradient(90deg, transparent 0%, #000 60%); } }
 
 /* ---------- Quem fala, no topo ---------- */
 .byline { display: flex; align-items: center; gap: 12px; font-size: .9375rem; color: var(--muted); }
@@ -617,19 +617,11 @@ form .btn { width: 100%; }
 
 /* ---------- Pedidos do Caio, depois do critique 6 ---------- */
 /* fundo do topo: um degradê azul bem leve atrás da planilha, para a primeira dobra não ficar chapada */
-/* o degradê nasce no alto à esquerda, atrás do título e da frase, e se apaga em direção à planilha */
-.hero {
-  background:
-    radial-gradient(55% 75% at 8% 18%, color-mix(in srgb, var(--accent) 24%, transparent), transparent 72%),
-    radial-gradient(45% 60% at 40% 0%, color-mix(in srgb, var(--accent) 12%, transparent), transparent 70%),
-    linear-gradient(180deg, color-mix(in srgb, var(--accent) 4%, var(--bg)) 0%, var(--bg) 100%);
-}
-@media (max-width: 959px) {
-  /* celular: o azul desce do alto (mais forte no canto esquerdo) e se apaga até a planilha */
-  .hero { background:
-    radial-gradient(90% 35% at 0% 0%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 80%),
-    linear-gradient(180deg, color-mix(in srgb, var(--accent) 26%, var(--bg)) 0%, color-mix(in srgb, var(--accent) 12%, var(--bg)) 40%, var(--bg) 75%); }
-}
+/* fundo do topo: padrão de peças da marca (no lugar do degradê), forte no alto à direita e sumindo para baixo e para o texto */
+.hero { position: relative; isolation: isolate; background: var(--bg); }
+.hero-padrao { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; pointer-events: none;
+  -webkit-mask-image: radial-gradient(150% 130% at 100% 0%, #000 45%, rgba(0, 0, 0, .3) 100%); mask-image: radial-gradient(150% 130% at 100% 0%, #000 45%, rgba(0, 0, 0, .3) 100%); }
+@media (max-width: 959px) { .hero-padrao { -webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .35) 70%); mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .35) 70%); } }
 
 /* sintomas: o recorte e a linha azul chegam depois da frase (só quando a seção ainda não estava na tela) */
 @media (prefers-reduced-motion: no-preference) {
@@ -758,7 +750,6 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 }
 
 /* ---------- E quanto sobrou? (Raio-X do mês) ---------- */
-.sobra-corpo { display: grid; gap: 24px; min-width: 0; }
 .sobra-lead { font-size: clamp(1.1875rem, 1.6vw, 1.5rem); line-height: 1.35; letter-spacing: -0.01em; max-width: 36ch; }
 .sobra-lead strong { color: var(--accent-ink); }
 .sobra-fatos { display: grid; gap: 24px; align-content: center; }
@@ -774,10 +765,10 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .rosca { margin: 0; max-width: 520px; }
 .rosca svg { display: block; width: 100%; height: auto; overflow: visible; }
 .rosca circle { transition: stroke-width .2s, opacity .2s; cursor: pointer; }
-.fixos.com-foco .rosca circle:not(.ativa) { opacity: .45; }
+.sobra.com-foco .rosca circle:not(.ativa) { opacity: .45; }
 .rosca-rotulo { font-size: 12px; font-weight: 600; fill: var(--ink); }
 .rosca-rotulo .rosca-pct { font-weight: 400; fill: var(--muted); }
-.fixos.com-foco .rosca-rotulo:not(.ativa) { opacity: .45; }
+.sobra.com-foco .rosca-rotulo:not(.ativa) { opacity: .45; }
 .rosca-total { font-size: 21px; font-weight: 700; fill: var(--ink); letter-spacing: -0.02em; }
 .rosca-sub { font-size: 11px; fill: var(--muted); }
 .fixos-tabela { width: 100%; border-collapse: collapse; font-size: .9375rem; }
@@ -812,9 +803,7 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .sobra-conta b { color: var(--ink); font-size: 1.0625rem; margin-right: 4px; }
 .sobra-conta i { font-style: normal; color: var(--ink); margin-right: 8px; }
 .sobra-conta-fim b { color: var(--accent-ink); }
-@media (min-width: 960px) { .fixos-topo { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px; align-items: center; } }
 @media (max-width: 959px) {
-  .fixos-topo { display: grid; gap: 20px; }
   .rosca-rotulo { font-size: 15px; }
   .rosca-sub { font-size: 12px; }
   .sobra-conta { flex-direction: column; gap: 4px; }
@@ -828,10 +817,24 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .calculo-ponta { font-size: .8125rem; color: var(--muted); white-space: nowrap; }
 .calculo-resultado { font-size: clamp(1.125rem, 1.6vw, 1.375rem); letter-spacing: -0.01em; }
 .calculo-explica { font-size: .875rem; color: var(--muted); max-width: 62ch; }
-.sobra-fatos dt, .sobra-lead strong { font-variant-numeric: tabular-nums; }
 /* calculadora: frase em cima, painel de placas com o resultado embaixo */
 .calculo-placar { display: grid; gap: 10px; justify-items: start; margin-top: 4px; }
 .calculo-placar .calculo-resultado { margin: 0; }
+.calculo-resultado b { font-weight: 700; }
+.calculo-resultado .falta { color: var(--error); }
 .calculo-valor { display: inline-flex; align-items: center; gap: 10px; }
 .calculo-moeda { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; color: var(--ink); }
 .calculo-valor.falta .calculo-moeda { color: var(--error); }
+
+/* ---------- "E quanto sobrou?" lado a lado ---------- */
+.sobra-esq, .sobra-dir { display: grid; gap: 24px; align-content: start; min-width: 0; }
+.sobra-esq .sec-title { margin-bottom: 4px; }
+@media (min-width: 960px) {
+  .sec .grid > .sobra-esq { grid-column: 1 / 6; position: sticky; top: calc(var(--barra-h) + 24px); align-self: start; }
+  .sec .grid > .sobra-dir { grid-column: 7 / 13; }
+  .sobra-esq .rosca { padding-left: 0; max-width: 460px; }
+  .sobra-dir .sobra-fatos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sobra-esq .sobra-conta { flex-direction: column; gap: 4px; }
+}
+
+.barra-nome { gap: 10px; }

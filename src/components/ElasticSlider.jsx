@@ -4,7 +4,8 @@
 // - sem Chakra UI e react-icons (os ícones vêm por props);
 // - valor controlado de fora (value + onChange), para a calculadora usar o número;
 // - funciona pelo teclado (setas, Page Up/Down, Home/End) e é lido como "slider" pelo leitor de tela;
-// - visual no estilo da página (cantos retos, azul), no ElasticSlider.css.
+// - visual no estilo da página (cantos retos, azul), no ElasticSlider.css;
+// - no toque, só começa a arrastar com gesto para o lado: o dedo que rola a página não mexe no valor.
 import { animate, motion, useMotionValue, useMotionValueEvent, useTransform } from 'motion/react';
 import { useRef, useState } from 'react';
 
@@ -32,6 +33,7 @@ export default function ElasticSlider({
   const scale = useMotionValue(1);
 
   const ajustar = v => Math.min(max, Math.max(min, Math.round(v / step) * step));
+  const toque = useRef(null);   // início do toque: { x, y, decidido }
 
   useMotionValueEvent(clientX, 'change', latest => {
     if (!sliderRef.current) return;
@@ -44,14 +46,25 @@ export default function ElasticSlider({
   });
 
   const handlePointerMove = e => {
-    if (e.buttons > 0 && sliderRef.current) {
+    if (toque.current && !toque.current.decidido) {
+      const dx = Math.abs(e.clientX - toque.current.x), dy = Math.abs(e.clientY - toque.current.y);
+      if (dx < 6 && dy < 6) return;
+      if (dy >= dx) { toque.current = null; return; }   // gesto vertical: é rolagem, não arrasto
+      // no toque o navegador já prende o dedo ao controle; pedir de novo fazia ele soltar e cortar o arrasto
+      toque.current.decidido = true;
+    }
+    if (toque.current === null && e.pointerType === 'touch') return;
+    if ((e.buttons > 0 || toque.current?.decidido) && sliderRef.current) {
       const { left, width } = sliderRef.current.getBoundingClientRect();
       onChange(ajustar(min + ((e.clientX - left) / width) * (max - min)));
       clientX.jump(e.clientX);
     }
   };
-  const handlePointerDown = e => { handlePointerMove(e); e.currentTarget.setPointerCapture(e.pointerId); };
-  const handlePointerUp = () => animate(overflow, 0, { type: 'spring', bounce: 0.5 });
+  const handlePointerDown = e => {
+    if (e.pointerType === 'touch') { toque.current = { x: e.clientX, y: e.clientY, decidido: false }; return; }
+    handlePointerMove(e); e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const handlePointerUp = () => { toque.current = null; animate(overflow, 0, { type: 'spring', bounce: 0.5 }); };
 
   const handleKeyDown = e => {
     const passos = { ArrowLeft: -step, ArrowDown: -step, ArrowRight: step, ArrowUp: step, PageDown: -step * 10, PageUp: step * 10 };
@@ -64,14 +77,7 @@ export default function ElasticSlider({
 
   return (
     <div className={`slider-container ${className}`}>
-      <motion.div
-        onHoverStart={() => animate(scale, 1.06)}
-        onHoverEnd={() => animate(scale, 1)}
-        onTouchStart={() => animate(scale, 1.06)}
-        onTouchEnd={() => animate(scale, 1)}
-        style={{ scale }}
-        className="slider-wrapper"
-      >
+      <motion.div className="slider-wrapper">
         {leftIcon && (
           <motion.div aria-hidden="true" className="slider-icone"
                       animate={{ scale: region === 'left' ? [1, 1.4, 1] : 1, transition: { duration: 0.25 } }}
@@ -95,7 +101,7 @@ export default function ElasticSlider({
           onPointerDown={handlePointerDown}
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerUp}
-          onLostPointerCapture={handlePointerUp}
+          onLostPointerCapture={() => animate(overflow, 0, { type: 'spring', bounce: 0.5 })}
         >
           <motion.div
             style={{

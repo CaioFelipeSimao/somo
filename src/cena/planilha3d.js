@@ -37,7 +37,8 @@ function textura(texto, larg, tipo, aniso) {
   x.strokeStyle = COR.grade; x.lineWidth = 1; x.strokeRect(.5, .5, larg - 1, ALT - 1);
   if (texto) {
     const forte = tipo === 'erro' || tipo === 'titulo';
-    x.font = `${forte ? 600 : 400} 13px ${FONTE}`;
+    // letra um pouco maior e mais cheia: inclinada, a de 13 px fina sumia
+    x.font = `${forte ? 650 : 500} 14px ${FONTE}`;
     x.fillStyle = tipo === 'erro' ? COR.erro : tipo === 'cab' ? COR.apagado : COR.texto;
     x.textBaseline = 'middle';
     const centro = tipo === 'cab';
@@ -52,7 +53,8 @@ function textura(texto, larg, tipo, aniso) {
 export function montarCena({ secao, vista, canvas, rotulos, onAto }) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setClearColor(0x000000, 0);
-  const aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+  // filtro para imagem vista de lado no máximo que a placa de vídeo aceitar (até 16): texto inclinado fica nítido
+  const aniso = Math.min(16, renderer.capabilities.getMaxAnisotropy());
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(30, 1, 100, 6000); camera.position.set(0, 0, 1800);
   scene.add(new THREE.HemisphereLight(0xffffff, 0x9aa0aa, 1.6));
@@ -202,7 +204,8 @@ export function montarCena({ secao, vista, canvas, rotulos, onAto }) {
 
   function tamanho() {
     largura = vista.clientWidth; altura = vista.clientHeight; if (!largura || !altura) return;
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(largura, altura, false);
+    // desenha 25% acima da resolução da tela (até 2x): bordas e letras mais limpas; no celular o teto continua 2x
+    renderer.setPixelRatio(Math.min(devicePixelRatio * 1.25, 2)); renderer.setSize(largura, altura, false);
     camera.aspect = largura / altura; camera.fov = 2 * Math.atan(altura / 2 / 1800) * 180 / Math.PI; camera.updateProjectionMatrix();
     ajuste.scale.setScalar(Math.max(.2, retrato ? Math.min(largura / 640, altura / 1060) : Math.min(largura / 1100, altura / 700, 1.2)));
     sujo = true;

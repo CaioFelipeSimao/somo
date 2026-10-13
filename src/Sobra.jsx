@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { CheckmarkCircle02Icon, Search01Icon, ArrowUpRight01Icon, HelpCircleIcon } from '@hugeicons/core-free-icons';
 import { GASTOS, VENDAS_MES, real } from './dados';
@@ -57,6 +57,9 @@ export default function Sobra() {
   const [foco, setFoco] = useState(null);
   const [vendas, setVendas] = useState(VENDAS_MES);
   const resultado = sobraCom(vendas);
+  // o painel mostra o valor "confirmado": o mesmo da frase, mas só depois de 250 ms sem mexer
+  const [noPainel, setNoPainel] = useState(resultado);
+  useEffect(() => { const t = window.setTimeout(() => setNoPainel(resultado), 250); return () => clearTimeout(t); }, [resultado]);
   // mouse: passar por cima destaca; toque: tocar na fatia ou na linha liga e desliga o destaque
   const marcar = i => ({
     onPointerEnter: e => e.pointerType === 'mouse' && setFoco(i),
@@ -65,10 +68,10 @@ export default function Sobra() {
   });
 
   return (
-    <section className="sec" aria-labelledby="t-sobra">
+    <section className={`sec sobra${foco !== null ? ' com-foco' : ''}`} aria-labelledby="t-sobra">
       <div className="grid">
+        <div className="sobra-esq">
         <h2 className="sec-title" id="t-sobra"><span className="sobrelinha">Exemplo do Raio‑X do mês, o passo pago depois do grátis</span>E quanto sobrou?</h2>
-        <div className="sobra-corpo">
           <p className="sobra-lead">
             A papelaria vendeu {real(VENDAS_MES)} em outubro e sobraram <strong><Numero valor={SOBRA} /></strong>. Os gastos fixos são onde a análise começa.
           </p>
@@ -79,8 +82,6 @@ export default function Sobra() {
             <span className="sobra-conta-fim"><i>=</i><b>{sem(SOBRA)}</b> sobra</span>
           </p>
 
-          <div className={`fixos${foco !== null ? ' com-foco' : ''}`}>
-            <div className="fixos-topo">
               <figure className="rosca">
                 <svg viewBox="-95 -12 390 224" role="img" aria-label={`Gastos fixos de outubro: ${FATIAS.map(f => `${f.nome} ${real(f.valor)}`).join(', ')}`}>
                   <g transform="rotate(-90 100 100)">
@@ -101,11 +102,13 @@ export default function Sobra() {
                 </svg>
                 <figcaption>Em outubro, os fixos ficaram <strong>{real(totalFixos - mediaFixos)} acima</strong> da média de julho a setembro.</figcaption>
               </figure>
+        </div>
+
+        <div className="sobra-dir">
               <dl className="sobra-fatos">
-                <div><dt><Numero valor={equilibrio} duracao={1.8} /></dt><dd>é quanto precisa vender por mês, mais ou menos, só para pagar as contas</dd></div>
+                <div><dt>{real(equilibrio)}</dt><dd>é quanto precisa vender por mês, mais ou menos, só para pagar as contas</dd></div>
                 <div><dt>{pedemOlhar} de {FIXOS.length}</dt><dd>gastos fixos pedem um olhar. O Raio-X mostra quanto, por quê e o que fazer.</dd></div>
               </dl>
-            </div>
 
             <table className="fixos-tabela">
               <caption className="sr-only">Gastos fixos de outubro comparados com a média de julho a setembro</caption>
@@ -132,7 +135,6 @@ export default function Sobra() {
                 })}
               </tbody>
             </table>
-          </div>
 
           <div className="calculo">
             <p className="calculo-titulo">E se a loja vendesse mais, ou menos?</p>
@@ -143,12 +145,14 @@ export default function Sobra() {
                            rightIcon={<span className="calculo-ponta">{real(8000)}</span>} />
             <div className="calculo-placar">
               <p className="calculo-resultado" aria-hidden="true">
-                Vendendo <b>{real(vendas)}</b> por mês, {resultado >= 0 ? 'sobrariam' : 'faltariam para pagar as contas'}
+                Vendendo <b>{real(vendas)}</b> por mês, {resultado >= 0
+                  ? <>sobrariam <b>{real(resultado)}</b></>
+                  : <>faltariam <b className="falta">{real(-resultado)}</b> para pagar as contas</>}
               </p>
               {/* o painel gira até o valor novo quando a pessoa para de arrastar */}
-              <span className={`calculo-valor${resultado < 0 ? ' falta' : ''}`}>
+              <span className={`calculo-valor${noPainel < 0 ? ' falta' : ''}`}>
                 <span className="calculo-moeda" aria-hidden="true">R$</span>
-                <SplitFlap text={sem(Math.abs(resultado))} largura={5} className={resultado < 0 ? 'falta' : undefined} />
+                <SplitFlap text={sem(Math.abs(noPainel))} largura={5} espera={0} className={noPainel < 0 ? 'falta' : undefined} />
               </span>
             </div>
             <p className="sr-only" aria-live="polite">

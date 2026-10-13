@@ -65,7 +65,7 @@ export default function SplitFlap({ text, largura = 8, espera = 250, giros = 6, 
     <span ref={raiz} className={`placar ${className}`.trim()} style={{ '--placar-giro': `${duracao}s` }}>
       <span className="sr-only">{String(text)}</span>
       {tiles.map((t, i) => (
-        <span className="placar-placa" aria-hidden="true" key={i}>
+        <span className={`placar-placa${t.atual === ' ' && !t.girando ? ' vazia' : ''}`} aria-hidden="true" key={i}>
           <span className="placar-meia placar-cima"><span className="placar-letra">{letra(t.atual)}</span></span>
           <span className="placar-meia placar-baixo"><span className="placar-letra">{letra(t.girando ? t.proxima : t.atual)}</span></span>
           {t.girando && (

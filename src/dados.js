@@ -31,14 +31,14 @@ export const ehErro = v => v.startsWith('#') || v === '???';
 export const VENDAS_MES = LUCRO.reduce((s, l) => s + l.valor, 0);
 export const GASTOS = [
   { nome: 'Mercadoria comprada', valor: 2370, fixo: false },
-  // fixos: média = julho a setembro (fictícia); corte = quanto dá para economizar por mês, se a sugestão der certo
-  { nome: 'Aluguel', valor: 900, fixo: true, media: 900, corte: 0, situacao: 'confere',
-    nota: 'Bate com o contrato. É o maior fixo, mas não muda até a renovação.' },
-  { nome: 'Luz, água e internet', valor: 260, fixo: true, media: 200, corte: 60, situacao: 'conferir',
-    nota: 'A conta de luz veio bem acima dos outros meses. Vale conferir a leitura do medidor antes de pagar.' },
-  { nome: 'Manutenção', valor: 180, fixo: true, media: 60, corte: 120, situacao: 'cortar',
-    nota: 'Duas visitas para a mesma impressora no mês. Já compensa orçar uma nova ou um contrato fixo.' },
-  { nome: 'Marketing', valor: 150, fixo: true, media: 150, corte: 75, situacao: 'cortar',
-    nota: 'Igual todo mês, mas ninguém mede se traz cliente. Dá para testar com metade e olhar as vendas.' },
+  // fixos: média = julho a setembro (fictícia). A nota diz o que a análise olha, não a solução (essa fica para o Raio-X).
+  { nome: 'Aluguel', valor: 900, fixo: true, media: 900, situacao: 'confere',
+    nota: 'Bate com o contrato. Mesmo assim entra na comparação com lojas do mesmo tamanho.' },
+  { nome: 'Luz, água e internet', valor: 260, fixo: true, media: 200, situacao: 'conferir',
+    nota: 'Veio 30% acima dos outros meses. Antes de falar em corte, eu confiro se o valor cobrado está certo.' },
+  { nome: 'Manutenção', valor: 180, fixo: true, media: 60, situacao: 'cortar',
+    nota: 'Três vezes a média. No Raio-X eu vejo para onde foi esse dinheiro e comparo com o que lojas parecidas gastam.' },
+  { nome: 'Marketing', valor: 150, fixo: true, media: 150, situacao: 'cortar',
+    nota: 'Sai todo mês sem medir o retorno. No Raio-X eu comparo o que foi investido com as vendas que ele trouxe.' },
   { nome: 'Taxa da maquininha', valor: 120, fixo: false }
 ];

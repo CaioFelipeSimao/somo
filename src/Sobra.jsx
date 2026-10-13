@@ -22,7 +22,7 @@ const mediaFixos = FIXOS.reduce((s, g) => s + g.media, 0);
 const variaveis = totalGastos - totalFixos;
 // ponto de equilíbrio: o que sobra de cada real vendido depois dos gastos que acompanham as vendas paga os fixos
 const equilibrio = Math.round(totalFixos / (1 - variaveis / VENDAS_MES) / 50) * 50;
-const corte = FIXOS.reduce((s, g) => s + g.corte, 0);
+const foraDoEsperado = FIXOS.filter(g => g.situacao !== 'confere').length;
 const pct = (v, t) => `${Math.round((v / t) * 100)}%`;
 
 // rosca em SVG: cada fatia é um arco do mesmo círculo, com 2 px de folga entre elas
@@ -45,7 +45,7 @@ export default function Sobra() {
         <div className="sobra-corpo">
           <p className="sobra-lead">
             A papelaria vendeu {real(VENDAS_MES)} em outubro. Depois das contas, sobraram <strong>{real(SOBRA)}</strong>.
-            Os gastos fixos levaram {real(totalFixos)}: é onde mais dá para mexer.
+            Os gastos fixos levaram {real(totalFixos)}: é onde a análise começa.
           </p>
 
           <div className={`fixos${foco !== null ? ' com-foco' : ''}`}>
@@ -99,7 +99,7 @@ export default function Sobra() {
           <dl className="sobra-fatos">
             <div><dt>{real(totalFixos)}</dt><dd>de gastos fixos em outubro, {real(totalFixos - mediaFixos)} acima da média dos últimos três meses</dd></div>
             <div><dt>{real(equilibrio)}</dt><dd>é quanto precisa vender por mês, mais ou menos, só para pagar as contas</dd></div>
-            <div><dt>até {real(corte)}</dt><dd>por mês de corte possível nos fixos: a sobra passaria de {real(SOBRA)} para {real(SOBRA + corte)}</dd></div>
+            <div><dt>{foraDoEsperado} de {FIXOS.length}</dt><dd>gastos fixos fora do esperado. O Raio-X mostra quanto, por quê e o que fazer.</dd></div>
           </dl>
           <p className="sobra-nota">
             Exemplo do Raio-X do mês (o passo depois do grátis), com dados fictícios; as vendas são as mesmas do exemplo acima.

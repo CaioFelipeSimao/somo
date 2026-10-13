@@ -208,21 +208,15 @@ h3 { font-size: 1.3125rem; font-weight: 600; letter-spacing: -0.01em; line-heigh
 }
 
 /* 4. Como funciona: a ordem importa, por isso os números */
-.steps { display: grid; gap: 36px; counter-reset: passo; }
-.steps li { counter-increment: passo; }
-.steps li::before {
-  content: counter(passo);
-  display: block;
-  font-size: clamp(3rem, 6vw, 4.5rem);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.04em;
+.steps { display: grid; gap: 36px; }
+.step-num {
   color: var(--accent-ink);
-  font-variant-numeric: tabular-nums;
-  padding-bottom: 14px;
+  padding-bottom: 2px;
   margin-bottom: 14px;
   border-bottom: 1px solid var(--hair);
 }
+/* Stroke Text centraliza o número; aqui ele fica alinhado à esquerda, como o resto da grade. */
+.step-num .stroke-text__svg { width: auto; height: clamp(4.5rem, 9vw, 6.75rem); overflow: visible; margin-left: -0.45rem; }
 .steps p { color: var(--muted); margin-top: 6px; max-width: 32ch; }
 
 @media (min-width: 960px) {
@@ -244,7 +238,7 @@ h3 { font-size: 1.3125rem; font-weight: 600; letter-spacing: -0.01em; line-heigh
   .sec-form .grid > form { grid-column: 7 / 13; }
 }
 
-form { display: grid; gap: 20px; }
+form { display: grid; gap: 20px; position: relative; }
 label { display: grid; gap: 8px; font-weight: 600; font-size: .9688rem; }
 .opt { font-weight: 400; color: var(--muted); }
 input, textarea {

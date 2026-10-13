@@ -1,2 +1,4 @@
 .claude/
 .impeccable/hook.cache.json
+node_modules/
+dist/

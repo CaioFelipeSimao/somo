@@ -15,7 +15,7 @@ Abre em http://localhost:5173/. O que você salvar nos arquivos aparece na hora.
 
 1. **Chave do formulário.** Crie a chave em web3forms.com com o e-mail do projeto e cole em `src/config.js`, no lugar de `COLE_AQUI_A_CHAVE`. No painel do Web3Forms, ative o filtro de spam e a resposta automática.
 2. **Contato e prazo da privacidade.** Em `src/config.js`, preencha `EMAIL_PRIVACIDADE` (aparece só na página de privacidade) e `DIAS_PEDIDO` (em quantos dias você apaga o pedido de quem não seguiu para a conversa).
-3. **Endereço do site.** Em `.env`, troque `VITE_SITE_URL` pelo endereço público, por exemplo `https://somo.com.br`, sem barra no fim. Ele vai na prévia do link no WhatsApp.
+3. **Endereço do site.** Na Vercel ele vem sozinho. Só se for publicar em outro lugar, troque `VITE_SITE_URL` em `.env` (ex.: `https://somo.com.br`, sem barra no fim).
 4. **Conferir tudo:**
 
    ```bash
@@ -50,4 +50,4 @@ npm.cmd run imagens
 
 ## Publicar na Vercel
 
-Importe o repositório na Vercel. Ela reconhece o Vite sozinha (comando `npm run build`, pasta `dist`). Em *Environment Variables*, crie `VITE_SITE_URL` com o endereço do site. O `vercel.json` já liga as proteções e os endereços sem `.html` (`/privacidade`).
+Importe o repositório na Vercel. Ela reconhece o Vite sozinha (comando `npm run build`, pasta `dist`). O `vercel.json` já liga as proteções e os endereços sem `.html` (`/privacidade`).

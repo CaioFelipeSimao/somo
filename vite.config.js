@@ -3,6 +3,11 @@ import { fileURLToPath } from 'node:url';
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// Na Vercel o endereço do site vem sozinho (ela informa o domínio de produção na publicação);
+// o VITE_SITE_URL do .env só é preciso para publicar em outro lugar ou num domínio próprio antes de ligá-lo lá.
+if (!process.env.VITE_SITE_URL && process.env.VERCEL_PROJECT_PRODUCTION_URL)
+  process.env.VITE_SITE_URL = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+
 // Sem a chave do Web3Forms o formulário não envia nada: a publicação para aqui em vez de ir ao ar com um formulário morto.
 // Para testar a versão de publicação mesmo assim: P0_SEM_CHAVE=1 npm run build
 const exigirChave = () => ({

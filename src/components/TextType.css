@@ -1,5 +1,8 @@
 /* a parte ainda não digitada ocupa o lugar, invisível */
 .text-type__resto { visibility: hidden; }
+/* as duas camadas ocupam a mesma célula: a de cima (letras) por cima da de baixo (faixas) */
+.text-type { display: grid; }
+.text-type__camada { grid-area: 1 / 1; }
 
 /* cursor de planilha: barra fina na cor do texto, pisca enquanto digita e some 1,6 s depois do fim */
 /* o cursor é um trecho vazio (inline, sem largura) com a barra desenhada por cima: as letras não se mexem e a

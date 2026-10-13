@@ -578,7 +578,8 @@ form .btn { width: 100%; }
 .recorte-diferente { font-size: 1.5rem; line-height: 1; color: var(--error); }
 
 /* página de caderno: pauta em linhas, letra inclinada */
-.caderno { display: grid; padding: 4px 12px 0 18px; background: var(--surface); border: 1px solid var(--hair); border-left: 3px double var(--hair); font-style: italic; font-size: .9375rem; transform: rotate(-1deg); }
+/* a margem do caderno é a linha vermelha de dentro, como no caderno de verdade (antes era uma borda dupla, que parecia defeito) */
+.caderno { display: grid; padding: 4px 12px 0 22px; background: linear-gradient(90deg, transparent 12px, #e9a8a2 12px 13px, transparent 13px), var(--surface); border: 1px solid var(--hair); font-style: italic; font-size: .9375rem; transform: rotate(-1deg); }
 .caderno span { min-height: 2.1em; display: flex; align-items: end; padding-bottom: 2px; border-bottom: 1px solid #d5ddf0; }
 .caderno-mes { font-weight: 600; text-decoration: underline; }
 
@@ -899,7 +900,9 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 
 /* texto do topo sobre o padrão: o título ganha uma faixa branca atrás de cada linha, do mesmo papel das molduras (o azul fica só para botões e o R$ 0)
    (cresce enquanto digita); no PC a coluna vira duas molduras: a da oferta e a dos números, com o preço em azul */
-.hero-title .text-type__feito { background: var(--surface); color: var(--ink); padding: 0 .14em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+/* as duas camadas têm o mesmo recuo (para as linhas quebrarem igual); só a de baixo pinta a faixa */
+.hero-title .text-type__feito { padding: 0 .14em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.hero-title .text-type__camada--fundo .text-type__feito { background: var(--surface); color: transparent; }
 @media (min-width: 960px) {
   .hero-copy { gap: 16px; }
   .hero-dados { display: grid; gap: 28px; justify-items: start; padding: 28px 32px 32px; background: var(--surface); border: 1px solid var(--hair); }

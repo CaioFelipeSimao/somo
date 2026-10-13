@@ -116,7 +116,9 @@ export default function LeadForm() {
     }
 
     if (!pronto) {
-      setFalha('Falta a chave do Web3Forms em src/config.js: sem ela o pedido não é enviado.');
+      // sem a chave o envio está desligado; quem visita não vê nome de arquivo nem detalhe técnico
+      if (import.meta.env.DEV) console.warn('Falta a chave do Web3Forms em src/config.js.');
+      setFalha('O envio está fora do ar agora. Seus dados continuam aqui; tente de novo mais tarde.');
       return;
     }
 

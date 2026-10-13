@@ -370,7 +370,7 @@ input[type="text"], textarea {
   font-weight: 400;
   caret-color: var(--accent-ink);
 }
-input::placeholder, textarea::placeholder { color: color-mix(in srgb, var(--muted) 62%, var(--surface)); opacity: 1; }
+input::placeholder, textarea::placeholder { color: color-mix(in srgb, var(--muted) 80%, var(--surface)); opacity: 1; }
 input[type="text"]:focus, textarea:focus { outline: 2px solid var(--accent-ink); outline-offset: 0; border-color: var(--accent-ink); }
 [aria-invalid="true"] { border-color: var(--error) !important; border-width: 2px; }
 [aria-invalid="true"]:focus { outline-color: var(--error); }

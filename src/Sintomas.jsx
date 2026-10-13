@@ -39,7 +39,7 @@ const SINTOMAS = [
         ]} />
       </Recorte>
     ),
-    muda: 'Painel de vendas: a resposta em uma tela.'
+    muda: 'No mês arrumado: o mais vendido aparece numa linha só.'
   },
   {
     dor: 'Gasto horas copiando dados de um lugar para outro.',
@@ -58,7 +58,7 @@ const SINTOMAS = [
         </Recorte>
       </div>
     ),
-    muda: 'Relatório semanal que chega pronto, sem copiar nada.'
+    muda: 'No fechamento do mês: o resumo chega pronto, sem copiar nada.'
   },
   {
     dor: 'Só uma pessoa entende a planilha (ou o caderno).',
@@ -70,7 +70,7 @@ const SINTOMAS = [
         <p className="recorte-bilhete">não mexer nessa fórmula!</p>
       </Recorte>
     ),
-    muda: 'Uma planilha arrumada, que qualquer pessoa da loja entende.'
+    muda: 'No mês arrumado: uma planilha que qualquer pessoa da loja entende.'
   },
   {
     dor: 'Não confio nos números no fim do mês.',
@@ -92,7 +92,7 @@ const SINTOMAS = [
         </Recorte>
       </div>
     ),
-    muda: 'Estoque e caixa que fecham no fim do mês.'
+    muda: 'No fechamento do mês: o caixa confere com o caderno.'
   }
 ];
 

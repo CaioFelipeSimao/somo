@@ -158,14 +158,20 @@ fieldset { border: 0; padding: 0; min-width: 0; }
 
 /* marcadores dos problemas: quadrado vermelho no canto da célula; no "depois", azul */
 .sheet td { position: relative; }
-.marca { position: absolute; right: 3px; top: 50%; translate: 0 -50%; display: grid; place-items: center; width: 18px; height: 18px; background: var(--error); color: #fff; font-size: 11px; font-weight: 700; font-style: normal; cursor: help; }
-.marca::after { content: ""; position: absolute; inset: -8px; }
+.marca { position: relative; display: inline-grid; place-items: center; width: 18px; height: 18px; margin-left: 5px; padding: 0; border: 0; vertical-align: 1px; background: var(--error); color: #fff; font: 700 11px/1 var(--font); font-style: normal; cursor: help; }
+.marca::after { content: ""; position: absolute; inset: -9px; }
+.marca:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.marca.ativa { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--error); }
+.sheet-ok .marca.ativa { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent); }
+.sheet td:has(.marca.ativa) { background: color-mix(in srgb, var(--error) 10%, var(--sheet-bg)); }
+.sheet-ok td:has(.marca.ativa) { background: color-mix(in srgb, var(--accent) 14%, var(--sheet-bg)); }
 .sheet-ok .marca, .demo-depois .marca-legenda { background: var(--accent); }
-.marca-legenda { position: static; translate: none; flex: none; margin-top: 2px; cursor: default; }
+.marca-legenda { position: static; flex: none; margin: 2px 0 0; cursor: default; }
 @media (hover: hover) { .marca:hover { scale: 1.15; } }
 @media (prefers-reduced-motion: no-preference) {
-  .marca { animation: marca-pulso 1.4s ease-out calc(var(--i) * .15s + .6s) 2; }
-  @keyframes marca-pulso { from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--error) 55%, transparent); } to { box-shadow: 0 0 0 9px transparent; } }
+  /* os números pulsam de tempos em tempos até a pessoa mexer em algum */
+  .demo:not(.demo-mexeu) .sheet:not(.sheet-ok) .marca { animation: marca-pulso 4s ease-out calc(var(--i) * .15s + .6s) infinite; }
+  @keyframes marca-pulso { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--error) 55%, transparent); } 30%, 100% { box-shadow: 0 0 0 9px transparent; } }
 }
 
 /* fatos do topo: preenchem a coluna da esquerda */
@@ -204,7 +210,7 @@ fieldset { border: 0; padding: 0; min-width: 0; }
   text-align: center;
 }
 .sheet thead th:first-child, .sheet tbody th { width: 2.9em; }
-.sheet col, .sheet thead th:nth-child(3) { width: 34%; }
+.sheet col, .sheet thead th:nth-child(3) { width: 27%; }
 .sheet-head td { font-weight: 600; }
 .sheet-err { color: var(--error); font-weight: 600; }
 .sheet-note { background: var(--sheet-note); }
@@ -437,6 +443,9 @@ form .btn { width: 100%; }
 /* No celular a planilha esconde a coluna de datas para as células da piada caberem. */
 @media (max-width: 959px) {
   .sheet thead th:nth-child(2), .sheet td:nth-child(2) { display: none; }
+  /* no antes, a coluna de observações também sai, para os erros marcados caberem inteiros */
+  .sheet:not(.sheet-ok) thead th:nth-child(6), .sheet:not(.sheet-ok) td:nth-child(6) { display: none; }
+  .sheet th, .sheet td { padding: 0 4px; }
 }
 
 /* ---------- Cena 3D: do caderno à resposta ---------- */
@@ -647,3 +656,28 @@ form .btn { width: 100%; }
   opacity: var(--t);
   translate: calc((1 - var(--t)) * -64px) 0;
 }
+
+/* botão da planilha: preto, para não competir com o azul do pedido */
+.btn-tinta { background: var(--ink); color: var(--bg); }
+@media (hover: hover) { .btn-tinta:hover { background: color-mix(in srgb, var(--ink) 82%, var(--accent)); } }
+
+/* celular: título, frase, planilha e só depois o botão, a foto e os números */
+@media (max-width: 959px) {
+  .hero-copy { display: contents; }
+  .hero-copy > * { grid-column: 1 / -1; }
+  .hero .lead { order: 1; }
+  .hero .demo { order: 2; }
+  .hero-copy > .btn { order: 3; }
+  .hero .byline { order: 4; }
+  .hero-fatos { order: 5; }
+}
+
+/* contato: escolher o teclado do celular */
+.teclado { display: flex; gap: 6px; }
+.teclado button { min-height: 36px; padding: 0 14px; border: 1px solid var(--field); background: var(--surface); color: var(--ink); font: 500 .9375rem var(--font); cursor: pointer; }
+.teclado button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+.teclado button:focus-visible { outline: 3px solid var(--accent-ink); outline-offset: 2px; }
+
+.cena-pular { display: inline-block; padding-block: 8px; }
+/* célula com número: o texto encolhe com "…", o número fica sempre à vista */
+.celula-txt { display: inline-block; max-width: calc(100% - 23px); overflow: hidden; text-overflow: ellipsis; vertical-align: bottom; }

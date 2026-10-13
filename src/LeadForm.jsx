@@ -45,6 +45,7 @@ export default function LeadForm() {
   const [falha, setFalha] = useState('');
   const [enviado, setEnviado] = useState(lerEnviado);
   const [correcao, setCorrecao] = useState(false);
+  const [teclado, setTeclado] = useState('tel');
   const [celebrar, setCelebrar] = useState(false);
   const [corFaisca, setCorFaisca] = useState('#17663f');
   const wrapRef = useRef(null);
@@ -106,7 +107,7 @@ export default function LeadForm() {
     setFalha('');
     const data = new FormData();
     data.append('access_key', FORM_ACCESS_KEY);
-    data.append('subject', `${correcao ? 'Correção de contato' : 'Novo pedido de diagnóstico'}: ${v.nome.trim()}`);
+    data.append('subject', `${correcao ? 'Correção de contato' : 'Novo pedido de mês arrumado'}: ${v.nome.trim()}`);
     data.append('nome', v.nome.trim());
     data.append('tipo_de_negocio', v.tipo === 'Outro' ? v.tipoOutro.trim() : v.tipo);
     data.append('contato', v.contato.trim());
@@ -209,8 +210,16 @@ export default function LeadForm() {
             </fieldset>
 
             <div className="field">
-              <label htmlFor="f-contato"><span className="passo" aria-hidden="true">3</span>E-mail ou WhatsApp para eu te responder</label>
-              <input id="f-contato" name="contato" type="text" inputMode="email" autoComplete="email" maxLength={120} placeholder="voce@email.com ou (12) 99999-0000"
+              <label htmlFor="f-contato"><span className="passo" aria-hidden="true">3</span>WhatsApp ou e-mail para eu te responder</label>
+              {/* só troca o teclado do celular; a validação aceita os dois de qualquer jeito */}
+              <div className="teclado" role="group" aria-label="Tipo de contato">
+                {[['tel', 'WhatsApp'], ['email', 'E-mail']].map(([m, t]) => (
+                  <button key={m} type="button" aria-pressed={teclado === m}
+                          onClick={() => { setTeclado(m); document.getElementById('f-contato')?.focus(); }}>{t}</button>
+                ))}
+              </div>
+              <input id="f-contato" name="contato" type="text" inputMode={teclado} autoComplete={teclado === 'email' ? 'email' : 'tel'} maxLength={120}
+                     placeholder={teclado === 'email' ? 'voce@email.com' : '(12) 99999-0000'}
                      required value={v.contato} onChange={mudar('contato')} onBlur={sair('contato')}
                      aria-invalid={Boolean(mostrar('contato'))} aria-describedby={ajuda('contato') ?? 'h-contato'} />
               {mostrar('contato')
@@ -230,7 +239,7 @@ export default function LeadForm() {
             {falha && <p className="status erro" role="alert" tabIndex={-1} ref={falhaRef}>{falha}</p>}
             <button className="btn btn-seta" type="submit" disabled={enviando} aria-busy={enviando}
                     onPointerDown={lembrarClique}>
-              <span>{enviando ? 'Enviando…' : correcao ? 'Enviar com o contato corrigido' : 'Pedir diagnóstico gratuito'}</span>
+              <span>{enviando ? 'Enviando…' : correcao ? 'Enviar com o contato corrigido' : 'Quero meu mês arrumado'}</span>
               {!enviando && <HugeiconsIcon icon={ArrowRight02Icon} size={20} strokeWidth={2} aria-hidden="true" />}
             </button>
             <ul className="promises">

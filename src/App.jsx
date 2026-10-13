@@ -64,9 +64,9 @@ function CartaoNaTela() {
             name="Caio Simão"
             title="Estudante de Engenharia no ITA"
             handle=""
-            status="Diagnóstico grátis"
+            status="Mês arrumado grátis"
             statusColor="#2148c0"
-            contactText="Pedir diagnóstico"
+            contactText="Quero meu mês"
             onContactClick={irFormulario}
             theme="light"
             backdropColor="#25272b"
@@ -107,7 +107,7 @@ function Degraus() {
           <div className="sec-side">
             <h2 className="sec-title" id="t-servicos">O que eu posso fazer por você</h2>
             <p>Começa grátis. Os outros degraus só se fizer sentido para você: eu digo o preço antes e você decide sem pressão.</p>
-            <a className="btn btn-inverse" href="#formulario" onClick={irFormulario}>Pedir diagnóstico gratuito</a>
+            <a className="btn btn-inverse" href="#formulario" onClick={irFormulario}>Quero meu mês arrumado</a>
           </div>
           <ol className="degraus">
             {degraus.map((d, i) => (
@@ -137,7 +137,7 @@ export default function App() {
             <li><a href="#t-passos">Como funciona</a></li>
             <li><a href="#t-quem">Quem faz</a></li>
           </ul>
-          <a className="btn faixa-cta" href="#formulario" onClick={irFormulario}>Pedir diagnóstico</a>
+          <a className="btn faixa-cta" href="#formulario" onClick={irFormulario}>Quero meu mês arrumado</a>
         </div>
       </nav>
       <header className="hero" id="topo">
@@ -147,7 +147,7 @@ export default function App() {
             <p className="lead">
               Eu arrumo um mês das suas vendas, de presente, e te mostro o que os números dizem. Começa com uma conversa.
             </p>
-            <a className="btn" href="#formulario" onClick={irFormulario}>Pedir diagnóstico gratuito</a>
+            <a className="btn" href="#formulario" onClick={irFormulario}>Quero meu mês arrumado</a>
             <p className="byline">
               <img src="/caio.webp" alt="" width="44" height="44" />
               <span><strong>Caio Simão</strong>Estudante de Engenharia no ITA</span>
@@ -155,7 +155,7 @@ export default function App() {
             <dl className="hero-fatos">
               <div><dt>20 min</dt><dd>de conversa, por vídeo ou WhatsApp</dd></div>
               <div><dt>1 mês</dt><dd>das suas vendas arrumado</dd></div>
-              <div><dt>R$ 0</dt><dd>para começar, sem senha</dd></div>
+              <div><dt>R$ 0</dt><dd>para começar, sem compromisso</dd></div>
             </dl>
           </div>
           <BeforeAfter />
@@ -229,7 +229,7 @@ export default function App() {
         <section className="sec sec-form" id="formulario" aria-labelledby="t-form">
           <div className="grid">
             <div className="form-intro">
-              <h2 id="t-form">Pedir diagnóstico gratuito</h2>
+              <h2 id="t-form">Pedir meu mês arrumado</h2>
               <p>20 minutos de conversa e um mês das suas vendas arrumado, sem custo e sem compromisso. Respondo em até 2 dias úteis.</p>
               <Diagnostico />
             </div>
@@ -240,7 +240,7 @@ export default function App() {
 
       <footer className="footer">
         <div className="grid">
-          <p><strong>Caio Simão</strong><br />Diagnóstico de vendas para pequenos comércios</p>
+          <p><strong>Caio Simão</strong><br />Vendas arrumadas para pequenos comércios</p>
           <p>Os dados enviados pelo formulário são usados só para responder ao seu pedido e não são repassados a ninguém.</p>
         </div>
       </footer>

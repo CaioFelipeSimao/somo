@@ -21,7 +21,7 @@ const degraus = [
 const passos = [
   { titulo: 'Conversa de 20 minutos', texto: 'Você me mostra a planilha ou o caderno, do jeito que estiver, e me conta como a loja funciona.' },
   { titulo: 'Seu mês arrumado, de presente', texto: 'Eu organizo um mês das suas vendas e te mando a planilha arrumada, o que mais vendeu e o que dá para melhorar. Se for caderno, eu leio pelas fotos.' },
-  { titulo: 'Proposta sem compromisso', texto: 'Se fizer sentido, eu digo como posso ajudar e quanto custa. Se não, você fica com o seu mês arrumado.' }
+  { titulo: 'Você usa no dia a dia', texto: 'A planilha arrumada fica com você. Se quiser ir além, a gente conversa sobre o Raio-X de lucro.' }
 ];
 
 // Grade fina como padrão do brilho holográfico do cartão: o mesmo desenho da página.
@@ -199,16 +199,24 @@ export default function App() {
                 Sou o Caio, estudante de Engenharia no ITA, e estou começando a ajudar pequenos comércios a entender
                 as próprias vendas.
               </p>
-              <p>
-                <strong>E depois do grátis?</strong> Você fica com o mês arrumado de qualquer jeito. Se quiser continuar,
-                eu digo quanto custa antes de começar, e você decide sem pressão.
-              </p>
-              <p>
-                <strong>E a inteligência artificial?</strong> Uso IA para fazer rápido a parte chata: ler as fotos do
-                caderno, juntar nomes repetidos, conferir as contas. A parte que importa fica comigo: entender como a sua
-                loja funciona e explicar o resultado sem complicar. Você não precisa aprender nada, trocar de sistema nem
-                me dar senha de nada.
-              </p>
+              <div className="quem-divide">
+                <div>
+                  <p className="quem-rotulo">A IA faz a parte chata</p>
+                  <ul>
+                    <li>lê as fotos do caderno</li>
+                    <li>junta os nomes repetidos</li>
+                    <li>confere as contas</li>
+                  </ul>
+                </div>
+                <div>
+                  <p className="quem-rotulo">Eu faço a parte que importa</p>
+                  <ul>
+                    <li>entendo como a sua loja funciona</li>
+                    <li>explico o resultado sem complicar</li>
+                    <li>não peço senha nem que você troque de sistema</li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div className="about-card">
               <CartaoNaTela />

@@ -68,7 +68,12 @@ export function montarCena({ secao, vista, canvas, rotulos, onAto }) {
   // (painel com rótulos tem ~700 x 520 unidades), limitado pela altura
   if (retrato) {
     const w = vista.clientWidth, h = vista.clientHeight, ajusteIni = Math.min(w / 640, h / 1060);
-    if (w && h) Z.fim = Math.min(w * .94 / 700, h * .82 / 520) / ajusteIni;
+    if (w && h) {
+      Z.fim = Math.min(w * .94 / 700, h * .82 / 520) / ajusteIni;
+      // planilha inclinada tem ~680 x 440 unidades na tela
+      Z.ini = Math.min(w * .96 / 680, h * .8 / 440) / ajusteIni;
+      Z.solta = Z.ini * .94;
+    }
   }
   const C = { rx: -24, ry: 14, rz: -3, zoom: Z.ini };   // proxy da câmera do conjunto (graus)
 

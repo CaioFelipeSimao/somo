@@ -76,7 +76,7 @@ const ARRUMADA = [
   ['14/10', 'Presente', '4', '7,00', '28,00'],
   ['15/10', { t: 'Cópia', f: 1 }, '40', '0,25', '10,00'],
   ['', '', '', '', ''],
-  ['', { t: 'Total', b: 1 }, '', '', { t: 'R$ 267,40', b: 1 }]
+  ['', { t: 'Total', b: 1 }, '', '', { t: <><span className="moeda">R$ </span>267,40</>, b: 1 }]
 ];
 
 function PlanilhaArrumada({ onMarca, foco }) {

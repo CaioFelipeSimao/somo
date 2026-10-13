@@ -1,0 +1,19 @@
+/* Painel de placas no estilo das estações suíças: placa preta reta, letra branca, uma costura fina no meio.
+   Adaptado do Split Flap Text do React Bits (sem brilhos, cantos arredondados nem sombras pesadas). */
+.placar { display: inline-flex; gap: 4px; font-family: var(--font); font-weight: 700; font-size: clamp(2rem, 4vw, 3.25rem); line-height: 1; font-variant-numeric: tabular-nums; user-select: none; }
+.placar-placa { position: relative; width: .72em; height: 1.12em; overflow: hidden; background: var(--ink); perspective: 400px; isolation: isolate; }
+.placar-placa::before { content: ""; position: absolute; z-index: 8; top: calc(50% - .5px); left: 0; width: 100%; height: 1px; background: color-mix(in srgb, var(--surface) 22%, transparent); pointer-events: none; }
+.placar-meia, .placar-aba { position: absolute; left: 0; width: 100%; height: 50%; overflow: hidden; background: var(--ink); backface-visibility: hidden; }
+.placar-cima, .placar-frente { top: 0; }
+.placar-baixo, .placar-verso { bottom: 0; background: color-mix(in srgb, var(--ink) 88%, #000); }
+.placar-letra { position: absolute; left: 0; width: 100%; height: 200%; display: flex; align-items: center; justify-content: center; color: var(--surface); }
+.placar-cima .placar-letra, .placar-frente .placar-letra { top: 0; }
+.placar-baixo .placar-letra, .placar-verso .placar-letra { bottom: 0; }
+.placar-aba { z-index: 6; will-change: transform; }
+.placar-frente { transform-origin: center bottom; animation: placar-frente var(--placar-giro, .09s) cubic-bezier(.23, 1, .32, 1) both; }
+.placar-verso { transform-origin: center top; transform: rotateX(90deg); animation: placar-verso var(--placar-giro, .09s) cubic-bezier(.23, 1, .32, 1) both; }
+@keyframes placar-frente { from { transform: rotateX(0); } to { transform: rotateX(-90deg); } }
+@keyframes placar-verso { 0%, 45% { transform: rotateX(90deg); } to { transform: rotateX(0); } }
+/* resultado no vermelho: a letra fica vermelha clara sobre a placa preta */
+.placar.falta .placar-letra { color: color-mix(in srgb, var(--error) 45%, #fff); }
+@media (prefers-reduced-motion: reduce) { .placar-aba { animation: none !important; } }

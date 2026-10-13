@@ -4,6 +4,7 @@ import { CheckmarkCircle02Icon, Search01Icon, ArrowUpRight01Icon, HelpCircleIcon
 import { GASTOS, VENDAS_MES, real } from './dados';
 import CountUp from './components/CountUp';
 import ElasticSlider from './components/ElasticSlider';
+import SplitFlap from './components/SplitFlap';
 
 const calmo = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 // número em reais que "rola" até o valor quando aparece (com pouco movimento, fica parado)
@@ -140,11 +141,18 @@ export default function Sobra() {
                            marks={[{ valor: equilibrio, rotulo: 'empata' }]}
                            leftIcon={<span className="calculo-ponta">{real(2000)}</span>}
                            rightIcon={<span className="calculo-ponta">{real(8000)}</span>} />
-            <p className="calculo-resultado" aria-live="polite">
-              Vendendo <b>{real(vendas)}</b> por mês,{' '}
-              {resultado >= 0
-                ? <>sobrariam <strong>{real(resultado)}</strong>.</>
-                : <>faltariam <strong className="falta">{real(-resultado)}</strong> para pagar as contas.</>}
+            <div className="calculo-placar">
+              <p className="calculo-resultado" aria-hidden="true">
+                Vendendo <b>{real(vendas)}</b> por mês, {resultado >= 0 ? 'sobrariam' : 'faltariam para pagar as contas'}
+              </p>
+              {/* o painel gira até o valor novo quando a pessoa para de arrastar */}
+              <span className={`calculo-valor${resultado < 0 ? ' falta' : ''}`}>
+                <span className="calculo-moeda" aria-hidden="true">R$</span>
+                <SplitFlap text={sem(Math.abs(resultado))} largura={5} className={resultado < 0 ? 'falta' : undefined} />
+              </span>
+            </div>
+            <p className="sr-only" aria-live="polite">
+              Vendendo {real(vendas)} por mês, {resultado >= 0 ? `sobrariam ${real(resultado)}.` : `faltariam ${real(-resultado)} para pagar as contas.`}
             </p>
             <p className="calculo-explica">
               A marca preta é o ponto em que o mês empata ({real(equilibrio)}). Cada {real(100)} a mais em vendas deixa

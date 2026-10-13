@@ -98,7 +98,7 @@ export default function BeforeAfter() {
       <div className="demo-foot">
         <figcaption>
           <strong>{depois ? 'Depois: a mesma planilha, arrumada.' : 'Antes: a planilha de hoje.'}</strong>{' '}
-          Exemplo de uma papelaria, com dados fictícios.
+          Quatro dias de outubro de uma papelaria, com dados fictícios.
         </figcaption>
         <button type="button" className="btn-ghost" onClick={alternar} aria-pressed={depois} disabled={trocando}>
           {depois ? 'Ver o antes' : 'Ver o depois'}

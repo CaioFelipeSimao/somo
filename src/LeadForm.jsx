@@ -210,7 +210,7 @@ export default function LeadForm() {
 
             <div className="field">
               <label htmlFor="f-contato"><span className="passo" aria-hidden="true">3</span>E-mail ou WhatsApp para eu te responder</label>
-              <input id="f-contato" name="contato" type="text" maxLength={120} placeholder="voce@email.com ou (12) 99999-0000"
+              <input id="f-contato" name="contato" type="text" inputMode="email" autoComplete="email" maxLength={120} placeholder="voce@email.com ou (12) 99999-0000"
                      required value={v.contato} onChange={mudar('contato')} onBlur={sair('contato')}
                      aria-invalid={Boolean(mostrar('contato'))} aria-describedby={ajuda('contato') ?? 'h-contato'} />
               {mostrar('contato')
@@ -236,7 +236,6 @@ export default function LeadForm() {
             <ul className="promises">
               <li>Conversa por chamada de vídeo ou WhatsApp, como for melhor para você.</li>
               <li>Não peço senha nem acesso ao seu sistema.</li>
-              <li>Por que é grátis? Estou começando e quero conhecer lojas de verdade. Se depois você quiser ajuda, eu digo o preço antes e você decide sem pressão.</li>
             </ul>
           </form>
         )}

@@ -74,15 +74,23 @@ const SINTOMAS = [
   },
   {
     dor: 'Não confio nos números no fim do mês.',
-    leitura: 'O total de outubro no caderno é diferente do total na planilha.',
+    leitura: 'Uma página de caderno com o total de outubro, R$ 4.965, e a planilha com R$ 4.735: R$ 230 de diferença.',
+    // o total da planilha é a soma das colunas da cena 3D (4.735); o caderno anotou a mais
     figura: (
-      <Recorte arquivo="fechamento_outubro">
-        <Tabela linhas={[
-          ['no caderno', 'R$ 4.210'],
-          ['na planilha', 'R$ 3.980'],
-          [{ t: 'diferença', cls: 'forte' }, { t: 'R$ 230 ???', cls: 'erro' }]
-        ]} />
-      </Recorte>
+      <div className="recorte-par" aria-hidden="true">
+        <div className="caderno">
+          <span className="caderno-mes">outubro</span>
+          <span>vendas: R$ 4.965</span>
+          <span />
+        </div>
+        <span className="recorte-seta">
+          <b className="recorte-diferente">≠</b>
+          <small className="erro">R$ 230 ???</small>
+        </span>
+        <Recorte arquivo="vendas_out.xlsx">
+          <Tabela linhas={[['outubro', ''], [{ t: 'total', cls: 'forte' }, 'R$ 4.735']]} />
+        </Recorte>
+      </div>
     ),
     muda: 'Estoque e caixa que fecham no fim do mês.'
   }

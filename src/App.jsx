@@ -18,8 +18,8 @@ const servicos = [
 ];
 
 const passos = [
-  { titulo: 'Conversa de 20 minutos', texto: 'Você me mostra como controla vendas e estoque hoje, do jeito que estiver.' },
-  { titulo: 'Diagnóstico por escrito', texto: 'Eu te mando o que dá para melhorar, em palavras simples.' },
+  { titulo: 'Conversa de 20 minutos', texto: 'Você me mostra a planilha ou o caderno, do jeito que estiver, e me conta como a loja funciona.' },
+  { titulo: 'Seu mês arrumado, de presente', texto: 'Eu organizo um mês das suas vendas e te mando a planilha arrumada, o que mais vendeu e o que dá para melhorar. Se for caderno, fotos das páginas bastam.' },
   { titulo: 'Proposta sem compromisso', texto: 'Se fizer sentido, eu digo como posso ajudar e quanto custa. Se não, você fica com o diagnóstico.' }
 ];
 
@@ -87,7 +87,8 @@ export default function App() {
           <h1 className="hero-title">Sua planilha ou caderno deveria responder perguntas, não criar dúvidas.</h1>
           <div className="hero-copy">
             <p className="lead">
-              Em 20 minutos eu olho como você controla vendas e estoque e te digo, sem custo, o que dá para melhorar.
+              Numa conversa de 20 minutos eu entendo como você controla vendas e estoque. Depois te mando, sem custo,
+              um mês das suas vendas arrumado e o que dá para melhorar.
             </p>
             <a className="btn" href="#formulario" onClick={irFormulario}>Pedir diagnóstico gratuito</a>
             <p className="byline">
@@ -157,13 +158,19 @@ export default function App() {
           <div className="grid">
             <div className="about-text">
               <h2 className="sec-title" id="t-quem">Quem faz</h2>
-              <p>
-                Sou o Caio, estudante de Engenharia no ITA. Trabalho organizando números e projetos, e explico o que
-                eles dizem sem complicar.
+              <p className="about-lead">
+                Sou o Caio, estudante de Engenharia no ITA, e estou começando a ajudar pequenos comércios a entender
+                as próprias vendas.
               </p>
               <p>
-                Você não precisa trocar de sistema nem me dar senha de nada: eu olho o caderno ou a planilha do jeito
-                que estiver e te digo, por escrito, o que dá para melhorar.
+                <strong>Por que é grátis?</strong> Porque estou começando e quero conhecer lojas de verdade. Se depois
+                você quiser ajuda, eu digo o preço antes e você decide sem pressão.
+              </p>
+              <p>
+                <strong>E a inteligência artificial?</strong> Uso IA para fazer rápido a parte chata: ler as fotos do
+                caderno, juntar nomes repetidos, conferir as contas. A parte que importa fica comigo: entender como a sua
+                loja funciona e explicar o resultado sem complicar. Você não precisa aprender nada, trocar de sistema nem
+                me dar senha de nada.
               </p>
             </div>
             <div className="about-card">
@@ -177,7 +184,7 @@ export default function App() {
           <div className="grid">
             <div className="form-intro">
               <h2 id="t-form">Pedir diagnóstico gratuito</h2>
-              <p>20 minutos, sem custo e sem compromisso. Respondo em até 2 dias úteis.</p>
+              <p>20 minutos de conversa e um mês das suas vendas arrumado, sem custo e sem compromisso. Respondo em até 2 dias úteis.</p>
               <Diagnostico />
             </div>
             <LeadForm />

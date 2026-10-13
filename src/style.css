@@ -538,3 +538,44 @@ form .btn { width: 100%; }
 /* planilha arrumada do topo */
 .sheet-fix { background: #eaf0ff; color: var(--accent); font-weight: 600; }
 .sheet-total { font-weight: 700; }
+
+/* ---------- Critique 5 ---------- */
+/* recortes não empurram a página no celular: a tabela é cortada dentro do próprio recorte */
+.sintomas-corpo, .sintomas li, .sintomas figure { min-width: 0; }
+.recorte-par { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); }
+.recorte-seta .erro { color: var(--error); font-weight: 600; }
+.recorte-diferente { font-size: 1.5rem; line-height: 1; color: var(--error); }
+
+/* página de caderno: pauta em linhas, letra inclinada */
+.caderno { display: grid; padding: 4px 12px 0 18px; background: var(--surface); border: 1px solid var(--hair); border-left: 3px double var(--hair); font-style: italic; font-size: .9375rem; transform: rotate(-1deg); }
+.caderno span { min-height: 2.1em; display: flex; align-items: end; padding-bottom: 2px; border-bottom: 1px solid #d5ddf0; }
+.caderno-mes { font-weight: 600; text-decoration: underline; }
+
+/* mais vendidos na folha de exemplo */
+.diag-mais { display: grid; gap: 8px; margin-bottom: 18px; font-size: .875rem; }
+.diag-mais li { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.diag-mais i { height: 10px; width: calc(var(--w) * 100%); background: var(--bar); }
+.diag-mais li:first-child i { background: var(--accent); }
+.diag-mais li:first-child { font-weight: 600; }
+
+/* Quem faz: as respostas em negrito, o resto em cinza */
+.about-text strong { color: var(--ink); }
+
+/* cena: pular a animação */
+.cena-pular { justify-self: start; font-size: .875rem; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; }
+@media (hover: hover) { .cena-pular:hover { color: var(--ink); } }
+@media (max-width: 959px) {
+  .cena-3d .cena-texto .sec-title { font-size: 1.5rem; color: var(--ink); }
+  .cena-frase { font-size: 1.1875rem; }
+  /* celular: o botão "Pedir diagnóstico" cai no formulário; a folha de exemplo vem depois dele */
+  .sec-form .form-intro { display: contents; }
+  .sec-form .form-intro > * { grid-column: 1 / -1; }
+  .sec-form .form-intro > p { margin-block: 12px 24px; }
+  .sec-form .diag { order: 1; margin-top: 32px; }
+}
+/* erro nas opções de loja: a mensagem do grupo basta, sem contorno vermelho em cada uma */
+.chip input[aria-invalid="true"] + span { border-color: var(--field); }
+@media (min-width: 960px) {
+  .cena-texto .sec-title { font-size: clamp(2rem, 3vw, 2.75rem); line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 16px; }
+  .cena-frase { font-size: clamp(1.25rem, 1.8vw, 1.75rem); }
+}

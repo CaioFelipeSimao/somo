@@ -32,7 +32,7 @@ const THEMES = {
     '--pc-tile-highlight': 'rgba(255, 255, 255, 1)',
     '--pc-tile-shadow': '0 4px 10px -5px rgba(24, 24, 27, 0.25)',
     '--pc-ink': '#27272a',
-    '--pc-muted': 'rgba(39, 39, 42, 0.6)',
+    '--pc-muted': 'rgba(39, 39, 42, 0.78)',
     '--pc-hover': 'brightness(0.97)',
     '--pc-press': 'brightness(0.92)',
     '--pc-shade': 'rgba(24, 24, 27, 0.14)'

@@ -949,7 +949,7 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 }
 
 /* 404: o endereço vira uma fórmula de planilha que dá #REF! */
-.erro { grid-column: 1 / -1; display: grid; gap: 32px; padding-top: 16px; }
+.pagina-erro { grid-column: 1 / -1; display: grid; gap: 32px; padding-top: 16px; }
 .erro-folha { border: 1px solid var(--sheet-grid); background: var(--sheet-bg); max-width: 640px; }
 .erro-fx { display: flex; align-items: center; gap: 14px; min-height: 48px; padding: 0 16px; border-bottom: 1px solid var(--sheet-grid); font-size: .9375rem; overflow: hidden; }
 .erro-fx i { padding-right: 14px; border-right: 1px solid var(--sheet-grid); color: var(--muted); }
@@ -962,7 +962,7 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .erro-acoes { display: flex; flex-wrap: wrap; gap: 12px; }
 .erro-pedido { display: inline-flex; align-items: center; min-height: 56px; padding: 0 24px; text-decoration: none; }
 @media (min-width: 960px) {
-  .erro { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
+  .pagina-erro { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap); }
   .erro-folha { grid-column: 1 / 7; }
   .erro-texto { grid-column: 8 / 13; }
 }

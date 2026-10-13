@@ -68,6 +68,9 @@ try {
     await espera(1200);
     item(await p.evaluate(() => !!document.querySelector('canvas')), 'a cena 3D montou');
     item(await p.evaluate(() => !!document.querySelector('.sobra-volta')), '"E quanto sobrou?" carregou');
+    // estilo de outra página não pode vazar para a landing (já esmagou o caderno x planilha dos sintomas)
+    const caderno = await p.evaluate(() => Math.round(document.querySelector('.caderno').getBoundingClientRect().width));
+    item(caderno > 100, 'o caderno dos sintomas tem largura normal', `${caderno} px`);
     const largura = await p.evaluate(() => document.documentElement.scrollWidth);
     item(largura <= vista.width, 'nada passa da largura da tela', `${largura} px`);
 

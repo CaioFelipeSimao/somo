@@ -10,7 +10,7 @@ montar({
   sobre: 'Erro 404',
   titulo: 'Esta página não existe.',
   children: (
-    <div className="erro">
+    <div className="pagina-erro">
       <figure className="erro-folha" aria-label={`Fórmula com o endereço ${caminho}, que dá erro de referência`}>
         <div className="erro-fx" aria-hidden="true"><i>fx</i><span>=PÁGINA("{caminho}")</span></div>
         <div className="erro-celula" aria-hidden="true"><span className="erro-ref">#REF!</span></div>

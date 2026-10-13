@@ -19,6 +19,6 @@
 .placar.falta .placar-baixo, .placar.falta .placar-verso { background: color-mix(in srgb, var(--error) 88%, #000); }
 /* placa sem número: só o contorno, clara, para não parecer um dígito escondido */
 .placar-placa.vazia, .placar-placa.vazia .placar-meia { background: transparent; }
-.placar-placa.vazia { box-shadow: none; visibility: hidden; }
+.placar-placa.vazia { display: none; }
 .placar-placa.vazia::before { background: var(--hair); }
 @media (prefers-reduced-motion: reduce) { .placar-aba { animation: none !important; } }

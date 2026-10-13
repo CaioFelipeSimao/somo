@@ -10,7 +10,7 @@ const DUVIDAS = [
   ['Quanto custa?', 'O mês arrumado é de graça e sem compromisso. Os outros passos só se fizer sentido para você, com o preço combinado antes.'],
   ['O que eu preciso mandar?', 'A planilha do jeito que estiver. Se for caderno, fotos das páginas bastam.'],
   ['Quanto tempo leva?', 'A conversa leva 20 minutos, por vídeo ou WhatsApp. Respondo ao pedido em até 2 dias úteis.'],
-  ['O que acontece com as minhas fotos e planilhas?', 'Eu guardo os seus arquivos para acompanhar a sua loja ao longo dos meses: ver o que melhorou e encontrar tendências. Se quiser, é só pedir que eu apago tudo.'],
+  ['O que acontece com as minhas fotos e planilhas?', 'Você escolhe, e eu pergunto na nossa conversa. Se quiser, eu guardo os arquivos para comparar com os próximos meses e ver o que melhorou. Se não, apago depois de entregar o mês arrumado.'],
   ['Você vai pedir senha?', 'Não peço senha nem acesso ao seu sistema.'],
   ['E depois do mês grátis?', 'Depois do mês grátis não acontece nada, a não ser que você peça o próximo passo.'],
   ['Quem vai me responder?', 'Quem responde sou eu, Caio, estudante de Engenharia no ITA.'],

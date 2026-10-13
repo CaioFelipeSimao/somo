@@ -237,7 +237,7 @@ export default function App() {
                     <li>entendo como a sua loja funciona</li>
                     <li>explico o resultado sem complicar</li>
                     <li>não peço senha nem que você troque de sistema</li>
-                    <li>guardo seus arquivos para acompanhar a loja mês a mês</li>
+                    <li>só guardo seus arquivos se você quiser</li>
                   </ul>
                 </div>
               </div>

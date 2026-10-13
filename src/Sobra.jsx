@@ -121,7 +121,7 @@ export default function Sobra({ onPedir }) {
                   const S = SITUACAO[f.situacao];
                   const dif = f.valor - f.media;
                   return (
-                    <tr key={f.nome} className={[foco === i && 'ativa', i >= 2 && !todos && 'fixos-extra'].filter(Boolean).join(' ') || undefined} {...marcar(i)}>
+                    <tr key={f.nome} className={[foco === i && 'ativa', !todos && (f.situacao === 'confere' || f.situacao === 'retorno') && 'fixos-extra'].filter(Boolean).join(' ') || undefined} {...marcar(i)}>
                       <th scope="row"><i style={{ background: f.cor }} aria-hidden="true" />{f.nome}</th>
                       <td>{real(f.valor)}</td>
                       <td>{real(f.media)}{dif !== 0 && <span className={dif > 0 ? 'subiu' : undefined}> ({dif > 0 ? '+' : ''}{Math.round((dif / f.media) * 100)}%)</span>}</td>

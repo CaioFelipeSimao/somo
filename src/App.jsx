@@ -187,11 +187,11 @@ export default function App() {
         {/* 2b. DA BAGUNÇA À RESPOSTA: a planilha explode e se remonta no painel (cena 3D por rolagem) */}
         <CenaPlanilha />
 
-        {/* 2c. E QUANTO SOBROU: exemplo do Raio-X do mês (vendas menos gastos; rosca dos fixos) */}
-        <Suspense fallback={<section className="sec sobra" style={{ minHeight: '100vh' }} aria-hidden="true" />}><Sobra /></Suspense>
-
         {/* 3. SERVIÇOS em degraus */}
         <Degraus />
+
+        {/* 3b. E QUANTO SOBROU: exemplo do Raio-X do mês, logo depois de os degraus apresentarem o Raio-X */}
+        <Suspense fallback={<section className="sec sobra" style={{ minHeight: '100vh' }} aria-hidden="true" />}><Sobra /></Suspense>
 
         {/* 4. COMO FUNCIONA: o número é desenhado e depois preenchido (Stroke Text) */}
         <section className="sec" aria-labelledby="t-passos">

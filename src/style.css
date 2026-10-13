@@ -154,7 +154,7 @@ fieldset { border: 0; padding: 0; min-width: 0; }
 .demo-swap { border: 1px solid var(--hair); background: var(--sheet-bg); }
 .demo-palco { position: relative; }
 .demo-acao { position: absolute; right: 16px; bottom: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-.demo-acao.btn-ghost { background: var(--surface); }
+.demo-acao.btn-ghost { min-height: 48px; min-width: 15.5em; background: var(--surface); }
 .demo-legenda { display: flex; gap: 10px; align-items: flex-start; min-height: 3em; margin-top: 14px; font-size: .9375rem; color: var(--muted); }
 .demo-legenda strong { color: var(--ink); font-weight: 600; }
 
@@ -613,7 +613,6 @@ form .btn { width: 100%; }
 @media (max-width: 959px) {
   /* compacto e com contorno: o único botão cheio do topo é o azul do pedido */
   .demo-acao { position: static; display: flex; width: auto; margin: 12px 0 0 auto; }
-  .demo-acao.btn-tinta { min-height: 44px; padding: 0 16px; background: var(--surface); color: var(--ink); border: 1px solid var(--ink); font-size: .9375rem; }
 }
 .pixel-swap__pixel-content .marca { animation: none; }
 
@@ -658,10 +657,10 @@ form .btn { width: 100%; }
   .hero-copy, .hero-dados { display: contents; }
   .hero-copy > *, .hero-dados > * { grid-column: 1 / -1; }
   .hero .lead { order: 1; }
-  .hero .demo { order: 2; }
-  .hero-dados > .btn { order: 3; }
-  .hero .byline { order: 4; }
-  .hero-fatos { order: 5; }
+  .hero-dados > .btn { order: 2; }
+  .hero-fatos { order: 4; }
+  .hero .demo { order: 5; }
+  .hero .byline { order: 6; }
 }
 
 /* contato: escolher o teclado do celular */
@@ -716,6 +715,8 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .ajuda-atalhos div { display: grid; grid-template-columns: 4.5em 1fr; align-items: baseline; gap: 12px; }
 .ajuda-atalhos dd { margin: 0; font-size: .9375rem; }
 .ajuda .btn { width: 100%; }
+.ajuda-chave { display: flex; align-items: center; gap: 10px; min-height: 44px; margin-top: 8px; font-size: .9375rem; cursor: pointer; }
+.ajuda-chave input { width: 18px; height: 18px; accent-color: var(--accent); }
 @media (max-width: 959px) {
   .barra-fx { display: none; }
   .barra { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "nome cta" "abas abas"; }
@@ -731,7 +732,9 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 @media (max-width: 959px) {
   .hero-nota { order: 3; margin-top: -16px; }
   /* faixa de abas: sombra na borda mostra que dá para deslizar */
-  .barra-abas { mask-image: linear-gradient(90deg, #000 calc(100% - 28px), transparent); }
+  /* a rolagem da faixa reserva o lugar da coluna presa, para nenhuma aba ficar escondida atrás dela */
+  .barra-abas { scroll-padding-right: 130px; }
+  .barra-abas li:last-child { position: sticky; right: 0; background: var(--sheet-head); box-shadow: -12px 0 12px -6px var(--sheet-head); }
   /* planilha do antes: coluna de produto mais larga e linhas mais altas para tocar nos números */
   .sheet:not(.sheet-ok) thead th:nth-child(3) { width: 42%; }
   .demo .sheet th, .demo .sheet td { height: 2.5em; }
@@ -752,7 +755,7 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .form-exemplo { display: none; }
 @media (max-width: 959px) {
   /* celular: os três fatos vêm logo depois da frase, compactos, antes da planilha */
-  .hero-fatos { order: 1; padding-top: 14px; gap: 12px; }
+  .hero-fatos { padding-top: 14px; gap: 12px; }
   .hero-fatos dt { font-size: 1.375rem; }
   .hero-fatos dd { margin-top: 4px; font-size: .8125rem; }
   .form-exemplo { display: inline-block; justify-self: start; padding-block: 8px; font-size: .9375rem; color: var(--accent-ink); }

@@ -160,7 +160,7 @@ export default function BeforeAfter({ liberado = true }) {
           className="demo-swap"
           onComplete={() => setTrocando(false)}
         />
-        <button type="button" className={depois ? 'btn-ghost demo-acao' : 'btn btn-tinta demo-acao'}
+        <button type="button" className="btn-ghost demo-acao"
                 onClick={() => { setMexeu(true); alternar(); }} aria-pressed={depois} disabled={trocando}>
           <HugeiconsIcon icon={depois ? ArrowTurnBackwardIcon : MagicWand01Icon} size={20} strokeWidth={2} aria-hidden="true" />
           {depois ? 'Ver o antes' : 'Arrumar esta planilha'}
@@ -172,7 +172,7 @@ export default function BeforeAfter({ liberado = true }) {
         ) : (
           <span>
             <strong>{depois ? 'Depois: os mesmos 5 números, consertados.' : 'Antes: 5 problemas, marcados de 1 a 5.'}</strong>{' '}
-            Quatro dias de outubro de uma papelaria, com dados fictícios.
+            Toque num número para ver o detalhe. Quatro dias de outubro de uma papelaria, com dados fictícios.
           </span>
         )}
       </figcaption>

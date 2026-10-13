@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import DecryptedText from './components/DecryptedText';
 import { Simbolo } from './Marca';
-import Ajuda from './Ajuda';
+import Ajuda, { atalhosLigados } from './Ajuda';
 
 // Nome do produto: trocar aqui troca na barra (o título da aba fica em index.html).
 export const NOME = 'Somô';
@@ -12,8 +12,8 @@ const SECOES = [
   { id: 'topo', aba: null, fx: 'Dá para arrumar a minha planilha?' },
   { id: 't-problemas', aba: 'Problema', fx: 'Onde a planilha atrapalha?' },
   { id: 't-cena', aba: 'Exemplo', fx: 'Qual produto vende mais?' },
-  { id: 't-sobra', aba: null, grupo: 't-cena', fx: 'Quanto sobrou no fim do mês?' },
   { id: 't-servicos', aba: 'Serviços', fx: 'O que vem depois do grátis?' },
+  { id: 't-sobra', aba: null, grupo: 't-servicos', fx: 'Quanto sobrou no fim do mês?' },
   { id: 't-passos', aba: 'Como funciona', fx: 'Como funciona, passo a passo?' },
   { id: 't-quem', aba: 'Quem faz', fx: 'Quem vai olhar os meus números?' },
   { id: 'formulario', aba: null, fx: 'Como eu peço?' }
@@ -78,7 +78,7 @@ export default function Barra({ onPedir }) {
   useEffect(() => {
     const abas = SECOES.filter(s => s.aba).map(s => s.id);
     const tecla = e => {
-      if (e.ctrlKey || e.metaKey || e.altKey || e.target.closest?.('input, textarea, select, [contenteditable]') || ajudaRef.current?.open) return;
+      if (e.ctrlKey || e.metaKey || e.altKey || e.target.closest?.('input, textarea, select, [contenteditable]') || ajudaRef.current?.open || !atalhosLigados()) return;
       const k = e.key.toLowerCase(), finge = { preventDefault() {} };
       if (k >= '1' && k <= String(abas.length)) ir(abas[+k - 1])(finge);
       else if (k === 't') ir('topo')(finge);
@@ -92,6 +92,7 @@ export default function Barra({ onPedir }) {
   }, [onPedir]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
+    <>
     <nav className="barra" aria-label="Seções da página">
       {/* a marca ocupa as duas linhas da barra no computador: símbolo e nome grandes, à esquerda */}
         <a className="barra-nome" href="#topo" aria-label={`${NOME}, voltar ao início`}><Simbolo tamanho={30} cor="var(--accent)" /><span>{NOME}</span></a>
@@ -118,7 +119,8 @@ export default function Barra({ onPedir }) {
         })}
         <li><button type="button" className="barra-ajuda" onClick={() => ajudaRef.current?.showModal()} aria-haspopup="dialog">Dúvidas<kbd aria-hidden="true">?</kbd></button></li>
       </ul>
-      <Ajuda ref={ajudaRef} onPedir={onPedir} />
     </nav>
+    <Ajuda ref={ajudaRef} onPedir={onPedir} />
+    </>
   );
 }

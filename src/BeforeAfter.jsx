@@ -11,7 +11,7 @@ const COLUNAS = ['A', 'B', 'C', 'D', 'E'];
 // Cada problema do "antes" tem um número; o mesmo número no "depois" mostra como foi consertado.
 // A chave é "linha,coluna" contando a partir da primeira linha de dados.
 const MARCAS_ANTES = { '1,1': 1, '2,3': 2, '3,3': 3, '4,3': 4, '8,3': 5 };
-const MARCAS_DEPOIS = { '1,1': 1, '2,3': 2, '3,3': 3, '4,4': 4, '8,1': 5 };
+const MARCAS_DEPOIS = { '1,1': 1, '2,3': 2, '3,3': 3, '4,4': 4, '8,4': 5 };
 const PROBLEMAS = {
   1: 'O mesmo produto escrito de jeitos diferentes (caderno, CANETA, xerox): as vendas ficam espalhadas.',
   2: 'Ponto no lugar da vírgula: para a planilha, isso é texto, não dinheiro.',
@@ -52,7 +52,8 @@ export function Planilha({ onMarca, foco }) {
             <tr key={i}>
               <th>{i + 2}</th>
               {l.map((v, j) => (
-                <td key={j} className={ehErro(v) ? 'sheet-err' : j === 4 && v ? 'sheet-note' : undefined}>
+                <td key={j} className={ehErro(v) ? 'sheet-err' : j === 4 && v ? 'sheet-note' : undefined}
+                    onClick={onMarca && MARCAS_ANTES[`${i},${j}`] ? () => onMarca(MARCAS_ANTES[`${i},${j}`]) : undefined}>
                   {MARCAS_ANTES[`${i},${j}`] ? <span className="celula-txt">{v}</span> : v}<Marca n={MARCAS_ANTES[`${i},${j}`]} onMarca={onMarca} foco={foco} textos={PROBLEMAS} />
                 </td>
               ))}
@@ -94,7 +95,8 @@ function PlanilhaArrumada({ onMarca, foco }) {
               {l.map((c, j) => {
                 const o = typeof c === 'string' ? { t: c } : c;
                 return (
-                  <td key={j} className={o.f ? 'sheet-fix' : o.b ? 'sheet-total' : undefined}>
+                  <td key={j} className={o.f ? 'sheet-fix' : o.b ? 'sheet-total' : undefined}
+                      onClick={onMarca && MARCAS_DEPOIS[`${i},${j}`] ? () => onMarca(MARCAS_DEPOIS[`${i},${j}`]) : undefined}>
                     {MARCAS_DEPOIS[`${i},${j}`] ? <span className="celula-txt">{o.t}</span> : o.t}<Marca n={MARCAS_DEPOIS[`${i},${j}`]} onMarca={onMarca} foco={foco} textos={CONSERTOS} />
                   </td>
                 );

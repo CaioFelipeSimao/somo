@@ -25,7 +25,7 @@ function lerRascunho() {
 function validar(v) {
   const e = {};
   if (v.nome.trim().length < 2) e.nome = 'Escreva seu nome.';
-  if (!v.tipo) e.tipo = 'Escolha o tipo do seu negócio.';
+  if (!v.tipo) e.tipo = 'Escolha o tipo da sua loja.';
   else if (v.tipo === 'Outro' && !v.tipoOutro.trim()) e.tipoOutro = 'Conte qual é o seu negócio.';
   const c = v.contato.trim();
   const ehEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c);

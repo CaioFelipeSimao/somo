@@ -20,7 +20,7 @@ const degraus = [
 
 const passos = [
   { titulo: 'Conversa de 20 minutos', texto: 'Você me mostra a planilha ou o caderno, do jeito que estiver, e me conta como a loja funciona.' },
-  { titulo: 'Seu mês arrumado, de presente', texto: 'Eu organizo um mês das suas vendas e te mando a planilha arrumada, o que mais vendeu e o que dá para melhorar. Se for caderno, fotos das páginas bastam.' },
+  { titulo: 'Seu mês arrumado, de presente', texto: 'Eu organizo um mês das suas vendas e te mando a planilha arrumada, o que mais vendeu e o que dá para melhorar. Se for caderno, eu leio pelas fotos.' },
   { titulo: 'Proposta sem compromisso', texto: 'Se fizer sentido, eu digo como posso ajudar e quanto custa. Se não, você fica com o seu mês arrumado.' }
 ];
 
@@ -107,7 +107,7 @@ function Degraus() {
         <div className="grid">
           <div className="sec-side">
             <h2 className="sec-title" id="t-servicos">O que eu posso fazer por você</h2>
-            <p>Começa grátis. Os outros degraus só se fizer sentido para você: eu digo o preço antes e você decide sem pressão.</p>
+            <p><strong>Por que o primeiro é grátis?</strong> Estou começando e quero conhecer lojas de verdade. Os outros passos só se fizer sentido para você, com o preço combinado antes.</p>
             <a className="btn btn-inverse" href="#formulario" onClick={irFormulario}>Quero meu mês arrumado</a>
           </div>
           <ol className="degraus">
@@ -200,8 +200,8 @@ export default function App() {
                 as próprias vendas.
               </p>
               <p>
-                <strong>Por que é grátis?</strong> Porque estou começando e quero conhecer lojas de verdade. Se depois
-                você quiser ajuda, eu digo o preço antes e você decide sem pressão.
+                <strong>E depois do grátis?</strong> Você fica com o mês arrumado de qualquer jeito. Se quiser continuar,
+                eu digo quanto custa antes de começar, e você decide sem pressão.
               </p>
               <p>
                 <strong>E a inteligência artificial?</strong> Uso IA para fazer rápido a parte chata: ler as fotos do
@@ -222,6 +222,7 @@ export default function App() {
             <div className="form-intro">
               <h2 id="t-form">Pedir meu mês arrumado</h2>
               <p>Respondo em até 2 dias úteis, pelo contato que você deixar.</p>
+              <a className="form-exemplo" href="#t-diag">Ver um exemplo do que você recebe</a>
               <Diagnostico />
             </div>
             <LeadForm />

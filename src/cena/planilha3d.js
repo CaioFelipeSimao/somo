@@ -64,6 +64,12 @@ export function montarCena({ secao, vista, canvas, rotulos, onAto }) {
   // ponytail: o formato é escolhido ao montar; girar o celular no meio da cena não refaz a grade (recarregar refaz)
   const retrato = vista.clientWidth < vista.clientHeight;
   const Z = retrato ? { ini: .95, solta: .9, exp: 1, fim: .9 } : { ini: 1.25, solta: 1.15, exp: 1, fim: 1.45 };
+  // no celular o painel final ocupa a largura toda: o zoom do fim sai do tamanho real da vista
+  // (painel com rótulos tem ~700 x 520 unidades), limitado pela altura
+  if (retrato) {
+    const w = vista.clientWidth, h = vista.clientHeight, ajusteIni = Math.min(w / 640, h / 1060);
+    if (w && h) Z.fim = Math.min(w * .94 / 700, h * .82 / 520) / ajusteIni;
+  }
   const C = { rx: -24, ry: 14, rz: -3, zoom: Z.ini };   // proxy da câmera do conjunto (graus)
 
   const geos = [], mats = [], texs = [];
@@ -197,7 +203,15 @@ export function montarCena({ secao, vista, canvas, rotulos, onAto }) {
     sujo = true;
   }
   let rt = 0;
-  const obs = new ResizeObserver(() => { tamanho(); clearTimeout(rt); rt = setTimeout(() => ScrollTrigger.refresh(), 150); });
+  // ScrollTrigger.refresh() reposiciona a página: chamar a cada mudança de altura do palco (no celular a legenda muda
+  // de altura a cada ato) interrompia a rolagem no meio. Os gatilhos dependem da seção, não do palco: só recalcula
+  // quando a largura muda (girar o celular, redimensionar a janela).
+  let larguraAntes = vista.clientWidth;
+  const obs = new ResizeObserver(() => {
+    tamanho();
+    if (vista.clientWidth === larguraAntes) return;
+    larguraAntes = vista.clientWidth; clearTimeout(rt); rt = setTimeout(() => ScrollTrigger.refresh(), 150);
+  });
   obs.observe(vista); tamanho();
 
   const gatilho = ScrollTrigger.create({ trigger: secao, start: 'top top', end: 'bottom bottom', scrub: .6, animation: tl });

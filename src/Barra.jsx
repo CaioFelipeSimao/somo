@@ -4,15 +4,15 @@ import { useEffect, useRef, useState } from 'react';
 export const NOME = 'Somô';
 
 // A barra imita a barra de fórmulas de uma planilha: a caixa de nome à esquerda, o "fx" com a
-// "fórmula" da seção em que a pessoa está, e as abas das seções embaixo (a aba atual fica marcada).
+// pergunta que a seção atual responde, e as abas das seções embaixo (a aba atual fica marcada).
 const SECOES = [
-  { id: 'topo', aba: null, fx: '=ARRUMAR(sua planilha)' },
-  { id: 't-problemas', aba: 'Problema', fx: '=ONDE.DÓI(vendas; estoque; caixa)' },
-  { id: 't-cena', aba: 'Exemplo', fx: '=SOMA(cadernos)  → R$ 1.840' },
-  { id: 't-servicos', aba: 'Serviços', fx: '=DEGRAUS(grátis; lucro; todo mês)' },
-  { id: 't-passos', aba: 'Como funciona', fx: '=CONVERSA(20 min) + MÊS.ARRUMADO()' },
-  { id: 't-quem', aba: 'Quem faz', fx: '=QUEM.FAZ("Caio Simão")' },
-  { id: 'formulario', aba: null, fx: '=PEDIR(meu mês arrumado)' }
+  { id: 'topo', aba: null, fx: 'Dá para arrumar a minha planilha?' },
+  { id: 't-problemas', aba: 'Problema', fx: 'Onde a planilha atrapalha?' },
+  { id: 't-cena', aba: 'Exemplo', fx: 'Qual produto vende mais?' },
+  { id: 't-servicos', aba: 'Serviços', fx: 'O que vem depois do grátis?' },
+  { id: 't-passos', aba: 'Como funciona', fx: 'Como funciona, passo a passo?' },
+  { id: 't-quem', aba: 'Quem faz', fx: 'Quem vai olhar os meus números?' },
+  { id: 'formulario', aba: null, fx: 'Como eu peço?' }
 ];
 
 // cada seção começa no topo do bloco que contém o título (a cena e os degraus têm trilhos de rolagem próprios)
@@ -45,8 +45,22 @@ export default function Barra({ onPedir }) {
   useEffect(() => {
     const ul = abasRef.current, a = ul?.querySelector('a.ativa');
     if (!a || ul.scrollWidth <= ul.clientWidth) return;
-    ul.scrollTo({ left: Math.max(0, a.offsetLeft - 24), behavior: 'smooth' });
+    // sem animação: no Chrome, animar esta faixa interrompe a rolagem suave da página que está acontecendo
+    ul.scrollTo({ left: Math.max(0, a.offsetLeft - 24), behavior: 'instant' });
   }, [atual]);
+
+  // Clique na aba: rola até o começo do bloco, não até o título. Os títulos da cena e dos serviços ficam
+  // dentro de partes presas na tela, e a posição deles muda durante a rolagem; o começo do bloco não muda.
+  // Ao terminar, confere e corrige se a página ainda mexeu (algo carregou no caminho).
+  const ir = id => e => {
+    e.preventDefault();
+    const destino = () => bloco(id).getBoundingClientRect().top + window.scrollY - (document.querySelector('.barra')?.offsetHeight ?? 0);
+    const suave = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: destino(), behavior: suave ? 'smooth' : 'instant' });
+    const conferir = () => { const d = destino(); if (Math.abs(d - window.scrollY) > 4) window.scrollTo({ top: d, behavior: 'instant' }); };
+    if (suave && 'onscrollend' in window) window.addEventListener('scrollend', conferir, { once: true });
+    else window.setTimeout(conferir, suave ? 1200 : 0);
+  };
 
   return (
     <nav className="barra" aria-label="Seções da página">
@@ -62,7 +76,7 @@ export default function Barra({ onPedir }) {
           const ativa = SECOES[atual].id === s.id;
           return (
             <li key={s.id}>
-              <a href={`#${s.id}`} aria-current={ativa ? 'location' : undefined} className={ativa ? 'ativa' : undefined}>{s.aba}</a>
+              <a href={`#${s.id}`} onClick={ir(s.id)} aria-current={ativa ? 'location' : undefined} className={ativa ? 'ativa' : undefined}>{s.aba}</a>
             </li>
           );
         })}

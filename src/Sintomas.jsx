@@ -80,8 +80,8 @@ const SINTOMAS = [
       <div className="recorte-par" aria-hidden="true">
         <div className="caderno">
           <span className="caderno-mes">outubro</span>
-          <span>vendas: R$ 4.965</span>
-          <span />
+          <span>vendas do mês</span>
+          <span>R$ 4.965</span>
         </div>
         <span className="recorte-seta">
           <b className="recorte-diferente">≠</b>

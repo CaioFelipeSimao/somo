@@ -8,7 +8,7 @@ const StrokeText = lazy(() => import('./components/StrokeText'));
 const ProfileCard = lazy(() => import('./components/ProfileCard'));
 
 const problemas = [
-  'Não sei qual produto dá mais lucro.',
+  'Não sei qual produto vende mais.',
   'Gasto horas copiando dados de um lugar para outro.',
   'Só uma pessoa entende a planilha (ou o caderno).',
   'Não confio nos números no fim do mês.'
@@ -16,7 +16,7 @@ const problemas = [
 
 // Cada serviço responde a um dos problemas acima.
 const servicos = [
-  { titulo: 'Painel de vendas simples', texto: 'Uma tela que mostra o que vendeu, quanto e o que deu lucro. Você bate o olho e sabe.' },
+  { titulo: 'Painel de vendas simples', texto: 'Uma tela que mostra o que vendeu, quanto e o que vende mais. Você bate o olho e sabe.' },
   { titulo: 'Relatório semanal automático', texto: 'Um resumo da semana que chega pronto, sem você copiar nada de um lugar para outro.' },
   { titulo: 'Estoque e caixa organizados', texto: 'Uma planilha arrumada, que qualquer pessoa da loja entende, para saber o que tem e quanto entrou e saiu.' }
 ];
@@ -98,9 +98,6 @@ export default function App() {
       </header>
 
       <main>
-        {/* 1b. DO CADERNO À RESPOSTA: a planilha explode e se remonta no painel (cena 3D por rolagem) */}
-        <CenaPlanilha />
-
         {/* 2. PROBLEMAS: cada frase sai do borrão e fica nítida (Blur Text) */}
         <section className="sec" aria-labelledby="t-problemas">
           <div className="grid">
@@ -108,6 +105,9 @@ export default function App() {
             <Problemas />
           </div>
         </section>
+
+        {/* 2b. DO CADERNO À RESPOSTA: a planilha explode e se remonta no painel (cena 3D por rolagem) */}
+        <CenaPlanilha />
 
         {/* 3. SERVIÇOS */}
         <section className="sec sec-accent" aria-labelledby="t-servicos">
@@ -175,9 +175,9 @@ export default function App() {
                   theme="light"
                   backdropColor="#25272b"
                   radius={0}
-                  holo={0.6}
-                  glare={0.4}
-                  tiltStrength={8}
+                  holo={0.3}
+                  glare={0.25}
+                  tiltStrength={4}
                 />
               </Suspense>
             </div>

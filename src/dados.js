@@ -14,7 +14,7 @@ export const LINHAS = [
   ['', 'TOTAL?', '', '#REF!', '']
 ];
 
-// fichas = quantas fichas da cena 3D formam a barra (cada uma vale cerca de R$ 150)
+// vendas do mês por produto; fichas = quantas fichas da cena 3D formam a barra (cada uma vale cerca de R$ 150)
 export const LUCRO = [
   { produto: 'Cadernos', valor: 1840, fichas: 12 },
   { produto: 'Mochilas', valor: 1215, fichas: 8 },

@@ -64,7 +64,7 @@ export function montarCena({ secao, vista, canvas, rotulos, onAto }) {
   // ponytail: o formato é escolhido ao montar; girar o celular no meio da cena não refaz a grade (recarregar refaz)
   const retrato = vista.clientWidth < vista.clientHeight;
   const Z = retrato ? { ini: .95, solta: .9, exp: 1, fim: .82 } : { ini: 1.25, solta: 1.15, exp: 1, fim: 1.12 };
-  const C = { rx: -36, ry: 20, rz: -4, zoom: Z.ini };   // proxy da câmera do conjunto (graus)
+  const C = { rx: -24, ry: 14, rz: -3, zoom: Z.ini };   // proxy da câmera do conjunto (graus)
 
   const geos = [], mats = [], texs = [];
   const matLado = new THREE.MeshLambertMaterial({ color: COR.lado }); mats.push(matLado);

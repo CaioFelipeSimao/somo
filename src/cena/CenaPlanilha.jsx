@@ -8,7 +8,7 @@ const ATOS = [
   { frase: 'Cada linha guarda uma resposta.', sub: 'Só que tudo misturado, do jeito que foi anotado na correria.' },
   { frase: 'Primeiro eu separo o que é venda do que é ruído.', sub: 'Erros, linhas vazias e anotações soltas saem da conta.' },
   { frase: 'Depois junto o que é igual.', sub: '“caderno 10 mat” e “Caderno espiral” viram um produto só, e as vendas se empilham.' },
-  { frase: 'Cadernos deram mais lucro: R$ 1.840.', sub: 'Cada ficha vale cerca de R$ 150. Exemplo com dados fictícios.' }
+  { frase: 'Cadernos venderam mais: R$ 1.840.', sub: 'Cada ficha vale cerca de R$ 150. Exemplo com dados fictícios.' }
 ];
 
 const suportaWebGL = () => {
@@ -19,7 +19,7 @@ const suportaWebGL = () => {
 function PainelParado() {
   const maior = Math.max(...LUCRO.map(l => l.valor));
   return (
-    <ol className="colunas" aria-label="Lucro por produto em outubro, exemplo fictício">
+    <ol className="colunas" aria-label="Vendas por produto em outubro, exemplo fictício">
       {LUCRO.map(l => (
         <li key={l.produto} className={l.valor === maior ? 'top' : undefined} style={{ '--h': l.valor / maior }}>
           <span className="rotulo-valor">{real(l.valor)}</span>

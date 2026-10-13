@@ -306,7 +306,6 @@ h3 { font-size: 1.3125rem; font-weight: 600; letter-spacing: -0.01em; line-heigh
 
 @media (min-width: 960px) {
   .sec .grid > .about-text { grid-column: 1 / 6; }
-  .sec .grid > .about-card { grid-column: 9 / 13; justify-self: end; }
 }
 
 /* ---------- 6. Formulário ---------- */
@@ -471,3 +470,12 @@ form .btn { width: 100%; }
 .cena-espera { position: absolute; inset: 0; display: grid; place-items: center; transition: opacity .3s; }
 .cena-espera .sheet { width: min(100%, 560px); height: auto; border: 1px solid var(--hair); }
 .cena-vista.montada .cena-espera { opacity: 0; pointer-events: none; }
+
+/* Cena mais curta no celular */
+@media (max-width: 959px) { .cena-3d { height: 350vh; } }
+
+/* Cartão suíço: foto chapada, sem moldura de vidro nem sombra; o movimento fica leve */
+.about-card .profile-card__body { padding: 0; background: none; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.about-card .profile-card__rim, .about-card .profile-card__tile-rim { display: none; }
+.about-card { aspect-ratio: 4 / 5; }
+@media (min-width: 960px) { .sec .grid > .about-card { grid-column: 7 / 11; justify-self: start; } }

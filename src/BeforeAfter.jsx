@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import PixelSwap from './components/PixelSwap';
 import { LINHAS, LUCRO, real, ehErro } from './dados';
 
@@ -35,7 +35,7 @@ function Painel() {
   const maior = Math.max(...lucroPorProduto.map(p => p.valor));
   return (
     <div className="panel">
-      <p className="panel-title">Qual produto deu mais lucro em outubro?</p>
+      <p className="panel-title">Qual produto vendeu mais em outubro?</p>
       <p className="panel-answer">Cadernos, com {real(maior)}.</p>
       <ol className="chart-rows">
         {lucroPorProduto.map(p => (
@@ -54,23 +54,10 @@ function Painel() {
 export default function BeforeAfter() {
   const ref = useRef(null);
   const [depois, setDepois] = useState(false);
-  const [mexeu, setMexeu] = useState(false);
   const [trocando, setTrocando] = useState(false);
 
-  // Quando o quadro aparece na tela, mostra o "antes" um instante e vira o "depois".
-  useEffect(() => {
-    if (mexeu) return undefined;
-    let timer = 0;
-    const io = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
-      io.disconnect();
-      timer = window.setTimeout(() => { setTrocando(true); setDepois(true); }, 1600);
-    }, { threshold: 0.6 });
-    io.observe(ref.current);
-    return () => { io.disconnect(); window.clearTimeout(timer); };
-  }, [mexeu]);
-
-  const alternar = () => { if (trocando) return; setMexeu(true); setTrocando(true); setDepois(d => !d); };
+  // O topo fica no "antes"; o "depois" só aparece no clique (a revelação completa é a cena 3D logo abaixo).
+  const alternar = () => { if (trocando) return; setTrocando(true); setDepois(d => !d); };
 
   return (
     <figure className="demo" ref={ref}>
@@ -86,7 +73,7 @@ export default function BeforeAfter() {
         pixelScale={0.2}
         duration={1300}
         pixelDuration={420}
-        aspectRatio="4 / 3"
+        aspectRatio="16 / 11"
         className="demo-swap"
         onComplete={() => setTrocando(false)}
       />
@@ -101,7 +88,7 @@ export default function BeforeAfter() {
       </div>
       <p className="sr-only" aria-live="polite">
         {depois
-          ? 'Painel: Cadernos deram mais lucro, R$ 1.840. Depois Mochilas, R$ 1.215; Canetas, R$ 960; Presentes, R$ 430; Cópias, R$ 290.'
+          ? 'Painel: Cadernos venderam mais, R$ 1.840. Depois Mochilas, R$ 1.215; Canetas, R$ 960; Presentes, R$ 430; Cópias, R$ 290.'
           : 'Planilha de vendas bagunçada, com produtos escritos de jeitos diferentes, valores faltando e erros de fórmula.'}
       </p>
     </figure>

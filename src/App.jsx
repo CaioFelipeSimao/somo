@@ -1,3 +1,4 @@
+import TextType from './components/TextType';
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import BeforeAfter from './BeforeAfter';
 import LeadForm from './LeadForm';
@@ -145,21 +146,23 @@ export default function App() {
         {/* fundo do topo: o padrão de peças da marca, em tons claros, sumindo em direção ao texto */}
         <Padrao id="padrao-topo" className="hero-padrao" forte="var(--apoio-forte)" leve="var(--apoio)" />
         <div className="grid">
-          <h1 className="hero-title"><span>Sua planilha ou caderno deveria responder perguntas, não criar dúvidas.</span></h1>
+          <h1 className="hero-title"><TextType text="Sua planilha ou caderno deveria responder perguntas, não criar dúvidas." /></h1>
           <div className="hero-copy">
-            <p className="lead">
-              Eu arrumo um mês das suas vendas, de presente, e te mostro o que os números dizem. Começa com uma conversa.
-            </p>
-            <a className="btn" href="#formulario" onClick={irFormulario}>Quero meu mês arrumado</a>
-            <p className="hero-nota">Planilha bagunçada ou caderno: fotos das páginas bastam.</p>
-            <p className="byline">
-              <img src="/caio.webp" alt="" width="44" height="44" />
-              <span><strong>Caio Simão</strong>Estudante de Engenharia no ITA</span>
-            </p>
+            <div className="hero-dados">
+              <p className="lead">
+                Eu arrumo um mês das suas vendas, de presente, e te mostro o que os números dizem. Começa com uma conversa.
+              </p>
+              <a className="btn" href="#formulario" onClick={irFormulario}>Quero meu mês arrumado</a>
+              <p className="hero-nota">Planilha bagunçada ou caderno: fotos das páginas bastam.</p>
+              <p className="byline">
+                <img src="/caio.webp" alt="" width="44" height="44" />
+                <span><strong>Caio Simão</strong>Estudante de Engenharia no ITA</span>
+              </p>
+            </div>
             <dl className="hero-fatos">
               <div><dt>20 min</dt><dd>de conversa, por vídeo ou WhatsApp</dd></div>
               <div><dt>1 mês</dt><dd>das suas vendas arrumado</dd></div>
-              <div><dt>R$ 0</dt><dd>para começar, sem compromisso</dd></div>
+              <div className="hero-preco"><dt>R$ 0</dt><dd>para começar, sem compromisso</dd></div>
             </dl>
           </div>
           <BeforeAfter />

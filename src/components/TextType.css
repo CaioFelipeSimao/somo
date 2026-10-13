@@ -1,0 +1,11 @@
+/* a parte ainda não digitada ocupa o lugar, invisível */
+.text-type__resto { color: transparent; }
+
+/* cursor de planilha: barra fina na cor de destaque, pisca enquanto digita e some 1,6 s depois do fim */
+.text-type__cursor {
+  display: inline-block; width: .08em; height: .9em; margin-left: .04em; vertical-align: -.08em;
+  background: var(--accent); animation: text-type-pisca 1s steps(1) infinite;
+}
+.text-type__cursor--fim { animation: text-type-pisca 1s steps(1) 2 forwards, text-type-some 0s 1.6s forwards; }
+@keyframes text-type-pisca { 50% { opacity: 0; } }
+@keyframes text-type-some { to { visibility: hidden; } }

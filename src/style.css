@@ -653,11 +653,11 @@ form .btn { width: 100%; }
 
 /* celular: título, frase, planilha e só depois o botão, a foto e os números */
 @media (max-width: 959px) {
-  .hero-copy { display: contents; }
-  .hero-copy > * { grid-column: 1 / -1; }
+  .hero-copy, .hero-dados { display: contents; }
+  .hero-copy > *, .hero-dados > * { grid-column: 1 / -1; }
   .hero .lead { order: 1; }
   .hero .demo { order: 2; }
-  .hero-copy > .btn { order: 3; }
+  .hero-dados > .btn { order: 3; }
   .hero .byline { order: 4; }
   .hero-fatos { order: 5; }
 }
@@ -839,11 +839,17 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 }
 
 
-/* moldura do texto do topo sobre o padrão: o título ganha uma faixa da cor do fundo atrás de cada linha;
-   a coluna de texto fica num painel branco reto com fio fino */
-.hero-title span { background: var(--bg); padding: 0 .12em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+/* texto do topo sobre o padrão: o título vira uma faixa azul da marca atrás de cada linha, com letras brancas
+   (cresce enquanto digita); no PC a coluna vira duas molduras: a da oferta e a dos números, com o preço em azul */
+.hero-title .text-type__feito { background: var(--accent); color: var(--on-accent); padding: 0 .14em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 @media (min-width: 960px) {
-  .hero-copy { padding: 28px 32px 32px; background: var(--surface); border: 1px solid var(--hair); }
+  .hero-copy { gap: 16px; }
+  .hero-dados { display: grid; gap: 28px; justify-items: start; padding: 28px 32px 32px; background: var(--surface); border: 1px solid var(--hair); }
+  .hero-fatos { gap: 0; padding: 0; background: var(--surface); border: 1px solid var(--hair); }
+  .hero-fatos > div { padding: 20px 24px 22px; }
+  .hero-fatos > div + div { border-left: 1px solid var(--hair); }
+  .hero-preco { background: var(--accent); }
+  .hero-preco :is(dt, dd) { color: var(--on-accent); }
 }
 @media (max-width: 959px) {
   /* celular: o padrão fica só no alto, acima do texto corrido */

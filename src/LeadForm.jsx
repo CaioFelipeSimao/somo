@@ -3,9 +3,13 @@ import ClickSpark from './components/ClickSpark';
 import { FORM_ACCESS_KEY } from './config';
 
 const TIPOS = ['Loja de roupas', 'Papelaria', 'Pet shop', 'Cosméticos', 'Outro'];
-const RASCUNHO = 'p0-rascunho';
+const RASCUNHO = 'p0-rascunho', ENVIADO = 'p0-enviado';
 const VAZIO = { nome: '', tipo: '', tipoOutro: '', contato: '', problema: '' };
 const pronto = Boolean(FORM_ACCESS_KEY) && !FORM_ACCESS_KEY.startsWith('COLE_AQUI');
+
+function lerEnviado() {
+  try { return JSON.parse(sessionStorage.getItem(ENVIADO) || 'null'); } catch { return null; }
+}
 
 function lerRascunho() {
   try {
@@ -23,7 +27,7 @@ function validar(v) {
   else if (v.tipo === 'Outro' && !v.tipoOutro.trim()) e.tipoOutro = 'Conte qual é o seu negócio.';
   const c = v.contato.trim();
   const ehEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c);
-  const ehWhats = c.replace(/\D/g, '').length >= 10;
+  const digitos = c.replace(/\D/g, '').length, ehWhats = /^[\d\s()+.-]+$/.test(c) && digitos >= 10 && digitos <= 13;
   if (!c) e.contato = 'Deixe um e-mail ou WhatsApp para eu te responder.';
   else if (!ehEmail && !ehWhats) e.contato = 'Escreva um e-mail com @ ou um WhatsApp com DDD.';
   return e;
@@ -37,7 +41,8 @@ export default function LeadForm() {
   const [tentou, setTentou] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [falha, setFalha] = useState('');
-  const [enviado, setEnviado] = useState(null);
+  const [enviado, setEnviado] = useState(lerEnviado);
+  const [correcao, setCorrecao] = useState(false);
   const [celebrar, setCelebrar] = useState(false);
   const [corFaisca, setCorFaisca] = useState('#17663f');
   const wrapRef = useRef(null);
@@ -85,34 +90,55 @@ export default function LeadForm() {
       return;
     }
 
+    if (!pronto) {
+      setFalha('Falta a chave do Web3Forms em src/config.js: sem ela o pedido não é enviado.');
+      return;
+    }
+
     setEnviando(true);
     setFalha('');
     const data = new FormData();
     data.append('access_key', FORM_ACCESS_KEY);
-    data.append('subject', `Novo pedido de diagnóstico: ${v.nome.trim()}`);
+    data.append('subject', `${correcao ? 'Correção de contato' : 'Novo pedido de diagnóstico'}: ${v.nome.trim()}`);
     data.append('nome', v.nome.trim());
     data.append('tipo_de_negocio', v.tipo === 'Outro' ? v.tipoOutro.trim() : v.tipo);
     data.append('contato', v.contato.trim());
     data.append('problema', v.problema.trim());
     if (botRef.current?.checked) data.append('botcheck', 'on');
+    if (correcao) data.append('observacao', 'Este pedido corrige o contato de um pedido anterior.');
 
+    // Sem resposta em 15 s, desiste: no 3G o botão não pode ficar em "Enviando…" para sempre.
+    const corte = new AbortController(), relogio = window.setTimeout(() => corte.abort(), 15000);
     try {
-      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
-      const json = await res.json();
-      if (!res.ok || !json.success) throw new Error(json.message);
+      let res;
+      try {
+        res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data, signal: corte.signal });
+      } catch {
+        throw new Error('rede');
+      }
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || !json.success) throw new Error('servidor');
       try { sessionStorage.removeItem(RASCUNHO); } catch { /* ignorado */ }
       setCorFaisca(getComputedStyle(wrapRef.current).getPropertyValue('--ok').trim() || '#17663f');
-      setEnviado({ nome: v.nome.trim().split(/\s+/)[0], contato: v.contato.trim() });
+      const pedido = { nome: v.nome.trim().split(/\s+/)[0], contato: v.contato.trim() };
+      try { sessionStorage.setItem(ENVIADO, JSON.stringify(pedido)); } catch { /* ignorado */ }
+      setEnviado(pedido);
+      setCorrecao(false);
       setCelebrar(true);
-    } catch {
-      setFalha('Não consegui enviar. Seus dados continuam aqui: confira a internet e toque no botão de novo.');
+    } catch (erro) {
+      setFalha(erro.message === 'rede'
+        ? 'Não consegui enviar: a conexão falhou ou demorou demais. Seus dados continuam aqui; tente de novo.'
+        : 'O envio não foi aceito agora. Seus dados continuam aqui; tente de novo em alguns minutos.');
     } finally {
+      window.clearTimeout(relogio);
       setEnviando(false);
     }
   }
 
   const corrigir = () => {
+    try { sessionStorage.removeItem(ENVIADO); } catch { /* ignorado */ }
     setEnviado(null);
+    setCorrecao(true);
     setTentou(false);
     window.setTimeout(() => document.getElementById('f-contato')?.focus(), 0);
   };
@@ -133,9 +159,9 @@ export default function LeadForm() {
           </div>
         ) : (
           <form onSubmit={enviar} noValidate>
-            {!pronto && (
+            {!pronto && import.meta.env.DEV && (
               <p className="notice" role="note">
-                O formulário ainda está sendo configurado e não envia pedidos. Volte em breve.
+                Só no seu computador: falta a chave do Web3Forms em src/config.js, então o envio está desligado. A publicação também fica bloqueada até ela existir.
               </p>
             )}
 
@@ -190,9 +216,9 @@ export default function LeadForm() {
             <input ref={botRef} type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" />
 
             {falha && <p className="status erro" role="alert">{falha}</p>}
-            <button className="btn" type="submit" disabled={!pronto || enviando} aria-busy={enviando}
+            <button className="btn" type="submit" disabled={enviando} aria-busy={enviando}
                     onPointerDown={lembrarClique}>
-              {enviando ? 'Enviando…' : 'Pedir diagnóstico gratuito'}
+              {enviando ? 'Enviando…' : correcao ? 'Enviar com o contato corrigido' : 'Pedir diagnóstico gratuito'}
             </button>
           </form>
         )}

@@ -1,30 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import PixelSwap from './components/PixelSwap';
+import { LINHAS, LUCRO, real, ehErro } from './dados';
 
-// Dados fictícios de uma papelaria. O "antes" repete os erros comuns de
-// planilha feita à mão; o "depois" responde a pergunta que ela não responde.
-const linhas = [
-  ['12/10', 'caderno 10 mat', '3', '18,90', ''],
-  ['12-out', 'Caderno espiral', '2', 'R$ 37,8', ''],
-  ['13/10', 'CANETA AZUL', '12', '2.5', ''],
-  ['13/10', 'mochila', '1', '???', 'conferir no caderno'],
-  ['14/10', 'caneta bic', '6', '#VALOR!', ''],
-  ['14/10', 'presente dia crianças', '4', '', 'anotei no papel'],
-  ['15/10', 'xerox', '40', '0,25', ''],
-  ['', '', '', '', ''],
-  ['', 'TOTAL?', '', '#REF!', '']
-];
-
-const lucroPorProduto = [
-  { produto: 'Cadernos', valor: 1840 },
-  { produto: 'Mochilas', valor: 1215 },
-  { produto: 'Canetas', valor: 960 },
-  { produto: 'Presentes', valor: 430 },
-  { produto: 'Cópias', valor: 290 }
-];
-
-const real = valor => `R$ ${valor.toLocaleString('pt-BR')}`;
-const erro = v => v.startsWith('#') || v === '???';
+// Os dados (fictícios) são os mesmos da cena 3D: src/dados.js
+const [cabecalho, ...linhas] = LINHAS;
+const erro = ehErro;
+const lucroPorProduto = LUCRO;
 
 function Planilha() {
   return (
@@ -35,7 +16,7 @@ function Planilha() {
           <tr><th />{['A', 'B', 'C', 'D', 'E'].map(c => <th key={c}>{c}</th>)}</tr>
         </thead>
         <tbody>
-          <tr className="sheet-head"><th>1</th><td>data</td><td>produto</td><td>qtd</td><td>valor</td><td>obs</td></tr>
+          <tr className="sheet-head"><th>1</th>{cabecalho.map(c => <td key={c}>{c}</td>)}</tr>
           {linhas.map((l, i) => (
             <tr key={i}>
               <th>{i + 2}</th>
@@ -74,6 +55,7 @@ export default function BeforeAfter() {
   const ref = useRef(null);
   const [depois, setDepois] = useState(false);
   const [mexeu, setMexeu] = useState(false);
+  const [trocando, setTrocando] = useState(false);
 
   // Quando o quadro aparece na tela, mostra o "antes" um instante e vira o "depois".
   useEffect(() => {
@@ -82,13 +64,13 @@ export default function BeforeAfter() {
     const io = new IntersectionObserver(([e]) => {
       if (!e.isIntersecting) return;
       io.disconnect();
-      timer = window.setTimeout(() => setDepois(true), 1600);
+      timer = window.setTimeout(() => { setTrocando(true); setDepois(true); }, 1600);
     }, { threshold: 0.6 });
     io.observe(ref.current);
     return () => { io.disconnect(); window.clearTimeout(timer); };
   }, [mexeu]);
 
-  const alternar = () => { setMexeu(true); setDepois(d => !d); };
+  const alternar = () => { if (trocando) return; setMexeu(true); setTrocando(true); setDepois(d => !d); };
 
   return (
     <figure className="demo" ref={ref}>
@@ -97,7 +79,8 @@ export default function BeforeAfter() {
         secondContent={<Painel />}
         active={depois}
         trigger="manual"
-        pixelSize={36}
+        pixelSize={56}
+        counterScale={false}
         pattern="left-to-right"
         randomness={0.35}
         pixelScale={0.2}
@@ -105,13 +88,14 @@ export default function BeforeAfter() {
         pixelDuration={420}
         aspectRatio="4 / 3"
         className="demo-swap"
+        onComplete={() => setTrocando(false)}
       />
       <div className="demo-foot">
         <figcaption>
           <strong>{depois ? 'Depois: a resposta em uma tela.' : 'Antes: a planilha de hoje.'}</strong>{' '}
           Exemplo de uma papelaria, com dados fictícios.
         </figcaption>
-        <button type="button" className="btn-ghost" onClick={alternar} aria-pressed={depois}>
+        <button type="button" className="btn-ghost" onClick={alternar} aria-pressed={depois} disabled={trocando}>
           {depois ? 'Ver o antes' : 'Ver o depois'}
         </button>
       </div>

@@ -154,6 +154,7 @@ function PixelSwap({
   pattern = 'random',
   randomness = 0,
   easing = 'cubic-bezier(0.22, 1, 0.36, 1)',
+  counterScale = true,
   trigger = 'hover',
   initialActive = false,
   active,
@@ -192,7 +193,7 @@ function PixelSwap({
 
   // Snapshot the animation inputs so a transition already in flight is never
   // rebuilt halfway through by an unrelated prop change.
-  const config = { duration, pixelDuration, pixelSpin, pixelScale, pixelRadius, fade, easing, onComplete };
+  const config = { duration, pixelDuration, pixelSpin, pixelScale, pixelRadius, fade, easing, onComplete, counterScale };
   const configRef = useRef(config);
   const gridRef = useRef(grid);
   configRef.current = config;
@@ -237,8 +238,10 @@ function PixelSwap({
     const settings = configRef.current;
     const { grid: frozenGrid, to } = transition;
 
+    // Não limpa os pixels aqui: limpar antes de o React mostrar a camada nova deixava um quadro com o
+    // conteúdo antigo (o "piscar" de volta para o antes). A grade sai junto com a troca, no mesmo
+    // quadro, e a limpeza dos tweens roda na desmontagem deste efeito.
     const finish = () => {
-      stopAnimations();
       setShownActive(to);
       setTransition(null);
       settings.onComplete?.(to);
@@ -287,10 +290,11 @@ function PixelSwap({
       pixelElement.replaceChildren(content);
 
       const timing = { duration: pixelMs, delay: pixel.offset * spread, easing: 'linear', fill: 'both' };
-      animationsRef.current.push(
-        pixelElement.animate(keyframes.window, timing),
-        content.animate(keyframes.content, timing)
-      );
+      animationsRef.current.push(pixelElement.animate(keyframes.window, timing));
+      // contraescala: o conteúdo fica parado enquanto a janela cresce. Ela exige uma camada do tamanho do quadro inteiro
+      // por pixel; com ~200 pixels o navegador estoura a memória de vídeo e alguns pixels piscam por um quadro.
+      // counterScale={false} deixa o conteúdo crescer junto com a janela (só funciona sem gap e sem raio, onde o fim é escala 1).
+      if (settings.counterScale) animationsRef.current.push(content.animate(keyframes.content, timing));
     });
 
     timerRef.current = window.setTimeout(finish, total);

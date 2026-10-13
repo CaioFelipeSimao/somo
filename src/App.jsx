@@ -4,6 +4,7 @@ import LeadForm from './LeadForm';
 import CenaPlanilha from './cena/CenaPlanilha';
 import Sintomas from './Sintomas';
 import Diagnostico from './Diagnostico';
+import Barra from './Barra';
 
 // Os efeitos carregam depois do texto: no 3G a página aparece primeiro, as animações chegam em seguida.
 const StrokeText = lazy(() => import('./components/StrokeText'));
@@ -128,18 +129,7 @@ export default function App() {
   return (
     <>
       {/* 1. PRIMEIRA DOBRA (será reescrita na aula 1.9) */}
-      <nav className="faixa" aria-label="Seções da página">
-        <div className="grid faixa-grid">
-          <a className="faixa-marca" href="#topo"><strong>Caio Simão</strong><span>vendas de pequenos comércios</span></a>
-          <ul className="faixa-links">
-            <li><a href="#t-problemas">O problema</a></li>
-            <li><a href="#t-servicos">O que eu faço</a></li>
-            <li><a href="#t-passos">Como funciona</a></li>
-            <li><a href="#t-quem">Quem faz</a></li>
-          </ul>
-          <a className="btn faixa-cta" href="#formulario" onClick={irFormulario}>Quero meu mês arrumado</a>
-        </div>
-      </nav>
+      <Barra onPedir={irFormulario} />
       <header className="hero" id="topo">
         <div className="grid">
           <h1 className="hero-title">Sua planilha ou caderno deveria responder perguntas, não criar dúvidas.</h1>

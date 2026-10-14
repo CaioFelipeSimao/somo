@@ -7,7 +7,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "imagens": "node scripts/imagens.mjs",
-    "conferir": "node testes/conferir.mjs"
+    "conferir": "node testes/conferir.mjs",
+    "artefato": "vite build -c vite.artefato.config.js --outDir .artefato/dist --emptyOutDir && node scripts/artefato-montar.mjs .artefato/dist public/caio.webp .artefato/somo.html"
   },
   "dependencies": {
     "@fontsource-variable/schibsted-grotesk": "^5.3.0",

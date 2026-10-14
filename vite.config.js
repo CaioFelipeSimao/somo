@@ -35,8 +35,20 @@ const enderecosLimpos = () => ({
   }
 });
 
+// a letra principal é avisada no <head> de cada página (preload): o navegador baixa junto com o resto,
+// sem esperar o CSS chegar para descobrir que precisa dela
+const preCarregarFonte = () => ({
+  name: 'pre-carregar-fonte',
+  apply: 'build',
+  transformIndexHtml(html, ctx) {
+    const fonte = Object.keys(ctx.bundle ?? {}).find(n => n.includes('schibsted-grotesk-latin-wght-normal') && n.endsWith('.woff2'));
+    if (!fonte) return html;
+    return html.replace('</head>', `  <link rel="preload" href="/${fonte}" as="font" type="font/woff2" crossorigin>\n</head>`);
+  }
+});
+
 // duas páginas: a landing e a de privacidade
 export default defineConfig({
-  plugins: [react(), exigirChave(), enderecosLimpos()],
+  plugins: [react(), exigirChave(), enderecosLimpos(), preCarregarFonte()],
   build: { rollupOptions: { input: { main: 'index.html', privacidade: 'privacidade.html', erro: '404.html' } } }
 });

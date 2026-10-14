@@ -661,8 +661,10 @@ form .btn { width: 100%; }
 .degraus-presos .degraus li {
   /* o 1º degrau já está no lugar; o 2º e o 3º sobem */
   --t: clamp(0, calc(var(--p, 0) * 2.2 - (var(--i) - 1) * 1.1), 1);
-  opacity: var(--t);
-  translate: calc((1 - var(--t)) * -64px) 0;
+  /* revela no próprio lugar, da esquerda para a direita: as bordas nunca cruzam a do cartão vizinho, mesmo se a
+     pessoa parar de rolar no meio (antes o cartão deslizava 64 px por cima do anterior) */
+  clip-path: inset(-2px calc((1 - var(--t)) * 100% - 2px) -2px -2px);
+  opacity: calc(.35 + var(--t) * .65);
 }
 
 /* botão da planilha: preto, para não competir com o azul do pedido */
@@ -890,7 +892,7 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 .sobra-esq, .sobra-dir { display: grid; gap: 24px; align-content: start; min-width: 0; }
 .sobra-esq .sec-title { margin-bottom: 4px; }
 @media (min-width: 960px) {
-  .sec .grid > .sobra-esq { grid-column: 1 / 6; position: sticky; top: calc(var(--barra-h) + 24px); align-self: start; }
+  .sec .grid > .sobra-esq { grid-column: 1 / 6; align-self: start; }
   .sec .grid > .sobra-dir { grid-column: 7 / 13; }
   .sobra-esq .rosca { padding-left: 0; max-width: 460px; }
   .sobra-dir .sobra-fatos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -973,3 +975,8 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
   .erro-texto { grid-column: 8 / 13; }
 }
 @media (max-width: 959px) { .erro-acoes > * { width: 100%; justify-content: center; } }
+
+/* a coluna da esquerda do "E quanto sobrou?" (~715 px) só fica presa quando cabe inteira abaixo da barra */
+@media (min-width: 960px) and (min-height: 860px) {
+  .sec .grid > .sobra-esq { position: sticky; top: calc(var(--barra-h) + 24px); }
+}

@@ -38,7 +38,8 @@ export default function CenaPlanilha() {
   const [ato, setAto] = useState(modo === 'parado' ? ATOS.length - 1 : 0);
   const [montada, setMontada] = useState(false);
 
-  // O 3D (Three.js) só baixa quando a seção está a uma tela e meia de aparecer.
+  // O 3D (Three.js, 135 KB) só baixa quando a seção está a menos de uma tela de aparecer: quem não rola até lá
+  // não baixa nada (com 1,5 tela, no PC ele baixava logo na abertura). Até montar, a planilha em HTML fica no palco.
   useEffect(() => {
     if (modo !== '3d') return undefined;
     let desmontar = null, vivo = true;
@@ -50,7 +51,7 @@ export default function CenaPlanilha() {
         desmontar = montarCena({ secao: secaoRef.current, vista: vistaRef.current, canvas: canvasRef.current, rotulos: rotulosRef.current, onAto: setAto });
         setMontada(true);
       }).catch(() => { /* sem rede para o 3D: a planilha em HTML continua no palco */ });
-    }, { rootMargin: '150% 0px' });
+    }, { rootMargin: '90% 0px' });
     io.observe(secaoRef.current);
     return () => { vivo = false; io.disconnect(); desmontar?.(); };
   }, [modo]);

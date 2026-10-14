@@ -50,8 +50,11 @@ try {
     await p.setViewport(vista);
     const erros = [];
     p.on('pageerror', e => erros.push(String(e)));
-    p.on('console', m => { if (m.type() === 'error' || /Content Security Policy|Refused to/i.test(m.text())) erros.push(m.text()); });
-    p.on('requestfailed', r => erros.push(`falhou: ${r.url()}`));
+    p.on('console', m => { if (m.location()?.url?.includes('api.web3forms.com')) return; if (m.type() === 'error' || /Content Security Policy|Refused to/i.test(m.text())) erros.push(m.text()); });
+    // o teste nunca manda pedido de verdade: o envio ao Web3Forms é barrado (vira a falha de rede que o teste confere)
+    await p.setRequestInterception(true);
+    p.on('request', r => (r.url().includes('api.web3forms.com') ? r.abort() : r.continue()));
+    p.on('requestfailed', r => { if (!r.url().includes('api.web3forms.com')) erros.push(`falhou: ${r.url()}`); });
     await p.evaluateOnNewDocument(() => {
       window.__pulos = 0;
       new PerformanceObserver(l => l.getEntries().forEach(e => { if (!e.hadRecentInput) window.__pulos += e.value; })).observe({ type: 'layout-shift', buffered: true });

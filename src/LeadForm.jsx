@@ -100,6 +100,14 @@ export default function LeadForm() {
   };
   const sair = campo => () => setTocado(t => ({ ...t, [campo]: true }));
 
+  // escolheu "Outro": no computador o cursor já vai para o "Qual?" (no celular não, para o teclado não abrir sozinho)
+  const escolheuOutro = useRef(false);
+  const mudarTipo = e => { escolheuOutro.current = e.target.value === 'Outro'; mudar('tipo')(e); };
+  useEffect(() => {
+    if (v.tipo === 'Outro' && escolheuOutro.current && window.matchMedia('(pointer: fine)').matches) document.getElementById('f-tipoOutro')?.focus();
+    escolheuOutro.current = false;
+  }, [v.tipo]);
+
   const lembrarClique = e => {
     const r = wrapRef.current.getBoundingClientRect();
     pressRef.current = { x: e.clientX - r.left, y: e.clientY - r.top };
@@ -130,12 +138,17 @@ export default function LeadForm() {
     const nome = limpar(v.nome, LIMITE.nome);
     const data = new FormData();
     data.append('access_key', FORM_ACCESS_KEY);
+    // o e-mail que chega para o Caio: remetente "Somô", assunto e campos em português, na ordem do formulário
+    const contato = limpar(v.contato, LIMITE.contato);
+    data.append('from_name', 'Somô');
     data.append('subject', `${correcao ? 'Correção de contato' : 'Novo pedido de mês arrumado'}: ${nome}`);
-    data.append('nome', nome);
-    data.append('tipo_de_negocio', v.tipo === 'Outro' ? limpar(v.tipoOutro, LIMITE.tipoOutro) : (TIPOS.includes(v.tipo) ? v.tipo : 'Outro'));
-    data.append('contato', limpar(v.contato, LIMITE.contato));
-    data.append('problema', limpar(v.problema, LIMITE.problema, true));
-    if (correcao) data.append('observacao', 'Este pedido corrige o contato de um pedido anterior.');
+    data.append('Nome', nome);
+    data.append('Tipo de loja', v.tipo === 'Outro' ? limpar(v.tipoOutro, LIMITE.tipoOutro) : (TIPOS.includes(v.tipo) ? v.tipo : 'Outro'));
+    data.append(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contato) ? 'E-mail' : 'WhatsApp', contato);
+    data.append('O que mais incomoda', limpar(v.problema, LIMITE.problema, true) || '(não respondeu)');
+    // contato por e-mail: o botão "Responder" do Gmail já responde para a pessoa
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contato)) data.append('replyto', contato);
+    if (correcao) data.append('Observação', 'Este pedido corrige o contato de um pedido anterior.');
 
     // Sem resposta em 15 s, desiste: no 3G o botão não pode ficar em "Enviando…" para sempre.
     const corte = new AbortController(), relogio = window.setTimeout(() => corte.abort(), 15000);
@@ -210,7 +223,7 @@ export default function LeadForm() {
                 {TIPOS.map((t, i) => (
                   <label key={t} className="chip">
                     <input type="radio" name="tipo" id={`f-tipo-${i}`} value={t} checked={v.tipo === t}
-                           onChange={mudar('tipo')} onBlur={sair('tipo')} aria-invalid={Boolean(mostrar('tipo'))} />
+                           onChange={mudarTipo} onBlur={sair('tipo')} aria-invalid={Boolean(mostrar('tipo'))} />
                     <span>{t}</span>
                   </label>
                 ))}

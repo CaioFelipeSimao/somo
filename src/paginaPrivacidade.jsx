@@ -28,6 +28,7 @@ montar({
       <section>
         <h2>O que fica no seu navegador</h2>
         <p>O site não usa cookies. Enquanto a aba está aberta, ele guarda no seu próprio navegador o rascunho do formulário, para você não perder o que escreveu. E lembra se você desligou os atalhos de teclado. Nada disso vem para mim.</p>
+        <p>Para saber quantas pessoas visitam o site, uso o contador de visitas da Vercel, que hospeda a página. Ele conta páginas vistas, de que país e de que tipo de aparelho, sem cookies e sem guardar nada que identifique você.</p>
       </section>
       <section>
         <h2>Seus direitos</h2>

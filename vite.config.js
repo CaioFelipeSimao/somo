@@ -47,8 +47,18 @@ const preCarregarFonte = () => ({
   }
 });
 
+// contador de visitas da Vercel (sem cookies): só entra no build feito na Vercel, onde o endereço existe;
+// no PC, nos testes e na prévia do celular ele não aparece
+const contadorVisitas = () => ({
+  name: 'contador-visitas',
+  apply: 'build',
+  transformIndexHtml: html => process.env.VERCEL
+    ? html.replace('</body>', '  <script defer src="/_vercel/insights/script.js"></script>\n</body>')
+    : html
+});
+
 // duas páginas: a landing e a de privacidade
 export default defineConfig({
-  plugins: [react(), exigirChave(), enderecosLimpos(), preCarregarFonte()],
+  plugins: [react(), exigirChave(), enderecosLimpos(), preCarregarFonte(), contadorVisitas()],
   build: { rollupOptions: { input: { main: 'index.html', privacidade: 'privacidade.html', erro: '404.html' } } }
 });

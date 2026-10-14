@@ -629,7 +629,8 @@ form .btn { width: 100%; }
 /* celular: o botão sai de cima da planilha e fica logo abaixo dela */
 @media (max-width: 959px) {
   /* compacto e com contorno: o único botão cheio do topo é o azul do pedido */
-  .demo-acao { position: static; display: flex; width: auto; margin: 12px 0 0 auto; }
+  .demo-acao { position: static; display: flex; width: auto; margin: 16px 0 0 auto; }
+  .demo-legenda { margin-top: 16px; }
 }
 .pixel-swap__pixel-content .marca { animation: none; }
 
@@ -769,8 +770,10 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
   /* planilha do antes: coluna de produto mais larga e linhas mais altas para tocar nos números */
   .sheet:not(.sheet-ok) thead th:nth-child(3) { width: 42%; }
   .demo .sheet th, .demo .sheet td { height: 2.5em; }
-  /* linhas mais altas pedem uma planilha mais alta, para a linha do total não sumir */
-  .demo-swap { aspect-ratio: 8 / 9 !important; }
+  /* a planilha tem a altura do próprio conteúdo (proporção fixa sobrava vazio no tablet e cortava o total em 360 px):
+     a primeira camada fica no fluxo e dá a altura; a segunda continua por cima, do mesmo tamanho */
+  .demo-swap { aspect-ratio: auto !important; }
+  .demo-swap .pixel-swap__layer:first-child { position: relative; }
 }
 
 /* ---------- Critique 8 ---------- */

@@ -140,6 +140,38 @@ try {
     await p.close();
   }
 
+  // planilha da amostra (topo) no celular e no tablet em pé: com proporção fixa ela sobrava vazio embaixo
+  // (458 px no tablet) ou cortava a linha do total (360 px). Mede as duas planilhas: a de antes e a arrumada.
+  console.log('\nPlanilha da amostra');
+  for (const [largura, alturaTela] of [[360, 780], [390, 844], [768, 1024]]) {
+    const p = await navegador.newPage();
+    await p.setViewport({ width: largura, height: alturaTela, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
+    await p.goto(BASE, { waitUntil: 'networkidle0' });
+    await espera(1500);
+    for (const planilha of ['antes', 'arrumada']) {
+      if (planilha === 'arrumada') {
+        await p.click('.demo-acao'); await espera(2200);
+        item(await p.evaluate(() => !!document.querySelector('.demo-depois .pixel-swap__layer[data-visible="true"] .sheet-ok')), `${largura} px: o botão troca para a planilha arrumada`);
+      }
+      const m = await p.evaluate(() => {
+        const r = sel => document.querySelector(sel).getBoundingClientRect();
+        const swap = r('.demo-swap'), acao = r('.demo-acao'), legenda = r('.demo-legenda');
+        const tabela = document.querySelector('.demo-swap .pixel-swap__layer[data-visible="true"] table').getBoundingClientRect();
+        return {
+          botao: Math.round(acao.top - swap.bottom), legenda: Math.round(legenda.top - acao.bottom),
+          faixa: Math.round(swap.bottom - 1 - tabela.bottom), // 1 px da borda de baixo; negativo = total cortado
+          tela: document.documentElement.scrollWidth
+        };
+      });
+      const onde = `${largura} px, planilha ${planilha}`;
+      item(Math.abs(m.botao - 16) <= 1, `${onde}: planilha → botão a 16 px`, `${m.botao} px`);
+      item(Math.abs(m.legenda - 16) <= 1, `${onde}: botão → legenda a 16 px`, `${m.legenda} px`);
+      item(m.faixa >= 0 && m.faixa <= 8, `${onde}: sem faixa vazia nem total cortado embaixo (0 a 8 px)`, `${m.faixa} px`);
+      item(m.tela <= largura, `${onde}: nada passa da largura da tela`, `${m.tela} px`);
+    }
+    await p.close();
+  }
+
   // página de privacidade e prévia do link
   console.log('\nOutras páginas');
   const p = await navegador.newPage();

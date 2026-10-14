@@ -22,7 +22,7 @@ Abre em http://localhost:5173/. O que você salvar nos arquivos aparece na hora.
    npm.cmd run conferir
    ```
 
-   Gera a versão de publicação e testa no PC e no celular: pulos de layout, cena 3D, abas, janela de dúvidas, atalhos, formulário, dados adulterados, proteções de segurança, privacidade e prévia do link. Termina com "Tudo certo." ou com a lista do que falhou.
+   Gera a versão de publicação e testa no PC e no celular: pulos de layout, cena 3D, planilha da amostra no celular e no tablet, abas, janela de dúvidas (com toques no celular), atalhos, formulário, dados adulterados, proteções de segurança, privacidade e prévia do link. Termina com "Tudo certo." ou com a lista do que falhou.
 
 A publicação (`npm.cmd run build`) para sozinha se faltar a chave, o contato da privacidade ou o endereço, para não ir ao ar com o formulário desligado.
 

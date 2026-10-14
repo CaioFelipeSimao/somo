@@ -48,9 +48,10 @@ npm install
 npm run conferir
 ```
 
-Gera a versão de publicação e testa 42 itens no PC e no celular:
+Gera a versão de publicação e testa 97 itens no PC, no celular e no tablet:
 - pulos de layout, cena 3D e rolagem lateral;
-- abas, atalhos e janela de dúvidas;
+- abas, atalhos e janela de dúvidas (no celular, com toques: abrir, ler até o fim, fechar, ir ao pedido);
+- espaçamento da planilha da amostra no celular e no tablet;
 - formulário: avisos, falha no envio e dados adulterados;
 - proteções de segurança;
 - privacidade, 404 e prévia do link.

@@ -43,9 +43,14 @@ const reduzMovimento = () => window.matchMedia('(prefers-reduced-motion: reduce)
 
 // Leva até o formulário. No computador, o cursor vai para o primeiro campo quando a rolagem termina;
 // no celular não, para o teclado não abrir no meio do caminho.
+// O que carrega no caminho ("E quanto sobrou?", cena 3D) empurra o formulário para baixo durante a rolagem
+// (no celular de 360 px ele parava 157 px abaixo do lugar): quando a rolagem para, mira de novo.
 function irFormulario(e) {
   e?.preventDefault();
-  document.getElementById('formulario')?.scrollIntoView({ behavior: reduzMovimento() ? 'auto' : 'smooth' });
+  const ir = () => document.getElementById('formulario')?.scrollIntoView({ behavior: reduzMovimento() ? 'auto' : 'smooth' });
+  ir();
+  if ('onscrollend' in window) window.addEventListener('scrollend', ir, { once: true });
+  else window.setTimeout(ir, 1200);
   if (window.matchMedia('(pointer: coarse)').matches) return;
   const focar = () => document.getElementById('f-nome')?.focus({ preventScroll: true });
   if ('onscrollend' in window) window.addEventListener('scrollend', focar, { once: true });

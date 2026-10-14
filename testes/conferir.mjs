@@ -7,6 +7,7 @@ import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { abrirNavegador } from '../scripts/navegador.mjs';
+import { conferirDuvidas } from './duvidas.mjs';
 
 const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pasta = path.join(raiz, '.conferir');
@@ -171,6 +172,10 @@ try {
     }
     await p.close();
   }
+
+  // janela "Dúvidas" no celular (testes/duvidas.mjs)
+  console.log('\nDúvidas no celular');
+  await conferirDuvidas({ navegador, BASE, item, espera });
 
   // página de privacidade e prévia do link
   console.log('\nOutras páginas');

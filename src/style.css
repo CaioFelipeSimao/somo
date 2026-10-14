@@ -722,8 +722,9 @@ html { scroll-padding-top: calc(var(--barra-h) + 8px); }
 /* janela de dúvidas: caixa reta à direita, fio fino, fundo escurecido */
 .ajuda { width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); margin: auto; padding: 0; border: 1px solid var(--hair); background: var(--surface); color: var(--ink); overflow: auto; }
 .ajuda::backdrop { background: color-mix(in srgb, var(--ink) 45%, transparent); }
-.ajuda-caixa { display: grid; gap: 24px; padding: 24px 28px 28px; }
-.ajuda-topo { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--hair); }
+.ajuda-caixa { display: grid; gap: 24px; padding: 0 28px 28px; }
+/* o topo (com o "Fechar") fica preso enquanto as perguntas rolam: no celular, quem lia até o fim perdia o botão de vista */
+.ajuda-topo { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 24px 0 16px; border-bottom: 1px solid var(--hair); background: var(--surface); }
 .ajuda-topo h2 { margin: 0; font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; }
 .ajuda-fechar { min-height: 44px; padding: 0 14px; border: 1px solid var(--hair); background: none; color: var(--ink); font: inherit; font-size: .9375rem; cursor: pointer; }
 .ajuda-lista { display: grid; gap: 18px; margin: 0; }

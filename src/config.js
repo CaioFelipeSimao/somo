@@ -3,6 +3,6 @@
 export const FORM_ACCESS_KEY = 'COLE_AQUI_A_CHAVE';
 
 // Contato para pedidos sobre dados (LGPD): aparece só na página de privacidade, não na landing.
-export const EMAIL_PRIVACIDADE = 'COLE_AQUI_O_EMAIL';
+export const EMAIL_PRIVACIDADE = 'somo.contato@gmail.com'; // ainda não criado: criar antes de publicar
 // Quantos dias o pedido do formulário fica guardado quando a conversa não acontece.
-export const DIAS_PEDIDO = 'COLE_AQUI_OS_DIAS';
+export const DIAS_PEDIDO = '30';

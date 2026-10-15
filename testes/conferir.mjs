@@ -147,12 +147,18 @@ try {
   for (const [largura, alturaTela] of [[360, 780], [390, 844], [768, 1024]]) {
     const p = await navegador.newPage();
     await p.setViewport({ width: largura, height: alturaTela, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
+    // "menos movimento" desliga a troca sozinha de 1,5 s (BeforeAfter.jsx): senão, em 768 px, ela troca a
+    // planilha no lugar do clique e a medida do "antes" pode cair no meio da troca
+    await p.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
     await p.goto(BASE, { waitUntil: 'networkidle0' });
-    await espera(1500);
+    await espera(3000); // mais que 1,5 s + a troca (1,3 s): se a troca sozinha voltar, o item abaixo pega
+    const arrumada = () => p.evaluate(() => !!document.querySelector('.demo-swap .pixel-swap__layer[data-visible="true"] .sheet-ok'));
     for (const planilha of ['antes', 'arrumada']) {
+      if (planilha === 'antes') item(!await arrumada(), `${largura} px: começa na planilha antes (nada trocou sozinho)`);
       if (planilha === 'arrumada') {
-        await p.click('.demo-acao'); await espera(2200);
-        item(await p.evaluate(() => !!document.querySelector('.demo-depois .pixel-swap__layer[data-visible="true"] .sheet-ok')), `${largura} px: o botão troca para a planilha arrumada`);
+        item(await p.$eval('.demo-acao', b => !b.disabled), `${largura} px: o botão está ativo antes do clique`);
+        await p.click('.demo-acao'); await espera(500);
+        item(await arrumada(), `${largura} px: o botão troca para a planilha arrumada`);
       }
       const m = await p.evaluate(() => {
         const r = sel => document.querySelector(sel).getBoundingClientRect();
